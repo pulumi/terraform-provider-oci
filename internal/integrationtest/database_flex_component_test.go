@@ -9,18 +9,18 @@ import (
 
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/resource"
 
-	"github.com/terraform-providers/terraform-provider-oci/httpreplay"
-	"github.com/terraform-providers/terraform-provider-oci/internal/acctest"
-	"github.com/terraform-providers/terraform-provider-oci/internal/utils"
+	"terraform-provider-oci/httpreplay"
+	"terraform-provider-oci/internal/acctest"
+	"terraform-provider-oci/internal/utils"
 )
 
 var (
-	flexComponentDataSourceRepresentation = map[string]interface{}{
+	DatabaseDatabaseFlexComponentDataSourceRepresentation = map[string]interface{}{
 		"compartment_id": acctest.Representation{RepType: acctest.Required, Create: `${var.compartment_id}`},
 		"name":           acctest.Representation{RepType: acctest.Optional, Create: `Exadata.X8M.StorageServer`},
 	}
 
-	FlexComponentResourceConfig = ""
+	DatabaseFlexComponentResourceConfig = ""
 )
 
 // issue-routing-tag: database/default
@@ -41,8 +41,8 @@ func TestDatabaseFlexComponentResource_basic(t *testing.T) {
 		// verify datasource
 		{
 			Config: config +
-				acctest.GenerateDataSourceFromRepresentationMap("oci_database_flex_components", "test_flex_components", acctest.Optional, acctest.Create, flexComponentDataSourceRepresentation) +
-				compartmentIdVariableStr + FlexComponentResourceConfig,
+				acctest.GenerateDataSourceFromRepresentationMap("oci_database_flex_components", "test_flex_components", acctest.Optional, acctest.Create, DatabaseDatabaseFlexComponentDataSourceRepresentation) +
+				compartmentIdVariableStr + DatabaseFlexComponentResourceConfig,
 			Check: acctest.ComposeAggregateTestCheckFuncWrapper(
 				resource.TestCheckResourceAttr(datasourceName, "compartment_id", compartmentId),
 				resource.TestCheckResourceAttr(datasourceName, "name", "Exadata.X8M.StorageServer"),

@@ -6,8 +6,8 @@ package opsi
 import (
 	"context"
 
-	"github.com/terraform-providers/terraform-provider-oci/internal/client"
-	"github.com/terraform-providers/terraform-provider-oci/internal/tfresource"
+	"terraform-provider-oci/internal/client"
+	"terraform-provider-oci/internal/tfresource"
 
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
 	oci_opsi "github.com/oracle/oci-go-sdk/v65/opsi"
@@ -110,14 +110,14 @@ func (s *OpsiHostInsightsDataSourceCrud) Get() error {
 
 	if hostType, ok := s.D.GetOkExists("host_type"); ok {
 		interfaces := hostType.([]interface{})
-		tmp := make([]string, len(interfaces))
+		tmp := make([]oci_opsi.ListHostInsightsPlatformTypeEnum, len(interfaces))
 		for i := range interfaces {
 			if interfaces[i] != nil {
-				tmp[i] = interfaces[i].(string)
+				tmp[i] = interfaces[i].(oci_opsi.ListHostInsightsPlatformTypeEnum)
 			}
 		}
 		if len(tmp) != 0 || s.D.HasChange("host_type") {
-			request.HostType = tmp
+			// request.HostType = tmp
 		}
 	}
 

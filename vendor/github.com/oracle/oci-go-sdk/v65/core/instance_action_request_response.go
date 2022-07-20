@@ -36,6 +36,9 @@ type InstanceActionRequest struct {
 	// will be updated or deleted only if the etag you provide matches the resource's current etag value.
 	IfMatch *string `mandatory:"false" contributesTo:"header" name:"if-match"`
 
+	// Instance Power Action details
+	InstancePowerActionDetails `contributesTo:"body"`
+
 	// Unique Oracle-assigned identifier for the request.
 	// If you need to contact Oracle about a particular request, please provide the request ID.
 	OpcRequestId *string `mandatory:"false" contributesTo:"header" name:"opc-request-id"`
@@ -123,6 +126,7 @@ const (
 	InstanceActionActionSoftstop                InstanceActionActionEnum = "SOFTSTOP"
 	InstanceActionActionSenddiagnosticinterrupt InstanceActionActionEnum = "SENDDIAGNOSTICINTERRUPT"
 	InstanceActionActionDiagnosticreboot        InstanceActionActionEnum = "DIAGNOSTICREBOOT"
+	InstanceActionActionRebootmigrate           InstanceActionActionEnum = "REBOOTMIGRATE"
 )
 
 var mappingInstanceActionActionEnum = map[string]InstanceActionActionEnum{
@@ -133,6 +137,7 @@ var mappingInstanceActionActionEnum = map[string]InstanceActionActionEnum{
 	"SOFTSTOP":                InstanceActionActionSoftstop,
 	"SENDDIAGNOSTICINTERRUPT": InstanceActionActionSenddiagnosticinterrupt,
 	"DIAGNOSTICREBOOT":        InstanceActionActionDiagnosticreboot,
+	"REBOOTMIGRATE":           InstanceActionActionRebootmigrate,
 }
 
 var mappingInstanceActionActionEnumLowerCase = map[string]InstanceActionActionEnum{
@@ -143,6 +148,7 @@ var mappingInstanceActionActionEnumLowerCase = map[string]InstanceActionActionEn
 	"softstop":                InstanceActionActionSoftstop,
 	"senddiagnosticinterrupt": InstanceActionActionSenddiagnosticinterrupt,
 	"diagnosticreboot":        InstanceActionActionDiagnosticreboot,
+	"rebootmigrate":           InstanceActionActionRebootmigrate,
 }
 
 // GetInstanceActionActionEnumValues Enumerates the set of values for InstanceActionActionEnum
@@ -164,6 +170,7 @@ func GetInstanceActionActionEnumStringValues() []string {
 		"SOFTSTOP",
 		"SENDDIAGNOSTICINTERRUPT",
 		"DIAGNOSTICREBOOT",
+		"REBOOTMIGRATE",
 	}
 }
 

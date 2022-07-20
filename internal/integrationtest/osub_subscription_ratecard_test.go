@@ -9,14 +9,14 @@ import (
 
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/resource"
 
-	"github.com/terraform-providers/terraform-provider-oci/httpreplay"
-	"github.com/terraform-providers/terraform-provider-oci/internal/acctest"
+	"terraform-provider-oci/httpreplay"
+	"terraform-provider-oci/internal/acctest"
 
-	"github.com/terraform-providers/terraform-provider-oci/internal/utils"
+	"terraform-provider-oci/internal/utils"
 )
 
 var (
-	ratecardDataSourceRepresentation = map[string]interface{}{
+	OsubSubscriptionOsubSubscriptionRatecardDataSourceRepresentation = map[string]interface{}{
 		"compartment_id":      acctest.Representation{RepType: acctest.Required, Create: `${var.compartment_id}`},
 		"subscription_id":     acctest.Representation{RepType: acctest.Required, Create: `${var.subscription_id}`},
 		"part_number":         acctest.Representation{RepType: acctest.Optional, Create: `partNumber`},
@@ -50,7 +50,7 @@ func TestOsubSubscriptionRatecardResource_basic(t *testing.T) {
 		// verify datasource
 		{
 			Config: config +
-				acctest.GenerateDataSourceFromRepresentationMap("oci_osub_subscription_ratecards", "test_ratecards", acctest.Required, acctest.Create, ratecardDataSourceRepresentation) +
+				acctest.GenerateDataSourceFromRepresentationMap("oci_osub_subscription_ratecards", "test_ratecards", acctest.Required, acctest.Create, OsubSubscriptionOsubSubscriptionRatecardDataSourceRepresentation) +
 				compartmentIdVariableStr + subscriptionIdVariableStr + oneRegionVariableStr,
 			Check: acctest.ComposeAggregateTestCheckFuncWrapper(
 				resource.TestCheckResourceAttr(datasourceName, "compartment_id", compartmentId),

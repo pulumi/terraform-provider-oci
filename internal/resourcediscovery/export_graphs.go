@@ -15,19 +15,21 @@ var tenancyResourceGraphs = map[string]TerraformResourceGraph{
 }
 
 var compartmentResourceGraphs = map[string]TerraformResourceGraph{
-	"availability_domain":     availabilityDomainResourceGraph,
+	"adm":                     admResourceGraph,
 	"ai_anomaly_detection":    aiAnomalyDetectionResourceGraph,
 	"ai_vision":               aiVisionResourceGraph,
 	"analytics":               analyticsResourceGraph,
 	"apigateway":              apigatewayResourceGraph,
 	"apm":                     apmResourceGraph,
 	"apm_config":              apmConfigResourceGraph,
+	"apm_synthetics":          apmSyntheticsResourceGraph,
 	"artifacts":               artifactsResourceGraph,
 	"auto_scaling":            autoScalingResourceGraph,
-	"apm_synthetics":          apmSyntheticsResourceGraph,
+	"availability_domain":     availabilityDomainResourceGraph,
 	"bastion":                 bastionResourceGraph,
 	"bds":                     bdsResourceGraph,
 	"blockchain":              blockchainResourceGraph,
+	"certificates_management": certificatesManagementResourceGraph,
 	"cloud_guard":             cloudGuardResourceGraph,
 	"containerengine":         containerengineResourceGraph,
 	"core":                    coreResourceGraph,
@@ -36,25 +38,28 @@ var compartmentResourceGraphs = map[string]TerraformResourceGraph{
 	"data_safe":               dataSafeResourceGraph,
 	"database":                databaseResourceGraph,
 	"database_migration":      databaseMigrationResourceGraph,
-	"datacatalog":             datacatalogResourceGraph,
 	"database_tools":          databaseToolsResourceGraph,
+	"datacatalog":             datacatalogResourceGraph,
 	"dataflow":                dataflowResourceGraph,
 	"dataintegration":         dataintegrationResourceGraph,
 	"datascience":             datascienceResourceGraph,
 	"devops":                  devopsResourceGraph,
 	"dns":                     dnsResourceGraph,
+	"em_warehouse":            emWarehouseResourceGraph,
 	"email":                   emailResourceGraph,
 	"events":                  eventsResourceGraph,
 	"file_storage":            fileStorageResourceGraph,
 	"functions":               functionsResourceGraph,
 	"golden_gate":             goldenGateResourceGraph,
 	"health_checks":           healthChecksResourceGraph,
+	"identity_data_plane":     identityDataPlaneResourceGraph,
 	"integration":             integrationResourceGraph,
 	"jms":                     jmsResourceGraph,
 	"kms":                     kmsResourceGraph,
+	"license_manager":         licenseManagerResourceGraph,
 	"load_balancer":           loadBalancerResourceGraph,
-	"logging":                 loggingResourceGraph,
 	"log_analytics":           logAnalyticsResourceGraph,
+	"logging":                 loggingResourceGraph,
 	"management_agent":        managementAgentResourceGraph,
 	"marketplace":             marketplaceResourceGraph,
 	"monitoring":              monitoringResourceGraph,
@@ -66,21 +71,23 @@ var compartmentResourceGraphs = map[string]TerraformResourceGraph{
 	"ocvp":                    ocvpResourceGraph,
 	"oda":                     odaResourceGraph,
 	"ons":                     onsResourceGraph,
+	"operator_access_control": operatorAccessControlResourceGraph,
 	"opsi":                    opsiResourceGraph,
 	"osmanagement":            osmanagementResourceGraph,
 	"osp_gateway":             ospGatewayResourceGraph,
+	"resourcemanager":         resourcemanagerResourceGraph,
 	"sch":                     schResourceGraph,
+	"service_mesh":            serviceMeshResourceGraph,
 	"stack_monitoring":        stackMonitoringResourceGraph,
-	"vault":                   vaultResourceGraph,
-	"vulnerability_scanning":  vulnerabilityScanningResourceGraph,
-	"waas":                    waasResourceGraph,
-	"waf":                     wafResourceGraph,
 	"streaming":               streamingResourceGraph,
 	"tagging":                 taggingResourceGraph,
+	"vault":                   vaultResourceGraph,
 	"visual_builder":          visualBuilderResourceGraph,
-	"certificates_management": certificatesManagementResourceGraph,
-	"identity_data_plane":     identityDataPlaneResourceGraph,
-	"operator_access_control": operatorAccessControlResourceGraph,
+	"vn_monitoring":           vnMonitoringResourceGraph,
+	"vulnerability_scanning":  vulnerabilityScanningResourceGraph,
+	"waa":                     waaResourceGraph,
+	"waas":                    waasResourceGraph,
+	"waf":                     wafResourceGraph,
 }
 
 var availabilityDomainResourceGraph = TerraformResourceGraph{
@@ -116,6 +123,13 @@ var availabilityDomainResourceGraph = TerraformResourceGraph{
 				"file_system_id": "id",
 			},
 		},
+	},
+}
+
+var admResourceGraph = TerraformResourceGraph{
+	"oci_identity_compartment": {
+		{TerraformResourceHints: exportAdmVulnerabilityAuditHints},
+		{TerraformResourceHints: exportAdmKnowledgeBaseHints},
 	},
 }
 
@@ -163,6 +177,8 @@ var apigatewayResourceGraph = TerraformResourceGraph{
 		{TerraformResourceHints: exportApigatewayGatewayHints},
 		{TerraformResourceHints: exportApigatewayDeploymentHints},
 		{TerraformResourceHints: exportApigatewayCertificateHints},
+		{TerraformResourceHints: exportApigatewaySubscriberHints},
+		{TerraformResourceHints: exportApigatewayUsagePlanHints},
 	},
 }
 
@@ -280,6 +296,8 @@ var cloudGuardResourceGraph = TerraformResourceGraph{
 		{TerraformResourceHints: exportCloudGuardManagedListHints},
 		{TerraformResourceHints: exportCloudGuardResponderRecipeHints},
 		{TerraformResourceHints: exportCloudGuardDetectorRecipeHints},
+		{TerraformResourceHints: exportCloudGuardSecurityRecipeHints},
+		{TerraformResourceHints: exportCloudGuardSecurityZoneHints},
 	},
 }
 
@@ -335,6 +353,8 @@ var coreResourceGraph = TerraformResourceGraph{
 		{TerraformResourceHints: exportCoreVolumeGroupBackupHints},
 		{TerraformResourceHints: exportCoreVolumeHints},
 		{TerraformResourceHints: exportCorePublicIpPoolHints},
+		{TerraformResourceHints: exportCoreCaptureFilterHints},
+		{TerraformResourceHints: exportCoreVtapHints},
 	},
 	"oci_core_boot_volume": {
 		{
@@ -725,6 +745,12 @@ var dnsResourceGraph = TerraformResourceGraph{
 	},
 }
 
+var emWarehouseResourceGraph = TerraformResourceGraph{
+	"oci_identity_compartment": {
+		{TerraformResourceHints: exportEmWarehouseEmWarehouseHints},
+	},
+}
+
 var emailResourceGraph = TerraformResourceGraph{
 	"oci_identity_compartment": {
 		{TerraformResourceHints: exportEmailSenderHints},
@@ -910,6 +936,21 @@ var kmsResourceGraph = TerraformResourceGraph{
 	},
 }
 
+var licenseManagerResourceGraph = TerraformResourceGraph{
+	"oci_identity_compartment": {
+		{TerraformResourceHints: exportLicenseManagerConfigurationHints},
+		{TerraformResourceHints: exportLicenseManagerProductLicenseHints},
+	},
+	"oci_license_manager_product_license": {
+		{
+			TerraformResourceHints: exportLicenseManagerLicenseRecordHints,
+			datasourceQueryParams: map[string]string{
+				"product_license_id": "id",
+			},
+		},
+	},
+}
+
 var limitsResourceGraph = TerraformResourceGraph{
 	"oci_identity_tenancy": {
 		{TerraformResourceHints: exportLimitsQuotaHints},
@@ -1010,6 +1051,7 @@ var marketplaceResourceGraph = TerraformResourceGraph{
 var meteringComputationResourceGraph = TerraformResourceGraph{
 	"oci_identity_tenancy": {
 		{TerraformResourceHints: exportMeteringComputationQueryHints},
+		{TerraformResourceHints: exportMeteringComputationScheduleHints},
 	},
 }
 
@@ -1195,9 +1237,27 @@ var ospGatewayResourceGraph = TerraformResourceGraph{
 	"oci_identity_compartment": {},
 }
 
+var resourcemanagerResourceGraph = TerraformResourceGraph{
+	"oci_identity_compartment": {
+		{TerraformResourceHints: exportResourcemanagerPrivateEndpointHints},
+	},
+}
+
 var schResourceGraph = TerraformResourceGraph{
 	"oci_identity_compartment": {
 		{TerraformResourceHints: exportSchServiceConnectorHints},
+	},
+}
+
+var serviceMeshResourceGraph = TerraformResourceGraph{
+	"oci_identity_compartment": {
+		{TerraformResourceHints: exportServiceMeshVirtualServiceHints},
+		{TerraformResourceHints: exportServiceMeshAccessPolicyHints},
+		{TerraformResourceHints: exportServiceMeshMeshHints},
+		{TerraformResourceHints: exportServiceMeshIngressGatewayRouteTableHints},
+		{TerraformResourceHints: exportServiceMeshVirtualServiceRouteTableHints},
+		{TerraformResourceHints: exportServiceMeshVirtualDeploymentHints},
+		{TerraformResourceHints: exportServiceMeshIngressGatewayHints},
 	},
 }
 
@@ -1239,12 +1299,25 @@ var visualBuilderResourceGraph = TerraformResourceGraph{
 	},
 }
 
+var vnMonitoringResourceGraph = TerraformResourceGraph{
+	"oci_identity_compartment": {
+		{TerraformResourceHints: exportVnMonitoringPathAnalyzerTestHints},
+	},
+}
+
 var vulnerabilityScanningResourceGraph = TerraformResourceGraph{
 	"oci_identity_compartment": {
 		{TerraformResourceHints: exportVulnerabilityScanningHostScanRecipeHints},
 		{TerraformResourceHints: exportVulnerabilityScanningHostScanTargetHints},
 		{TerraformResourceHints: exportVulnerabilityScanningContainerScanRecipeHints},
 		{TerraformResourceHints: exportVulnerabilityScanningContainerScanTargetHints},
+	},
+}
+
+var waaResourceGraph = TerraformResourceGraph{
+	"oci_identity_compartment": {
+		{TerraformResourceHints: exportWaaWebAppAccelerationPolicyHints},
+		{TerraformResourceHints: exportWaaWebAppAccelerationHints},
 	},
 }
 

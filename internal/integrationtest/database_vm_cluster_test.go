@@ -10,11 +10,11 @@ import (
 	"testing"
 	"time"
 
-	"github.com/terraform-providers/terraform-provider-oci/internal/acctest"
-	"github.com/terraform-providers/terraform-provider-oci/internal/client"
-	"github.com/terraform-providers/terraform-provider-oci/internal/resourcediscovery"
-	"github.com/terraform-providers/terraform-provider-oci/internal/tfresource"
-	"github.com/terraform-providers/terraform-provider-oci/internal/utils"
+	"terraform-provider-oci/internal/acctest"
+	"terraform-provider-oci/internal/client"
+	"terraform-provider-oci/internal/resourcediscovery"
+	"terraform-provider-oci/internal/tfresource"
+	"terraform-provider-oci/internal/utils"
 
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/resource"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
@@ -22,32 +22,32 @@ import (
 	"github.com/oracle/oci-go-sdk/v65/common"
 	oci_database "github.com/oracle/oci-go-sdk/v65/database"
 
-	"github.com/terraform-providers/terraform-provider-oci/httpreplay"
+	"terraform-provider-oci/httpreplay"
 )
 
 var (
-	VmClusterRequiredOnlyResource = VmClusterResourceDependencies +
-		acctest.GenerateResourceFromRepresentationMap("oci_database_vm_cluster", "test_vm_cluster", acctest.Required, acctest.Create, vmClusterRepresentation)
+	DatabaseVmClusterRequiredOnlyResource = DatabaseVmClusterResourceDependencies +
+		acctest.GenerateResourceFromRepresentationMap("oci_database_vm_cluster", "test_vm_cluster", acctest.Required, acctest.Create, DatabaseVmClusterRepresentation)
 
-	VmClusterResourceConfig = VmClusterResourceDependencies +
-		acctest.GenerateResourceFromRepresentationMap("oci_database_vm_cluster", "test_vm_cluster", acctest.Optional, acctest.Update, vmClusterRepresentation)
+	DatabaseVmClusterResourceConfig = DatabaseVmClusterResourceDependencies +
+		acctest.GenerateResourceFromRepresentationMap("oci_database_vm_cluster", "test_vm_cluster", acctest.Optional, acctest.Update, DatabaseVmClusterRepresentation)
 
-	vmClusterSingularDataSourceRepresentation = map[string]interface{}{
+	DatabaseDatabaseVmClusterSingularDataSourceRepresentation = map[string]interface{}{
 		"vm_cluster_id": acctest.Representation{RepType: acctest.Required, Create: `${oci_database_vm_cluster.test_vm_cluster.id}`},
 	}
 
-	vmClusterDataSourceRepresentation = map[string]interface{}{
+	DatabaseDatabaseVmClusterDataSourceRepresentation = map[string]interface{}{
 		"compartment_id":            acctest.Representation{RepType: acctest.Required, Create: `${var.compartment_id}`},
 		"display_name":              acctest.Representation{RepType: acctest.Optional, Create: `vmCluster`},
 		"exadata_infrastructure_id": acctest.Representation{RepType: acctest.Optional, Create: `${oci_database_exadata_infrastructure.test_exadata_infrastructure.id}`},
 		"state":                     acctest.Representation{RepType: acctest.Optional, Create: `AVAILABLE`},
-		"filter":                    acctest.RepresentationGroup{RepType: acctest.Required, Group: vmClusterDataSourceFilterRepresentation}}
-	vmClusterDataSourceFilterRepresentation = map[string]interface{}{
+		"filter":                    acctest.RepresentationGroup{RepType: acctest.Required, Group: DatabaseVmClusterDataSourceFilterRepresentation}}
+	DatabaseVmClusterDataSourceFilterRepresentation = map[string]interface{}{
 		"name":   acctest.Representation{RepType: acctest.Required, Create: `id`},
 		"values": acctest.Representation{RepType: acctest.Required, Create: []string{`${oci_database_vm_cluster.test_vm_cluster.id}`}},
 	}
 
-	vmClusterRepresentation = map[string]interface{}{
+	DatabaseVmClusterRepresentation = map[string]interface{}{
 		"compartment_id":              acctest.Representation{RepType: acctest.Required, Create: `${var.compartment_id}`},
 		"cpu_core_count":              acctest.Representation{RepType: acctest.Required, Create: `4`, Update: `6`},
 		"display_name":                acctest.Representation{RepType: acctest.Required, Create: `vmCluster`},
@@ -55,6 +55,7 @@ var (
 		"gi_version":                  acctest.Representation{RepType: acctest.Required, Create: `19.0.0.0.0`},
 		"ssh_public_keys":             acctest.Representation{RepType: acctest.Required, Create: []string{`ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDOuBJgh6lTmQvQJ4BA3RCJdSmxRtmiXAQEEIP68/G4gF3XuZdKEYTFeputacmRq9yO5ZnNXgO9akdUgePpf8+CfFtveQxmN5xo3HVCDKxu/70lbMgeu7+wJzrMOlzj+a4zNq2j0Ww2VWMsisJ6eV3bJTnO/9VLGCOC8M9noaOlcKcLgIYy4aDM724MxFX2lgn7o6rVADHRxkvLEXPVqYT4syvYw+8OVSnNgE4MJLxaw8/2K0qp19YlQyiriIXfQpci3ThxwLjymYRPj+kjU1xIxv6qbFQzHR7ds0pSWp1U06cIoKPfCazU9hGWW8yIe/vzfTbWrt2DK6pLwBn/G0x3 sample`}},
 		"vm_cluster_network_id":       acctest.Representation{RepType: acctest.Required, Create: `${oci_database_vm_cluster_network.test_vm_cluster_network.id}`},
+		"data_collection_options":     acctest.RepresentationGroup{RepType: acctest.Optional, Group: DatabaseVmClusterDataCollectionOptionsRepresentation},
 		"data_storage_size_in_tbs":    acctest.Representation{RepType: acctest.Optional, Create: `84`, Update: `86`},
 		"db_node_storage_size_in_gbs": acctest.Representation{RepType: acctest.Optional, Create: `120`, Update: `160`},
 		"db_servers":                  acctest.Representation{RepType: acctest.Required, Create: []string{`${data.oci_database_db_servers.test_db_servers.db_servers.0.id}`, `${data.oci_database_db_servers.test_db_servers.db_servers.1.id}`}},
@@ -66,8 +67,11 @@ var (
 		"memory_size_in_gbs":          acctest.Representation{RepType: acctest.Optional, Create: `60`, Update: `90`},
 		"time_zone":                   acctest.Representation{RepType: acctest.Optional, Create: `US/Pacific`},
 	}
+	DatabaseVmClusterDataCollectionOptionsRepresentation = map[string]interface{}{
+		"is_diagnostics_events_enabled": acctest.Representation{RepType: acctest.Optional, Create: `false`, Update: `true`},
+	}
 
-	VmClusterResourceDependencies = VmClusterNetworkValidatedResourceConfig
+	DatabaseVmClusterResourceDependencies = VmClusterNetworkValidatedResourceConfig
 )
 
 // issue-routing-tag: database/ExaCC
@@ -89,15 +93,15 @@ func TestDatabaseVmClusterResource_basic(t *testing.T) {
 
 	var resId, resId2 string
 	// Save TF content to Create resource with optional properties. This has to be exactly the same as the config part in the "Create with optionals" step in the test.
-	acctest.SaveConfigContent(config+compartmentIdVariableStr+VmClusterResourceDependencies+
-		acctest.GenerateResourceFromRepresentationMap("oci_database_vm_cluster", "test_vm_cluster", acctest.Optional, acctest.Create, vmClusterRepresentation), "database", "vmCluster", t)
+	acctest.SaveConfigContent(config+compartmentIdVariableStr+DatabaseVmClusterResourceDependencies+
+		acctest.GenerateResourceFromRepresentationMap("oci_database_vm_cluster", "test_vm_cluster", acctest.Optional, acctest.Create, DatabaseVmClusterRepresentation), "database", "vmCluster", t)
 
 	acctest.ResourceTest(t, testAccCheckDatabaseVmClusterDestroy, []resource.TestStep{
 		// verify Create
 		{
-			Config: config + compartmentIdVariableStr + VmClusterResourceDependencies +
-				acctest.GenerateDataSourceFromRepresentationMap("oci_database_db_servers", "test_db_servers", acctest.Required, acctest.Create, dbServerDataSourceRepresentation) +
-				acctest.GenerateResourceFromRepresentationMap("oci_database_vm_cluster", "test_vm_cluster", acctest.Required, acctest.Create, vmClusterRepresentation),
+			Config: config + compartmentIdVariableStr + DatabaseVmClusterResourceDependencies +
+				acctest.GenerateDataSourceFromRepresentationMap("oci_database_db_servers", "test_db_servers", acctest.Required, acctest.Create, DatabaseDatabaseDbServerDataSourceRepresentation) +
+				acctest.GenerateResourceFromRepresentationMap("oci_database_vm_cluster", "test_vm_cluster", acctest.Required, acctest.Create, DatabaseVmClusterRepresentation),
 			Check: acctest.ComposeAggregateTestCheckFuncWrapper(
 				resource.TestCheckResourceAttr(resourceName, "compartment_id", compartmentId),
 				resource.TestCheckResourceAttr(resourceName, "cpu_core_count", "4"),
@@ -119,12 +123,14 @@ func TestDatabaseVmClusterResource_basic(t *testing.T) {
 		},
 		//verify Create with optionals
 		{
-			Config: config + compartmentIdVariableStr + VmClusterResourceDependencies +
-				acctest.GenerateDataSourceFromRepresentationMap("oci_database_db_servers", "test_db_servers", acctest.Required, acctest.Create, dbServerDataSourceRepresentation) +
-				acctest.GenerateResourceFromRepresentationMap("oci_database_vm_cluster", "test_vm_cluster", acctest.Optional, acctest.Create, vmClusterRepresentation),
+			Config: config + compartmentIdVariableStr + DatabaseVmClusterResourceDependencies +
+				acctest.GenerateDataSourceFromRepresentationMap("oci_database_db_servers", "test_db_servers", acctest.Required, acctest.Create, DatabaseDatabaseDbServerDataSourceRepresentation) +
+				acctest.GenerateResourceFromRepresentationMap("oci_database_vm_cluster", "test_vm_cluster", acctest.Optional, acctest.Create, DatabaseVmClusterRepresentation),
 			Check: acctest.ComposeAggregateTestCheckFuncWrapper(
 				resource.TestCheckResourceAttr(resourceName, "compartment_id", compartmentId),
 				resource.TestCheckResourceAttr(resourceName, "cpu_core_count", "4"),
+				resource.TestCheckResourceAttr(resourceName, "data_collection_options.#", "1"),
+				resource.TestCheckResourceAttr(resourceName, "data_collection_options.0.is_diagnostics_events_enabled", "false"),
 				resource.TestCheckResourceAttr(resourceName, "data_storage_size_in_tbs", "84"),
 				resource.TestCheckResourceAttr(resourceName, "db_node_storage_size_in_gbs", "120"),
 				resource.TestCheckResourceAttr(resourceName, "db_servers.#", "2"),
@@ -153,15 +159,17 @@ func TestDatabaseVmClusterResource_basic(t *testing.T) {
 
 		// verify Update to the compartment (the compartment will be switched back in the next step)
 		{
-			Config: config + compartmentIdVariableStr + compartmentIdUVariableStr + VmClusterResourceDependencies +
-				acctest.GenerateDataSourceFromRepresentationMap("oci_database_db_servers", "test_db_servers", acctest.Required, acctest.Create, dbServerDataSourceRepresentation) +
+			Config: config + compartmentIdVariableStr + compartmentIdUVariableStr + DatabaseVmClusterResourceDependencies +
+				acctest.GenerateDataSourceFromRepresentationMap("oci_database_db_servers", "test_db_servers", acctest.Required, acctest.Create, DatabaseDatabaseDbServerDataSourceRepresentation) +
 				acctest.GenerateResourceFromRepresentationMap("oci_database_vm_cluster", "test_vm_cluster", acctest.Optional, acctest.Create,
-					acctest.RepresentationCopyWithNewProperties(vmClusterRepresentation, map[string]interface{}{
+					acctest.RepresentationCopyWithNewProperties(DatabaseVmClusterRepresentation, map[string]interface{}{
 						"compartment_id": acctest.Representation{RepType: acctest.Required, Create: `${var.compartment_id_for_update}`},
 					})),
 			Check: acctest.ComposeAggregateTestCheckFuncWrapper(
 				resource.TestCheckResourceAttr(resourceName, "compartment_id", compartmentIdU),
 				resource.TestCheckResourceAttr(resourceName, "cpu_core_count", "4"),
+				resource.TestCheckResourceAttr(resourceName, "data_collection_options.#", "1"),
+				resource.TestCheckResourceAttr(resourceName, "data_collection_options.0.is_diagnostics_events_enabled", "false"),
 				resource.TestCheckResourceAttr(resourceName, "data_storage_size_in_tbs", "84"),
 				resource.TestCheckResourceAttr(resourceName, "db_node_storage_size_in_gbs", "120"),
 				resource.TestCheckResourceAttr(resourceName, "db_servers.#", "2"),
@@ -188,12 +196,14 @@ func TestDatabaseVmClusterResource_basic(t *testing.T) {
 
 		// verify updates to updatable parameters
 		{
-			Config: config + compartmentIdVariableStr + VmClusterResourceDependencies +
-				acctest.GenerateDataSourceFromRepresentationMap("oci_database_db_servers", "test_db_servers", acctest.Required, acctest.Create, dbServerDataSourceRepresentation) +
-				acctest.GenerateResourceFromRepresentationMap("oci_database_vm_cluster", "test_vm_cluster", acctest.Optional, acctest.Update, vmClusterRepresentation),
+			Config: config + compartmentIdVariableStr + DatabaseVmClusterResourceDependencies +
+				acctest.GenerateDataSourceFromRepresentationMap("oci_database_db_servers", "test_db_servers", acctest.Required, acctest.Create, DatabaseDatabaseDbServerDataSourceRepresentation) +
+				acctest.GenerateResourceFromRepresentationMap("oci_database_vm_cluster", "test_vm_cluster", acctest.Optional, acctest.Update, DatabaseVmClusterRepresentation),
 			Check: acctest.ComposeAggregateTestCheckFuncWrapper(
 				resource.TestCheckResourceAttr(resourceName, "compartment_id", compartmentId),
 				resource.TestCheckResourceAttr(resourceName, "cpu_core_count", "6"),
+				resource.TestCheckResourceAttr(resourceName, "data_collection_options.#", "1"),
+				resource.TestCheckResourceAttr(resourceName, "data_collection_options.0.is_diagnostics_events_enabled", "true"),
 				resource.TestCheckResourceAttr(resourceName, "data_storage_size_in_tbs", "86"),
 				resource.TestCheckResourceAttr(resourceName, "db_node_storage_size_in_gbs", "160"),
 				resource.TestCheckResourceAttr(resourceName, "db_servers.#", "2"),
@@ -220,10 +230,10 @@ func TestDatabaseVmClusterResource_basic(t *testing.T) {
 		// verify datasource
 		{
 			Config: config +
-				acctest.GenerateDataSourceFromRepresentationMap("oci_database_vm_clusters", "test_vm_clusters", acctest.Optional, acctest.Update, vmClusterDataSourceRepresentation) +
-				compartmentIdVariableStr + VmClusterResourceDependencies +
-				acctest.GenerateDataSourceFromRepresentationMap("oci_database_db_servers", "test_db_servers", acctest.Required, acctest.Create, dbServerDataSourceRepresentation) +
-				acctest.GenerateResourceFromRepresentationMap("oci_database_vm_cluster", "test_vm_cluster", acctest.Optional, acctest.Update, vmClusterRepresentation),
+				acctest.GenerateDataSourceFromRepresentationMap("oci_database_vm_clusters", "test_vm_clusters", acctest.Optional, acctest.Update, DatabaseDatabaseVmClusterDataSourceRepresentation) +
+				compartmentIdVariableStr + DatabaseVmClusterResourceDependencies +
+				acctest.GenerateDataSourceFromRepresentationMap("oci_database_db_servers", "test_db_servers", acctest.Required, acctest.Create, DatabaseDatabaseDbServerDataSourceRepresentation) +
+				acctest.GenerateResourceFromRepresentationMap("oci_database_vm_cluster", "test_vm_cluster", acctest.Optional, acctest.Update, DatabaseVmClusterRepresentation),
 			Check: acctest.ComposeAggregateTestCheckFuncWrapper(
 				resource.TestCheckResourceAttr(datasourceName, "compartment_id", compartmentId),
 				resource.TestCheckResourceAttr(datasourceName, "display_name", "vmCluster"),
@@ -233,6 +243,8 @@ func TestDatabaseVmClusterResource_basic(t *testing.T) {
 				resource.TestCheckResourceAttr(datasourceName, "vm_clusters.#", "1"),
 				resource.TestCheckResourceAttr(datasourceName, "vm_clusters.0.compartment_id", compartmentId),
 				resource.TestCheckResourceAttrSet(datasourceName, "vm_clusters.0.cpus_enabled"),
+				resource.TestCheckResourceAttr(datasourceName, "vm_clusters.0.data_collection_options.#", "1"),
+				resource.TestCheckResourceAttr(datasourceName, "vm_clusters.0.data_collection_options.0.is_diagnostics_events_enabled", "true"),
 				resource.TestCheckResourceAttr(datasourceName, "vm_clusters.0.data_storage_size_in_tbs", "86"),
 				resource.TestCheckResourceAttr(datasourceName, "vm_clusters.0.db_node_storage_size_in_gbs", "160"),
 				resource.TestCheckResourceAttr(datasourceName, "vm_clusters.0.db_servers.#", "2"),
@@ -255,15 +267,17 @@ func TestDatabaseVmClusterResource_basic(t *testing.T) {
 		// verify singular datasource
 		{
 			Config: config +
-				acctest.GenerateDataSourceFromRepresentationMap("oci_database_vm_cluster", "test_vm_cluster", acctest.Required, acctest.Create, vmClusterSingularDataSourceRepresentation) +
-				compartmentIdVariableStr + VmClusterResourceDependencies +
-				acctest.GenerateDataSourceFromRepresentationMap("oci_database_db_servers", "test_db_servers", acctest.Required, acctest.Create, dbServerDataSourceRepresentation) +
-				acctest.GenerateResourceFromRepresentationMap("oci_database_vm_cluster", "test_vm_cluster", acctest.Optional, acctest.Update, vmClusterRepresentation),
+				acctest.GenerateDataSourceFromRepresentationMap("oci_database_vm_cluster", "test_vm_cluster", acctest.Required, acctest.Create, DatabaseDatabaseVmClusterSingularDataSourceRepresentation) +
+				compartmentIdVariableStr + DatabaseVmClusterResourceDependencies +
+				acctest.GenerateDataSourceFromRepresentationMap("oci_database_db_servers", "test_db_servers", acctest.Required, acctest.Create, DatabaseDatabaseDbServerDataSourceRepresentation) +
+				acctest.GenerateResourceFromRepresentationMap("oci_database_vm_cluster", "test_vm_cluster", acctest.Optional, acctest.Update, DatabaseVmClusterRepresentation),
 			Check: acctest.ComposeAggregateTestCheckFuncWrapper(
 				resource.TestCheckResourceAttrSet(singularDatasourceName, "vm_cluster_id"),
 
 				resource.TestCheckResourceAttr(singularDatasourceName, "compartment_id", compartmentId),
 				resource.TestCheckResourceAttrSet(singularDatasourceName, "cpus_enabled"),
+				resource.TestCheckResourceAttr(singularDatasourceName, "data_collection_options.#", "1"),
+				resource.TestCheckResourceAttr(singularDatasourceName, "data_collection_options.0.is_diagnostics_events_enabled", "true"),
 				resource.TestCheckResourceAttr(singularDatasourceName, "data_storage_size_in_tbs", "86"),
 				resource.TestCheckResourceAttr(singularDatasourceName, "db_node_storage_size_in_gbs", "160"),
 				resource.TestCheckResourceAttr(singularDatasourceName, "db_servers.#", "2"),
@@ -283,7 +297,7 @@ func TestDatabaseVmClusterResource_basic(t *testing.T) {
 		},
 		// verify resource import
 		{
-			Config:            config + VmClusterRequiredOnlyResource,
+			Config:            config + DatabaseVmClusterRequiredOnlyResource,
 			ImportState:       true,
 			ImportStateVerify: true,
 			ImportStateVerifyIgnore: []string{
@@ -349,7 +363,7 @@ func init() {
 
 func sweepDatabaseVmClusterResource(compartment string) error {
 	databaseClient := acctest.GetTestClients(&schema.ResourceData{}).DatabaseClient()
-	vmClusterIds, err := getVmClusterIds(compartment)
+	vmClusterIds, err := getDatabaseVmClusterIds(compartment)
 	if err != nil {
 		return err
 	}
@@ -365,14 +379,14 @@ func sweepDatabaseVmClusterResource(compartment string) error {
 				fmt.Printf("Error deleting VmCluster %s %s, It is possible that the resource is already deleted. Please verify manually \n", vmClusterId, error)
 				continue
 			}
-			acctest.WaitTillCondition(acctest.TestAccProvider, &vmClusterId, vmClusterSweepWaitCondition, time.Duration(3*time.Minute),
-				vmClusterSweepResponseFetchOperation, "database", true)
+			acctest.WaitTillCondition(acctest.TestAccProvider, &vmClusterId, DatabaseVmClusterSweepWaitCondition, time.Duration(3*time.Minute),
+				DatabaseVmClusterSweepResponseFetchOperation, "database", true)
 		}
 	}
 	return nil
 }
 
-func getVmClusterIds(compartment string) ([]string, error) {
+func getDatabaseVmClusterIds(compartment string) ([]string, error) {
 	ids := acctest.GetResourceIdsToSweep(compartment, "VmClusterId")
 	if ids != nil {
 		return ids, nil
@@ -397,7 +411,7 @@ func getVmClusterIds(compartment string) ([]string, error) {
 	return resourceIds, nil
 }
 
-func vmClusterSweepWaitCondition(response common.OCIOperationResponse) bool {
+func DatabaseVmClusterSweepWaitCondition(response common.OCIOperationResponse) bool {
 	// Only stop if the resource is available beyond 3 mins. As there could be an issue for the sweeper to delete the resource and manual intervention required.
 	if vmClusterResponse, ok := response.Response.(oci_database.GetVmClusterResponse); ok {
 		return vmClusterResponse.LifecycleState != oci_database.VmClusterLifecycleStateTerminated
@@ -405,7 +419,7 @@ func vmClusterSweepWaitCondition(response common.OCIOperationResponse) bool {
 	return false
 }
 
-func vmClusterSweepResponseFetchOperation(client *client.OracleClients, resourceId *string, retryPolicy *common.RetryPolicy) error {
+func DatabaseVmClusterSweepResponseFetchOperation(client *client.OracleClients, resourceId *string, retryPolicy *common.RetryPolicy) error {
 	_, err := client.DatabaseClient().GetVmCluster(context.Background(), oci_database.GetVmClusterRequest{
 		VmClusterId: resourceId,
 		RequestMetadata: common.RequestMetadata{

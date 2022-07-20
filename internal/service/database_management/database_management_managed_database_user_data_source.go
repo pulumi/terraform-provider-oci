@@ -6,8 +6,8 @@ package database_management
 import (
 	"context"
 
-	"github.com/terraform-providers/terraform-provider-oci/internal/client"
-	"github.com/terraform-providers/terraform-provider-oci/internal/tfresource"
+	"terraform-provider-oci/internal/client"
+	"terraform-provider-oci/internal/tfresource"
 
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
 	oci_database_management "github.com/oracle/oci-go-sdk/v65/databasemanagement"
@@ -281,6 +281,10 @@ func UserSummaryToMap(obj oci_database_management.UserSummary) map[string]interf
 
 	if obj.TimeExpiring != nil {
 		result["time_expiring"] = obj.TimeExpiring.String()
+	}
+
+	if obj.TimeLocked != nil {
+		result["time_locked"] = obj.TimeLocked.String()
 	}
 
 	return result

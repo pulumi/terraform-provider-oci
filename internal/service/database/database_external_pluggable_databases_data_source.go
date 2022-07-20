@@ -6,8 +6,8 @@ package database
 import (
 	"context"
 
-	"github.com/terraform-providers/terraform-provider-oci/internal/client"
-	"github.com/terraform-providers/terraform-provider-oci/internal/tfresource"
+	"terraform-provider-oci/internal/client"
+	"terraform-provider-oci/internal/tfresource"
 
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
 	oci_database "github.com/oracle/oci-go-sdk/v65/database"
@@ -183,6 +183,12 @@ func (s *DatabaseExternalPluggableDatabasesDataSourceCrud) SetData() error {
 
 		if r.SourceId != nil {
 			externalPluggableDatabase["source_id"] = *r.SourceId
+		}
+
+		if r.StackMonitoringConfig != nil {
+			externalPluggableDatabase["stack_monitoring_config"] = []interface{}{StackMonitoringConfigToMap(r.StackMonitoringConfig)}
+		} else {
+			externalPluggableDatabase["stack_monitoring_config"] = nil
 		}
 
 		externalPluggableDatabase["state"] = r.LifecycleState

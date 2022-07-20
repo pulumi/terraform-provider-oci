@@ -9,8 +9,8 @@ import (
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
 	oci_budget "github.com/oracle/oci-go-sdk/v65/budget"
 
-	"github.com/terraform-providers/terraform-provider-oci/internal/client"
-	"github.com/terraform-providers/terraform-provider-oci/internal/tfresource"
+	"terraform-provider-oci/internal/client"
+	"terraform-provider-oci/internal/tfresource"
 )
 
 func BudgetBudgetResource() *schema.Resource {
@@ -67,6 +67,11 @@ func BudgetBudgetResource() *schema.Resource {
 				Optional: true,
 				Computed: true,
 				Elem:     schema.TypeString,
+			},
+			"processing_period_type": {
+				Type:     schema.TypeString,
+				Optional: true,
+				Computed: true,
 			},
 			"target_compartment_id": {
 				Type:          schema.TypeString,
@@ -232,6 +237,10 @@ func (s *BudgetBudgetResourceCrud) Create() error {
 		request.FreeformTags = tfresource.ObjectMapToStringMap(freeformTags.(map[string]interface{}))
 	}
 
+	if processingPeriodType, ok := s.D.GetOkExists("processing_period_type"); ok {
+		request.ProcessingPeriodType = oci_budget.ProcessingPeriodTypeEnum(processingPeriodType.(string))
+	}
+
 	if resetPeriod, ok := s.D.GetOkExists("reset_period"); ok {
 		request.ResetPeriod = oci_budget.ResetPeriodEnum(resetPeriod.(string))
 	}
@@ -324,6 +333,10 @@ func (s *BudgetBudgetResourceCrud) Update() error {
 		request.FreeformTags = tfresource.ObjectMapToStringMap(freeformTags.(map[string]interface{}))
 	}
 
+	if processingPeriodType, ok := s.D.GetOkExists("processing_period_type"); ok {
+		request.ProcessingPeriodType = oci_budget.ProcessingPeriodTypeEnum(processingPeriodType.(string))
+	}
+
 	if resetPeriod, ok := s.D.GetOkExists("reset_period"); ok {
 		request.ResetPeriod = oci_budget.ResetPeriodEnum(resetPeriod.(string))
 	}
@@ -389,6 +402,8 @@ func (s *BudgetBudgetResourceCrud) SetData() error {
 	}
 
 	s.D.Set("freeform_tags", s.Res.FreeformTags)
+
+	s.D.Set("processing_period_type", s.Res.ProcessingPeriodType)
 
 	s.D.Set("reset_period", s.Res.ResetPeriod)
 

@@ -6,8 +6,8 @@ package database
 import (
 	"context"
 
-	"github.com/terraform-providers/terraform-provider-oci/internal/client"
-	"github.com/terraform-providers/terraform-provider-oci/internal/tfresource"
+	"terraform-provider-oci/internal/client"
+	"terraform-provider-oci/internal/tfresource"
 
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
 	oci_database "github.com/oracle/oci-go-sdk/v65/database"
@@ -68,6 +68,14 @@ func (s *DatabaseAutonomousVmClusterDataSourceCrud) SetData() error {
 
 	if s.Res.AutonomousDataStorageSizeInTBs != nil {
 		s.D.Set("autonomous_data_storage_size_in_tbs", *s.Res.AutonomousDataStorageSizeInTBs)
+	}
+
+	if s.Res.AvailableAutonomousDataStorageSizeInTBs != nil {
+		s.D.Set("available_autonomous_data_storage_size_in_tbs", *s.Res.AvailableAutonomousDataStorageSizeInTBs)
+	}
+
+	if s.Res.AvailableContainerDatabases != nil {
+		s.D.Set("available_container_databases", *s.Res.AvailableContainerDatabases)
 	}
 
 	if s.Res.AvailableCpus != nil {
@@ -150,6 +158,10 @@ func (s *DatabaseAutonomousVmClusterDataSourceCrud) SetData() error {
 
 	if s.Res.OcpusEnabled != nil {
 		s.D.Set("ocpus_enabled", *s.Res.OcpusEnabled)
+	}
+
+	if s.Res.ReclaimableCpus != nil {
+		s.D.Set("reclaimable_cpus", *s.Res.ReclaimableCpus)
 	}
 
 	s.D.Set("state", s.Res.LifecycleState)

@@ -10,8 +10,8 @@ import (
 	"strings"
 	"time"
 
-	"github.com/terraform-providers/terraform-provider-oci/internal/client"
-	"github.com/terraform-providers/terraform-provider-oci/internal/tfresource"
+	"terraform-provider-oci/internal/client"
+	"terraform-provider-oci/internal/tfresource"
 
 	oci_work_requests "github.com/oracle/oci-go-sdk/v65/workrequests"
 
@@ -648,6 +648,12 @@ func DatabaseDbSystemResource() *schema.Resource {
 				Computed: true,
 				ForceNew: true,
 			},
+			"storage_volume_performance_mode": {
+				Type:     schema.TypeString,
+				Optional: true,
+				Computed: true,
+				ForceNew: true,
+			},
 			"time_zone": {
 				Type:     schema.TypeString,
 				Optional: true,
@@ -807,6 +813,10 @@ func DatabaseDbSystemResource() *schema.Resource {
 					},
 				},
 			},
+			"memory_size_in_gbs": {
+				Type:     schema.TypeInt,
+				Computed: true,
+			},
 			"next_maintenance_run_id": {
 				Type:     schema.TypeString,
 				Computed: true,
@@ -950,6 +960,7 @@ func (s *DatabaseDbSystemResourceCrud) DeletedTarget() []string {
 func (s *DatabaseDbSystemResourceCrud) UpdatedPending() []string {
 	return []string{
 		string(oci_database.DbSystemLifecycleStateUpdating),
+		string(oci_database.DbSystemLifecycleStateUpgrading),
 	}
 }
 
@@ -1279,6 +1290,10 @@ func (s *DatabaseDbSystemResourceCrud) SetData() error {
 		s.D.Set("maintenance_window", nil)
 	}
 
+	if s.Res.MemorySizeInGBs != nil {
+		s.D.Set("memory_size_in_gbs", *s.Res.MemorySizeInGBs)
+	}
+
 	if s.Res.NextMaintenanceRunId != nil {
 		s.D.Set("next_maintenance_run_id", *s.Res.NextMaintenanceRunId)
 	}
@@ -1332,6 +1347,8 @@ func (s *DatabaseDbSystemResourceCrud) SetData() error {
 	s.D.Set("ssh_public_keys", schema.NewSet(tfresource.LiteralTypeHashCodeForSets, sshPublicKeys))
 
 	s.D.Set("state", s.Res.LifecycleState)
+
+	s.D.Set("storage_volume_performance_mode", s.Res.StorageVolumePerformanceMode)
 
 	if s.Res.SubnetId != nil {
 		s.D.Set("subnet_id", *s.Res.SubnetId)
@@ -2304,6 +2321,9 @@ func (s *DatabaseDbSystemResourceCrud) populateTopLevelPolymorphicLaunchDbSystem
 				details.SshPublicKeys = tmp
 			}
 		}
+		if storageVolumePerformanceMode, ok := s.D.GetOkExists("storage_volume_performance_mode"); ok {
+			details.StorageVolumePerformanceMode = oci_database.LaunchDbSystemBaseStorageVolumePerformanceModeEnum(storageVolumePerformanceMode.(string))
+		}
 		if subnetId, ok := s.D.GetOkExists("subnet_id"); ok {
 			tmp := subnetId.(string)
 			details.SubnetId = &tmp
@@ -2472,6 +2492,9 @@ func (s *DatabaseDbSystemResourceCrud) populateTopLevelPolymorphicLaunchDbSystem
 				details.SshPublicKeys = tmp
 			}
 		}
+		if storageVolumePerformanceMode, ok := s.D.GetOkExists("storage_volume_performance_mode"); ok {
+			details.StorageVolumePerformanceMode = oci_database.LaunchDbSystemBaseStorageVolumePerformanceModeEnum(storageVolumePerformanceMode.(string))
+		}
 		if subnetId, ok := s.D.GetOkExists("subnet_id"); ok {
 			tmp := subnetId.(string)
 			details.SubnetId = &tmp
@@ -2637,6 +2660,9 @@ func (s *DatabaseDbSystemResourceCrud) populateTopLevelPolymorphicLaunchDbSystem
 			if len(tmp) != 0 || s.D.HasChange("ssh_public_keys") {
 				details.SshPublicKeys = tmp
 			}
+		}
+		if storageVolumePerformanceMode, ok := s.D.GetOkExists("storage_volume_performance_mode"); ok {
+			details.StorageVolumePerformanceMode = oci_database.LaunchDbSystemBaseStorageVolumePerformanceModeEnum(storageVolumePerformanceMode.(string))
 		}
 		if subnetId, ok := s.D.GetOkExists("subnet_id"); ok {
 			tmp := subnetId.(string)
@@ -2815,6 +2841,9 @@ func (s *DatabaseDbSystemResourceCrud) populateTopLevelPolymorphicLaunchDbSystem
 			if len(tmp) != 0 || s.D.HasChange("ssh_public_keys") {
 				details.SshPublicKeys = tmp
 			}
+		}
+		if storageVolumePerformanceMode, ok := s.D.GetOkExists("storage_volume_performance_mode"); ok {
+			details.StorageVolumePerformanceMode = oci_database.LaunchDbSystemBaseStorageVolumePerformanceModeEnum(storageVolumePerformanceMode.(string))
 		}
 		if subnetId, ok := s.D.GetOkExists("subnet_id"); ok {
 			tmp := subnetId.(string)

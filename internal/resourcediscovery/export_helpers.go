@@ -7,40 +7,41 @@ import (
 	"fmt"
 	"net/url"
 
-	"github.com/terraform-providers/terraform-provider-oci/internal/service/data_safe"
+	"terraform-provider-oci/internal/service/data_safe"
 
-	"github.com/terraform-providers/terraform-provider-oci/internal/service/bds"
+	"terraform-provider-oci/internal/service/bds"
 
-	"github.com/terraform-providers/terraform-provider-oci/internal/service/data_connectivity"
-	tf_datascience "github.com/terraform-providers/terraform-provider-oci/internal/service/datascience"
-	"github.com/terraform-providers/terraform-provider-oci/internal/service/devops"
-	tf_identity "github.com/terraform-providers/terraform-provider-oci/internal/service/identity"
-	tf_log_analytics "github.com/terraform-providers/terraform-provider-oci/internal/service/log_analytics"
+	"terraform-provider-oci/internal/service/data_connectivity"
+	tf_datascience "terraform-provider-oci/internal/service/datascience"
+	"terraform-provider-oci/internal/service/devops"
+	tf_identity "terraform-provider-oci/internal/service/identity"
+	tf_log_analytics "terraform-provider-oci/internal/service/log_analytics"
 
-	"github.com/terraform-providers/terraform-provider-oci/internal/service/apm_config"
+	"terraform-provider-oci/internal/service/apm_config"
 
-	tf_logging "github.com/terraform-providers/terraform-provider-oci/internal/service/logging"
+	tf_logging "terraform-provider-oci/internal/service/logging"
 
-	tf_datacatalog "github.com/terraform-providers/terraform-provider-oci/internal/service/datacatalog"
+	tf_datacatalog "terraform-provider-oci/internal/service/datacatalog"
 
-	tf_apm_synthetics "github.com/terraform-providers/terraform-provider-oci/internal/service/apm_synthetics"
+	tf_apm_synthetics "terraform-provider-oci/internal/service/apm_synthetics"
 
-	tf_nosql "github.com/terraform-providers/terraform-provider-oci/internal/service/nosql"
+	tf_nosql "terraform-provider-oci/internal/service/nosql"
 
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
 
-	tf_kms "github.com/terraform-providers/terraform-provider-oci/internal/service/kms"
+	tf_kms "terraform-provider-oci/internal/service/kms"
 
-	"github.com/terraform-providers/terraform-provider-oci/internal/service/budget"
-	tf_core "github.com/terraform-providers/terraform-provider-oci/internal/service/core"
+	"terraform-provider-oci/internal/service/budget"
+	tf_core "terraform-provider-oci/internal/service/core"
 
-	tf_blockchain "github.com/terraform-providers/terraform-provider-oci/internal/service/blockchain"
-	tf_database "github.com/terraform-providers/terraform-provider-oci/internal/service/database"
-	tf_load_balancer "github.com/terraform-providers/terraform-provider-oci/internal/service/load_balancer"
-	network_load_balancer "github.com/terraform-providers/terraform-provider-oci/internal/service/network_load_balancer"
-	tf_objectstorage "github.com/terraform-providers/terraform-provider-oci/internal/service/objectstorage"
-	"github.com/terraform-providers/terraform-provider-oci/internal/service/osp_gateway"
-	tf_usage_proxy "github.com/terraform-providers/terraform-provider-oci/internal/service/usage_proxy"
+	tf_blockchain "terraform-provider-oci/internal/service/blockchain"
+	tf_database "terraform-provider-oci/internal/service/database"
+	tf_license_manager "terraform-provider-oci/internal/service/license_manager"
+	tf_load_balancer "terraform-provider-oci/internal/service/load_balancer"
+	network_load_balancer "terraform-provider-oci/internal/service/network_load_balancer"
+	tf_objectstorage "terraform-provider-oci/internal/service/objectstorage"
+	"terraform-provider-oci/internal/service/osp_gateway"
+	tf_usage_proxy "terraform-provider-oci/internal/service/usage_proxy"
 )
 
 func init() {
@@ -79,6 +80,7 @@ func init() {
 	exportIdentityDbCredentialHints.getIdFn = getIdentityDbCredentialId
 	exportKmsKeyHints.getIdFn = getKmsKeyId
 	exportKmsKeyVersionHints.getIdFn = getKmsKeyVersionId
+	exportLicenseManagerConfigurationHints.getIdFn = getLicenseManagerConfigurationId
 	exportLoadBalancerBackendHints.getIdFn = getLoadBalancerBackendId
 	exportLoadBalancerBackendSetHints.getIdFn = getLoadBalancerBackendSetId
 	exportLoadBalancerCertificateHints.getIdFn = getLoadBalancerCertificateId
@@ -497,6 +499,16 @@ func getKmsKeyVersionId(resource *OCIResource) (string, error) {
 		return "", fmt.Errorf("[ERROR] unable to find keyVersionId for Kms KeyVersion")
 	}
 	return tf_kms.GetCompositeKeyVersionId(managementEndpoint, keyId, keyVersionId), nil
+}
+
+func getLicenseManagerConfigurationId(resource *OCIResource) (string, error) {
+
+	compartmentId, ok := resource.sourceAttributes["compartment_id"].(string)
+	if !ok {
+		return "", fmt.Errorf("[ERROR] unable to find compartment_id for Licensemanager Configuration")
+	}
+
+	return tf_license_manager.GetConfigurationId(compartmentId), nil
 }
 
 func getLoadBalancerBackendId(resource *OCIResource) (string, error) {

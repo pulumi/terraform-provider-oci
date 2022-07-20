@@ -15,8 +15,8 @@ import (
 	oci_common "github.com/oracle/oci-go-sdk/v65/common"
 	oci_ocvp "github.com/oracle/oci-go-sdk/v65/ocvp"
 
-	"github.com/terraform-providers/terraform-provider-oci/internal/client"
-	"github.com/terraform-providers/terraform-provider-oci/internal/tfresource"
+	"terraform-provider-oci/internal/client"
+	"terraform-provider-oci/internal/tfresource"
 )
 
 func OcvpEsxiHostResource() *schema.Resource {
@@ -40,6 +40,12 @@ func OcvpEsxiHostResource() *schema.Resource {
 			},
 
 			// Optional
+			"capacity_reservation_id": {
+				Type:     schema.TypeString,
+				Optional: true,
+				Computed: true,
+				ForceNew: true,
+			},
 			"compute_availability_domain": {
 				Type:     schema.TypeString,
 				Optional: true,
@@ -75,6 +81,18 @@ func OcvpEsxiHostResource() *schema.Resource {
 				Optional: true,
 				Computed: true,
 				Elem:     schema.TypeString,
+			},
+			"host_ocpu_count": {
+				Type:     schema.TypeFloat,
+				Optional: true,
+				Computed: true,
+				ForceNew: true,
+			},
+			"host_shape_name": {
+				Type:     schema.TypeString,
+				Optional: true,
+				Computed: true,
+				ForceNew: true,
 			},
 			"next_sku": {
 				Type:     schema.TypeString,
@@ -194,6 +212,11 @@ func (s *OcvpEsxiHostResourceCrud) DeletedTarget() []string {
 func (s *OcvpEsxiHostResourceCrud) Create() error {
 	request := oci_ocvp.CreateEsxiHostRequest{}
 
+	if capacityReservationId, ok := s.D.GetOkExists("capacity_reservation_id"); ok {
+		tmp := capacityReservationId.(string)
+		request.CapacityReservationId = &tmp
+	}
+
 	if computeAvailabilityDomain, ok := s.D.GetOkExists("compute_availability_domain"); ok {
 		tmp := computeAvailabilityDomain.(string)
 		request.ComputeAvailabilityDomain = &tmp
@@ -223,6 +246,16 @@ func (s *OcvpEsxiHostResourceCrud) Create() error {
 
 	if freeformTags, ok := s.D.GetOkExists("freeform_tags"); ok {
 		request.FreeformTags = tfresource.ObjectMapToStringMap(freeformTags.(map[string]interface{}))
+	}
+
+	if hostOcpuCount, ok := s.D.GetOkExists("host_ocpu_count"); ok {
+		tmp := float32(hostOcpuCount.(float64))
+		request.HostOcpuCount = &tmp
+	}
+
+	if hostShapeName, ok := s.D.GetOkExists("host_shape_name"); ok {
+		tmp := hostShapeName.(string)
+		request.HostShapeName = &tmp
 	}
 
 	if nextSku, ok := s.D.GetOkExists("next_sku"); ok {
@@ -440,6 +473,10 @@ func (s *OcvpEsxiHostResourceCrud) SetData() error {
 		s.D.Set("billing_contract_end_date", s.Res.BillingContractEndDate.String())
 	}
 
+	if s.Res.CapacityReservationId != nil {
+		s.D.Set("capacity_reservation_id", *s.Res.CapacityReservationId)
+	}
+
 	if s.Res.CompartmentId != nil {
 		s.D.Set("compartment_id", *s.Res.CompartmentId)
 	}
@@ -470,6 +507,14 @@ func (s *OcvpEsxiHostResourceCrud) SetData() error {
 
 	if s.Res.GracePeriodEndDate != nil {
 		s.D.Set("grace_period_end_date", s.Res.GracePeriodEndDate.String())
+	}
+
+	if s.Res.HostOcpuCount != nil {
+		s.D.Set("host_ocpu_count", *s.Res.HostOcpuCount)
+	}
+
+	if s.Res.HostShapeName != nil {
+		s.D.Set("host_shape_name", *s.Res.HostShapeName)
 	}
 
 	s.D.Set("next_sku", s.Res.NextSku)
@@ -532,6 +577,14 @@ func EsxiHostSummaryToMap(obj oci_ocvp.EsxiHostSummary) map[string]interface{} {
 
 	if obj.GracePeriodEndDate != nil {
 		result["grace_period_end_date"] = obj.GracePeriodEndDate.String()
+	}
+
+	if obj.HostOcpuCount != nil {
+		result["host_ocpu_count"] = float32(*obj.HostOcpuCount)
+	}
+
+	if obj.HostShapeName != nil {
+		result["host_shape_name"] = string(*obj.HostShapeName)
 	}
 
 	if obj.Id != nil {

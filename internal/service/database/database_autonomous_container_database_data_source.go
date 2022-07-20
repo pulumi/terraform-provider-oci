@@ -6,8 +6,8 @@ package database
 import (
 	"context"
 
-	"github.com/terraform-providers/terraform-provider-oci/internal/client"
-	"github.com/terraform-providers/terraform-provider-oci/internal/tfresource"
+	"terraform-provider-oci/internal/client"
+	"terraform-provider-oci/internal/tfresource"
 
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
 	oci_database "github.com/oracle/oci-go-sdk/v65/database"
@@ -76,6 +76,10 @@ func (s *DatabaseAutonomousContainerDatabaseDataSourceCrud) SetData() error {
 
 	if s.Res.AvailabilityDomain != nil {
 		s.D.Set("availability_domain", *s.Res.AvailabilityDomain)
+	}
+
+	if s.Res.AvailableCpus != nil {
+		s.D.Set("available_cpus", *s.Res.AvailableCpus)
 	}
 
 	if s.Res.BackupConfig != nil {
@@ -162,6 +166,12 @@ func (s *DatabaseAutonomousContainerDatabaseDataSourceCrud) SetData() error {
 
 	s.D.Set("patch_model", s.Res.PatchModel)
 
+	s.D.Set("provisionable_cpus", s.Res.ProvisionableCpus)
+
+	if s.Res.ReclaimableCpus != nil {
+		s.D.Set("reclaimable_cpus", *s.Res.ReclaimableCpus)
+	}
+
 	s.D.Set("role", s.Res.Role)
 
 	s.D.Set("service_level_agreement_type", s.Res.ServiceLevelAgreementType)
@@ -174,6 +184,10 @@ func (s *DatabaseAutonomousContainerDatabaseDataSourceCrud) SetData() error {
 
 	if s.Res.TimeCreated != nil {
 		s.D.Set("time_created", s.Res.TimeCreated.String())
+	}
+
+	if s.Res.TotalCpus != nil {
+		s.D.Set("total_cpus", *s.Res.TotalCpus)
 	}
 
 	if s.Res.VaultId != nil {

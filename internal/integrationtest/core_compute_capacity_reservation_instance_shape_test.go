@@ -9,19 +9,19 @@ import (
 
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/resource"
 
-	"github.com/terraform-providers/terraform-provider-oci/httpreplay"
-	"github.com/terraform-providers/terraform-provider-oci/internal/acctest"
-	"github.com/terraform-providers/terraform-provider-oci/internal/utils"
+	"terraform-provider-oci/httpreplay"
+	"terraform-provider-oci/internal/acctest"
+	"terraform-provider-oci/internal/utils"
 )
 
 var (
-	computeCapacityReservationInstanceShapeDataSourceRepresentation = map[string]interface{}{
+	CoreCoreComputeCapacityReservationInstanceShapeDataSourceRepresentation = map[string]interface{}{
 		"compartment_id":      acctest.Representation{RepType: acctest.Required, Create: `${var.compartment_id}`},
 		"availability_domain": acctest.Representation{RepType: acctest.Optional, Create: `${data.oci_identity_availability_domains.test_availability_domains.availability_domains.0.name}`},
 		"display_name":        acctest.Representation{RepType: acctest.Optional, Create: `displayName`},
 	}
 
-	ComputeCapacityReservationInstanceShapeResourceConfig = AvailabilityDomainConfig
+	CoreComputeCapacityReservationInstanceShapeResourceConfig = AvailabilityDomainConfig
 )
 
 // issue-routing-tag: core/computeSharedOwnershipVmAndBm
@@ -42,8 +42,8 @@ func TestCoreComputeCapacityReservationInstanceShapeResource_basic(t *testing.T)
 		// verify datasource
 		{
 			Config: config +
-				acctest.GenerateDataSourceFromRepresentationMap("oci_core_compute_capacity_reservation_instance_shapes", "test_compute_capacity_reservation_instance_shapes", acctest.Required, acctest.Create, computeCapacityReservationInstanceShapeDataSourceRepresentation) +
-				compartmentIdVariableStr + ComputeCapacityReservationInstanceShapeResourceConfig,
+				acctest.GenerateDataSourceFromRepresentationMap("oci_core_compute_capacity_reservation_instance_shapes", "test_compute_capacity_reservation_instance_shapes", acctest.Required, acctest.Create, CoreCoreComputeCapacityReservationInstanceShapeDataSourceRepresentation) +
+				compartmentIdVariableStr + CoreComputeCapacityReservationInstanceShapeResourceConfig,
 			Check: acctest.ComposeAggregateTestCheckFuncWrapper(
 				resource.TestCheckResourceAttr(datasourceName, "compartment_id", compartmentId),
 
@@ -55,8 +55,8 @@ func TestCoreComputeCapacityReservationInstanceShapeResource_basic(t *testing.T)
 		// verify datasource
 		{
 			Config: config +
-				acctest.GenerateDataSourceFromRepresentationMap("oci_core_compute_capacity_reservation_instance_shapes", "test_compute_capacity_reservation_instance_shapes", acctest.Optional, acctest.Create, computeCapacityReservationInstanceShapeDataSourceRepresentation) +
-				compartmentIdVariableStr + ComputeCapacityReservationInstanceShapeResourceConfig,
+				acctest.GenerateDataSourceFromRepresentationMap("oci_core_compute_capacity_reservation_instance_shapes", "test_compute_capacity_reservation_instance_shapes", acctest.Optional, acctest.Create, CoreCoreComputeCapacityReservationInstanceShapeDataSourceRepresentation) +
+				compartmentIdVariableStr + CoreComputeCapacityReservationInstanceShapeResourceConfig,
 			Check: acctest.ComposeAggregateTestCheckFuncWrapper(
 				resource.TestCheckResourceAttrSet(datasourceName, "availability_domain"),
 				resource.TestCheckResourceAttr(datasourceName, "compartment_id", compartmentId),

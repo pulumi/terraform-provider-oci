@@ -6,12 +6,12 @@ package limits
 import (
 	"context"
 
-	"github.com/terraform-providers/terraform-provider-oci/internal/client"
+	"terraform-provider-oci/internal/client"
 
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
 	oci_limits "github.com/oracle/oci-go-sdk/v65/limits"
 
-	"github.com/terraform-providers/terraform-provider-oci/internal/tfresource"
+	"terraform-provider-oci/internal/tfresource"
 )
 
 func LimitsQuotasDataSource() *schema.Resource {
@@ -124,6 +124,12 @@ func (s *LimitsQuotasDataSourceCrud) SetData() error {
 		if r.Id != nil {
 			quota["id"] = *r.Id
 		}
+
+		locks := []interface{}{}
+		for _, item := range r.Locks {
+			locks = append(locks, ResourceLockToMap(item))
+		}
+		quota["locks"] = locks
 
 		if r.Name != nil {
 			quota["name"] = *r.Name

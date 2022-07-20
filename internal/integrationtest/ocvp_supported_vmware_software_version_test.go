@@ -9,17 +9,17 @@ import (
 
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/resource"
 
-	"github.com/terraform-providers/terraform-provider-oci/httpreplay"
-	"github.com/terraform-providers/terraform-provider-oci/internal/acctest"
-	"github.com/terraform-providers/terraform-provider-oci/internal/utils"
+	"terraform-provider-oci/httpreplay"
+	"terraform-provider-oci/internal/acctest"
+	"terraform-provider-oci/internal/utils"
 )
 
 var (
-	supportedVmwareSoftwareVersionDataSourceRepresentation = map[string]interface{}{
+	OcvpOcvpSupportedVmwareSoftwareVersionDataSourceRepresentation = map[string]interface{}{
 		"compartment_id": acctest.Representation{RepType: acctest.Required, Create: `${var.compartment_id}`},
 	}
 
-	SupportedVmwareSoftwareVersionResourceConfig = ""
+	OcvpSupportedVmwareSoftwareVersionResourceConfig = ""
 )
 
 // issue-routing-tag: ocvp/default
@@ -40,8 +40,8 @@ func TestOcvpSupportedVmwareSoftwareVersionResource_basic(t *testing.T) {
 		// verify datasource
 		{
 			Config: config +
-				acctest.GenerateDataSourceFromRepresentationMap("oci_ocvp_supported_vmware_software_versions", "test_supported_vmware_software_versions", acctest.Required, acctest.Create, supportedVmwareSoftwareVersionDataSourceRepresentation) +
-				compartmentIdVariableStr + SupportedVmwareSoftwareVersionResourceConfig,
+				acctest.GenerateDataSourceFromRepresentationMap("oci_ocvp_supported_vmware_software_versions", "test_supported_vmware_software_versions", acctest.Required, acctest.Create, OcvpOcvpSupportedVmwareSoftwareVersionDataSourceRepresentation) +
+				compartmentIdVariableStr + OcvpSupportedVmwareSoftwareVersionResourceConfig,
 			Check: acctest.ComposeAggregateTestCheckFuncWrapper(
 				resource.TestCheckResourceAttr(datasourceName, "compartment_id", compartmentId),
 

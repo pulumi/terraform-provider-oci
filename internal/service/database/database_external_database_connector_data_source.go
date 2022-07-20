@@ -7,8 +7,8 @@ import (
 	"context"
 	"log"
 
-	"github.com/terraform-providers/terraform-provider-oci/internal/client"
-	"github.com/terraform-providers/terraform-provider-oci/internal/tfresource"
+	"terraform-provider-oci/internal/client"
+	"terraform-provider-oci/internal/tfresource"
 
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
 	oci_database "github.com/oracle/oci-go-sdk/v65/database"
@@ -157,6 +157,26 @@ func (s *DatabaseExternalDatabaseConnectorDataSourceCrud) DatabaseConnectionCred
 
 		if v.CredentialName != nil {
 			result["credential_name"] = string(*v.CredentialName)
+		}
+	case oci_database.DatabaseSslConnectionCredentials:
+		result["credential_type"] = "SSL_DETAILS"
+
+		if v.CredentialName != nil {
+			result["credential_name"] = string(*v.CredentialName)
+		}
+
+		if password, ok := s.D.GetOkExists("connection_credentials.0.password"); ok && password != nil {
+			result["password"] = password.(string)
+		}
+
+		result["role"] = string(v.Role)
+
+		if v.SslSecretId != nil {
+			result["ssl_secret_id"] = string(*v.SslSecretId)
+		}
+
+		if username, ok := s.D.GetOkExists("connection_credentials.0.username"); ok && username != nil {
+			result["username"] = username.(string)
 		}
 	default:
 		log.Printf("[WARN] Received 'credential_type' of unknown type %v", *obj)

@@ -7,15 +7,15 @@ import (
 	"strconv"
 	"testing"
 
-	"github.com/terraform-providers/terraform-provider-oci/internal/acctest"
-	"github.com/terraform-providers/terraform-provider-oci/internal/resourcediscovery"
-	"github.com/terraform-providers/terraform-provider-oci/internal/utils"
+	"terraform-provider-oci/internal/acctest"
+	"terraform-provider-oci/internal/resourcediscovery"
+	"terraform-provider-oci/internal/utils"
 
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/resource"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/terraform"
 
-	"github.com/terraform-providers/terraform-provider-oci/httpreplay"
+	"terraform-provider-oci/httpreplay"
 )
 
 var (
@@ -68,23 +68,26 @@ var (
 		"items": acctest.RepresentationGroup{RepType: acctest.Required, Group: buildPipelineStageBuildSourceCollectionItemsRepresentation},
 	}
 
+	githubRepositoryUrl  = "https://github.com/dlcbld/docktest"
+	githubRepositoryUrl2 = "https://github.com/dlcbld/deliver-artifact-test"
+
 	buildPipelineStageBuildSourceCollectionItemsRepresentation = map[string]interface{}{
 		"connection_type": acctest.Representation{RepType: acctest.Required, Create: `GITHUB`},
 		"branch":          acctest.Representation{RepType: acctest.Required, Create: `branch`, Update: `branch2`},
 		"connection_id":   acctest.Representation{RepType: acctest.Required, Create: `${oci_devops_connection.test_connection.id}`},
 		"name":            acctest.Representation{RepType: acctest.Required, Create: `primaryBuildSource`, Update: `primaryBuildSource2`},
-		"repository_url":  acctest.Representation{RepType: acctest.Required, Create: `repositoryUrl`, Update: `repositoryUrl2`},
+		"repository_url":  acctest.Representation{RepType: acctest.Required, Create: githubRepositoryUrl, Update: githubRepositoryUrl2},
 	}
 
 	githubAccessTokenVaultId    = utils.GetEnvSettingWithBlankDefault("github_access_token_vault_id")
 	githubAccessTokenVaultIdStr = fmt.Sprintf("variable \"github_access_token_vault_id\" { default = \"%s\" }\n", githubAccessTokenVaultId)
 
-	BuildPipelineBuildStageResourceDependencies = acctest.GenerateResourceFromRepresentationMap("oci_devops_build_pipeline", "test_build_pipeline", acctest.Required, acctest.Create, buildPipelineRepresentation) +
-		acctest.GenerateResourceFromRepresentationMap("oci_devops_project", "test_project", acctest.Required, acctest.Create, devopsProjectRepresentation) +
+	BuildPipelineBuildStageResourceDependencies = acctest.GenerateResourceFromRepresentationMap("oci_devops_build_pipeline", "test_build_pipeline", acctest.Required, acctest.Create, DevopsBuildPipelineRepresentation) +
+		acctest.GenerateResourceFromRepresentationMap("oci_devops_project", "test_project", acctest.Required, acctest.Create, DevopsProjectRepresentation) +
 		DefinedTagsDependencies +
-		acctest.GenerateResourceFromRepresentationMap("oci_ons_notification_topic", "test_notification_topic", acctest.Required, acctest.Create, notificationTopicRepresentation) +
+		acctest.GenerateResourceFromRepresentationMap("oci_ons_notification_topic", "test_notification_topic", acctest.Required, acctest.Create, OnsNotificationTopicRepresentation) +
 		githubAccessTokenVaultIdStr +
-		acctest.GenerateResourceFromRepresentationMap("oci_devops_connection", "test_connection", acctest.Required, acctest.Create, devopsConnectionRepresentation)
+		acctest.GenerateResourceFromRepresentationMap("oci_devops_connection", "test_connection", acctest.Required, acctest.Create, DevopsConnectionRepresentation)
 )
 
 // issue-routing-tag: devops/default
@@ -136,7 +139,7 @@ func TestDevopsBuildPipelineBuildStageResource_basic(t *testing.T) {
 					resource.TestCheckResourceAttr(resourceName, "build_source_collection.0.items.0.connection_type", "GITHUB"),
 					resource.TestCheckResourceAttr(resourceName, "build_source_collection.0.items.0.name", "primaryBuildSource"),
 					resource.TestCheckResourceAttr(resourceName, "primary_build_source", "primaryBuildSource"),
-					resource.TestCheckResourceAttr(resourceName, "build_source_collection.0.items.0.repository_url", "repositoryUrl"),
+					resource.TestCheckResourceAttr(resourceName, "build_source_collection.0.items.0.repository_url", "https://github.com/dlcbld/docktest"),
 					resource.TestCheckResourceAttr(resourceName, "image", "OL7_X86_64_STANDARD_10"),
 
 					func(s *terraform.State) (err error) {
@@ -174,7 +177,7 @@ func TestDevopsBuildPipelineBuildStageResource_basic(t *testing.T) {
 					resource.TestCheckResourceAttrSet(resourceName, "build_source_collection.0.items.0.connection_id"),
 					resource.TestCheckResourceAttr(resourceName, "build_source_collection.0.items.0.connection_type", "GITHUB"),
 					resource.TestCheckResourceAttr(resourceName, "build_source_collection.0.items.0.name", "primaryBuildSource"),
-					resource.TestCheckResourceAttr(resourceName, "build_source_collection.0.items.0.repository_url", "repositoryUrl"),
+					resource.TestCheckResourceAttr(resourceName, "build_source_collection.0.items.0.repository_url", "https://github.com/dlcbld/docktest"),
 					resource.TestCheckResourceAttr(resourceName, "image", "OL7_X86_64_STANDARD_10"),
 					resource.TestCheckResourceAttr(resourceName, "stage_execution_timeout_in_seconds", "10"),
 					resource.TestCheckResourceAttr(resourceName, "build_spec_file", "buildSpecFile"),
@@ -213,7 +216,7 @@ func TestDevopsBuildPipelineBuildStageResource_basic(t *testing.T) {
 					resource.TestCheckResourceAttrSet(resourceName, "build_source_collection.0.items.0.connection_id"),
 					resource.TestCheckResourceAttr(resourceName, "build_source_collection.0.items.0.connection_type", "GITHUB"),
 					resource.TestCheckResourceAttr(resourceName, "build_source_collection.0.items.0.name", "primaryBuildSource2"),
-					resource.TestCheckResourceAttr(resourceName, "build_source_collection.0.items.0.repository_url", "repositoryUrl2"),
+					resource.TestCheckResourceAttr(resourceName, "build_source_collection.0.items.0.repository_url", "https://github.com/dlcbld/deliver-artifact-test"),
 					resource.TestCheckResourceAttr(resourceName, "image", "OL7_X86_64_STANDARD_10"),
 					resource.TestCheckResourceAttr(resourceName, "build_spec_file", "buildSpecFile2"),
 
@@ -255,7 +258,7 @@ func TestDevopsBuildPipelineBuildStageResource_basic(t *testing.T) {
 					resource.TestCheckResourceAttr(singularDatasourceName, "build_source_collection.0.items.0.branch", "branch2"),
 					resource.TestCheckResourceAttr(singularDatasourceName, "build_source_collection.0.items.0.connection_type", "GITHUB"),
 					resource.TestCheckResourceAttr(singularDatasourceName, "build_source_collection.0.items.0.name", "primaryBuildSource2"),
-					resource.TestCheckResourceAttr(singularDatasourceName, "build_source_collection.0.items.0.repository_url", "repositoryUrl2"),
+					resource.TestCheckResourceAttr(singularDatasourceName, "build_source_collection.0.items.0.repository_url", "https://github.com/dlcbld/deliver-artifact-test"),
 					resource.TestCheckResourceAttr(singularDatasourceName, "build_spec_file", "buildSpecFile2"),
 					resource.TestCheckResourceAttrSet(singularDatasourceName, "compartment_id"),
 					resource.TestCheckResourceAttr(singularDatasourceName, "description", "description2"),

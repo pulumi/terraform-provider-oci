@@ -10,8 +10,8 @@ import (
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
 	oci_apm_synthetics "github.com/oracle/oci-go-sdk/v65/apmsynthetics"
 
-	"github.com/terraform-providers/terraform-provider-oci/internal/client"
-	"github.com/terraform-providers/terraform-provider-oci/internal/tfresource"
+	"terraform-provider-oci/internal/client"
+	"terraform-provider-oci/internal/tfresource"
 )
 
 func ApmSyntheticsMonitorsDataSource() *schema.Resource {
@@ -36,6 +36,10 @@ func ApmSyntheticsMonitorsDataSource() *schema.Resource {
 				Optional: true,
 			},
 			"status": {
+				Type:     schema.TypeString,
+				Optional: true,
+			},
+			"vantage_point": {
 				Type:     schema.TypeString,
 				Optional: true,
 			},
@@ -106,6 +110,11 @@ func (s *ApmSyntheticsMonitorsDataSourceCrud) Get() error {
 
 	if status, ok := s.D.GetOkExists("status"); ok {
 		request.Status = oci_apm_synthetics.ListMonitorsStatusEnum(status.(string))
+	}
+
+	if vantagePoint, ok := s.D.GetOkExists("vantage_point"); ok {
+		tmp := vantagePoint.(string)
+		request.VantagePoint = &tmp
 	}
 
 	request.RequestMetadata.RetryPolicy = tfresource.GetRetryPolicy(false, "apm_synthetics")

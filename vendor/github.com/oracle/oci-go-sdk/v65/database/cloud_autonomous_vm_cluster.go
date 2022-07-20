@@ -47,9 +47,9 @@ type CloudAutonomousVmCluster struct {
 	// User defined description of the cloud Autonomous VM cluster.
 	Description *string `mandatory:"false" json:"description"`
 
-	// A list of the OCIDs (https://docs.cloud.oracle.com/Content/General/Concepts/identifiers.htm) of the network security groups (NSGs) that this resource belongs to. Setting this to an empty array after the list is created removes the resource from all NSGs. For more information about NSGs, see Security Rules (https://docs.cloud.oracle.com/Content/Network/Concepts/securityrules.htm).
+	// The list of OCIDs (https://docs.cloud.oracle.com/Content/General/Concepts/identifiers.htm) for the network security groups (NSGs) to which this resource belongs. Setting this to an empty list removes all resources from all NSGs. For more information about NSGs, see Security Rules (https://docs.cloud.oracle.com/Content/Network/Concepts/securityrules.htm).
 	// **NsgIds restrictions:**
-	// - Autonomous Databases with private access require at least 1 Network Security Group (NSG). The nsgIds array cannot be empty.
+	// - A network security group (NSG) is optional for Autonomous Databases with private access. The nsgIds list can be empty.
 	NsgIds []string `mandatory:"false" json:"nsgIds"`
 
 	// The OCID (https://docs.cloud.oracle.com/Content/General/Concepts/identifiers.htm) of the last maintenance update history. This value is updated when a maintenance update starts.
@@ -60,6 +60,9 @@ type CloudAutonomousVmCluster struct {
 
 	// The last date and time that the cloud Autonomous VM cluster was updated.
 	TimeUpdated *common.SDKTime `mandatory:"false" json:"timeUpdated"`
+
+	// The time zone of the Cloud Autonomous VM Cluster.
+	ClusterTimeZone *string `mandatory:"false" json:"clusterTimeZone"`
 
 	// Additional information about the current lifecycle state.
 	LifecycleDetails *string `mandatory:"false" json:"lifecycleDetails"`
@@ -111,6 +114,30 @@ type CloudAutonomousVmCluster struct {
 	// Defined tags for this resource. Each key is predefined and scoped to a namespace.
 	// For more information, see Resource Tags (https://docs.cloud.oracle.com/Content/General/Concepts/resourcetags.htm).
 	DefinedTags map[string]map[string]interface{} `mandatory:"false" json:"definedTags"`
+
+	// CPU cores available for allocation to Autonomous Databases.
+	AvailableCpus *float32 `mandatory:"false" json:"availableCpus"`
+
+	// CPU cores that continue to be included in the count of OCPUs available to the Autonomous Container Database even after one of its Autonomous Database is terminated or scaled down. You can release them to the available OCPUs at its parent AVMC level by restarting the Autonomous Container Database.
+	ReclaimableCpus *float32 `mandatory:"false" json:"reclaimableCpus"`
+
+	// The number of Autonomous Container Databases that can be created with the currently available local storage.
+	AvailableContainerDatabases *int `mandatory:"false" json:"availableContainerDatabases"`
+
+	// The total number of Autonomous Container Databases that can be created with the allocated local storage.
+	TotalContainerDatabases *int `mandatory:"false" json:"totalContainerDatabases"`
+
+	// The data disk group size available for Autonomous Databases, in TBs.
+	AvailableAutonomousDataStorageSizeInTBs *float64 `mandatory:"false" json:"availableAutonomousDataStorageSizeInTBs"`
+
+	// The data disk group size allocated for Autonomous Databases, in TBs.
+	AutonomousDataStorageSizeInTBs *float64 `mandatory:"false" json:"autonomousDataStorageSizeInTBs"`
+
+	// The local node storage allocated in GBs.
+	DbNodeStorageSizeInGBs *int `mandatory:"false" json:"dbNodeStorageSizeInGBs"`
+
+	// The amount of memory (in GBs) enabled per each OCPU core.
+	MemoryPerOracleComputeUnitInGBs *int `mandatory:"false" json:"memoryPerOracleComputeUnitInGBs"`
 }
 
 func (m CloudAutonomousVmCluster) String() string {

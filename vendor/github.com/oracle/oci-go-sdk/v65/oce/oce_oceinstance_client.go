@@ -92,9 +92,10 @@ func (client *OceInstanceClient) ConfigurationProvider() *common.ConfigurationPr
 // See also
 //
 // Click https://docs.cloud.oracle.com/en-us/iaas/tools/go-sdk-examples/latest/oce/ChangeOceInstanceCompartment.go.html to see an example of how to use ChangeOceInstanceCompartment API.
+// A default retry strategy applies to this operation ChangeOceInstanceCompartment()
 func (client OceInstanceClient) ChangeOceInstanceCompartment(ctx context.Context, request ChangeOceInstanceCompartmentRequest) (response ChangeOceInstanceCompartmentResponse, err error) {
 	var ociResponse common.OCIResponse
-	policy := common.NoRetryPolicy()
+	policy := common.DefaultRetryPolicy()
 	if client.RetryPolicy() != nil {
 		policy = *client.RetryPolicy()
 	}
@@ -140,7 +141,7 @@ func (client OceInstanceClient) changeOceInstanceCompartment(ctx context.Context
 	defer common.CloseBodyIfValid(httpResponse)
 	response.RawResponse = httpResponse
 	if err != nil {
-		apiReferenceLink := ""
+		apiReferenceLink := "https://docs.oracle.com/iaas/api/#/en/oce/20190912/OceInstance/ChangeOceInstanceCompartment"
 		err = common.PostProcessServiceError(err, "OceInstance", "ChangeOceInstanceCompartment", apiReferenceLink)
 		return response, err
 	}
@@ -154,9 +155,10 @@ func (client OceInstanceClient) changeOceInstanceCompartment(ctx context.Context
 // See also
 //
 // Click https://docs.cloud.oracle.com/en-us/iaas/tools/go-sdk-examples/latest/oce/CreateOceInstance.go.html to see an example of how to use CreateOceInstance API.
+// A default retry strategy applies to this operation CreateOceInstance()
 func (client OceInstanceClient) CreateOceInstance(ctx context.Context, request CreateOceInstanceRequest) (response CreateOceInstanceResponse, err error) {
 	var ociResponse common.OCIResponse
-	policy := common.NoRetryPolicy()
+	policy := common.DefaultRetryPolicy()
 	if client.RetryPolicy() != nil {
 		policy = *client.RetryPolicy()
 	}
@@ -202,7 +204,7 @@ func (client OceInstanceClient) createOceInstance(ctx context.Context, request c
 	defer common.CloseBodyIfValid(httpResponse)
 	response.RawResponse = httpResponse
 	if err != nil {
-		apiReferenceLink := ""
+		apiReferenceLink := "https://docs.oracle.com/iaas/api/#/en/oce/20190912/OceInstance/CreateOceInstance"
 		err = common.PostProcessServiceError(err, "OceInstance", "CreateOceInstance", apiReferenceLink)
 		return response, err
 	}
@@ -216,9 +218,10 @@ func (client OceInstanceClient) createOceInstance(ctx context.Context, request c
 // See also
 //
 // Click https://docs.cloud.oracle.com/en-us/iaas/tools/go-sdk-examples/latest/oce/DeleteOceInstance.go.html to see an example of how to use DeleteOceInstance API.
+// A default retry strategy applies to this operation DeleteOceInstance()
 func (client OceInstanceClient) DeleteOceInstance(ctx context.Context, request DeleteOceInstanceRequest) (response DeleteOceInstanceResponse, err error) {
 	var ociResponse common.OCIResponse
-	policy := common.NoRetryPolicy()
+	policy := common.DefaultRetryPolicy()
 	if client.RetryPolicy() != nil {
 		policy = *client.RetryPolicy()
 	}
@@ -259,7 +262,7 @@ func (client OceInstanceClient) deleteOceInstance(ctx context.Context, request c
 	defer common.CloseBodyIfValid(httpResponse)
 	response.RawResponse = httpResponse
 	if err != nil {
-		apiReferenceLink := ""
+		apiReferenceLink := "https://docs.oracle.com/iaas/api/#/en/oce/20190912/OceInstance/DeleteOceInstance"
 		err = common.PostProcessServiceError(err, "OceInstance", "DeleteOceInstance", apiReferenceLink)
 		return response, err
 	}
@@ -273,9 +276,10 @@ func (client OceInstanceClient) deleteOceInstance(ctx context.Context, request c
 // See also
 //
 // Click https://docs.cloud.oracle.com/en-us/iaas/tools/go-sdk-examples/latest/oce/GetOceInstance.go.html to see an example of how to use GetOceInstance API.
+// A default retry strategy applies to this operation GetOceInstance()
 func (client OceInstanceClient) GetOceInstance(ctx context.Context, request GetOceInstanceRequest) (response GetOceInstanceResponse, err error) {
 	var ociResponse common.OCIResponse
-	policy := common.NoRetryPolicy()
+	policy := common.DefaultRetryPolicy()
 	if client.RetryPolicy() != nil {
 		policy = *client.RetryPolicy()
 	}
@@ -316,7 +320,7 @@ func (client OceInstanceClient) getOceInstance(ctx context.Context, request comm
 	defer common.CloseBodyIfValid(httpResponse)
 	response.RawResponse = httpResponse
 	if err != nil {
-		apiReferenceLink := ""
+		apiReferenceLink := "https://docs.oracle.com/iaas/api/#/en/oce/20190912/OceInstance/GetOceInstance"
 		err = common.PostProcessServiceError(err, "OceInstance", "GetOceInstance", apiReferenceLink)
 		return response, err
 	}
@@ -330,9 +334,10 @@ func (client OceInstanceClient) getOceInstance(ctx context.Context, request comm
 // See also
 //
 // Click https://docs.cloud.oracle.com/en-us/iaas/tools/go-sdk-examples/latest/oce/GetWorkRequest.go.html to see an example of how to use GetWorkRequest API.
+// A default retry strategy applies to this operation GetWorkRequest()
 func (client OceInstanceClient) GetWorkRequest(ctx context.Context, request GetWorkRequestRequest) (response GetWorkRequestResponse, err error) {
 	var ociResponse common.OCIResponse
-	policy := common.NoRetryPolicy()
+	policy := common.DefaultRetryPolicy()
 	if client.RetryPolicy() != nil {
 		policy = *client.RetryPolicy()
 	}
@@ -373,7 +378,7 @@ func (client OceInstanceClient) getWorkRequest(ctx context.Context, request comm
 	defer common.CloseBodyIfValid(httpResponse)
 	response.RawResponse = httpResponse
 	if err != nil {
-		apiReferenceLink := ""
+		apiReferenceLink := "https://docs.oracle.com/iaas/api/#/en/oce/20190912/WorkRequest/GetWorkRequest"
 		err = common.PostProcessServiceError(err, "OceInstance", "GetWorkRequest", apiReferenceLink)
 		return response, err
 	}
@@ -387,9 +392,10 @@ func (client OceInstanceClient) getWorkRequest(ctx context.Context, request comm
 // See also
 //
 // Click https://docs.cloud.oracle.com/en-us/iaas/tools/go-sdk-examples/latest/oce/ListOceInstances.go.html to see an example of how to use ListOceInstances API.
+// A default retry strategy applies to this operation ListOceInstances()
 func (client OceInstanceClient) ListOceInstances(ctx context.Context, request ListOceInstancesRequest) (response ListOceInstancesResponse, err error) {
 	var ociResponse common.OCIResponse
-	policy := common.NoRetryPolicy()
+	policy := common.DefaultRetryPolicy()
 	if client.RetryPolicy() != nil {
 		policy = *client.RetryPolicy()
 	}
@@ -430,7 +436,7 @@ func (client OceInstanceClient) listOceInstances(ctx context.Context, request co
 	defer common.CloseBodyIfValid(httpResponse)
 	response.RawResponse = httpResponse
 	if err != nil {
-		apiReferenceLink := ""
+		apiReferenceLink := "https://docs.oracle.com/iaas/api/#/en/oce/20190912/OceInstanceSummary/ListOceInstances"
 		err = common.PostProcessServiceError(err, "OceInstance", "ListOceInstances", apiReferenceLink)
 		return response, err
 	}
@@ -444,9 +450,10 @@ func (client OceInstanceClient) listOceInstances(ctx context.Context, request co
 // See also
 //
 // Click https://docs.cloud.oracle.com/en-us/iaas/tools/go-sdk-examples/latest/oce/ListWorkRequestErrors.go.html to see an example of how to use ListWorkRequestErrors API.
+// A default retry strategy applies to this operation ListWorkRequestErrors()
 func (client OceInstanceClient) ListWorkRequestErrors(ctx context.Context, request ListWorkRequestErrorsRequest) (response ListWorkRequestErrorsResponse, err error) {
 	var ociResponse common.OCIResponse
-	policy := common.NoRetryPolicy()
+	policy := common.DefaultRetryPolicy()
 	if client.RetryPolicy() != nil {
 		policy = *client.RetryPolicy()
 	}
@@ -487,7 +494,7 @@ func (client OceInstanceClient) listWorkRequestErrors(ctx context.Context, reque
 	defer common.CloseBodyIfValid(httpResponse)
 	response.RawResponse = httpResponse
 	if err != nil {
-		apiReferenceLink := ""
+		apiReferenceLink := "https://docs.oracle.com/iaas/api/#/en/oce/20190912/WorkRequestError/ListWorkRequestErrors"
 		err = common.PostProcessServiceError(err, "OceInstance", "ListWorkRequestErrors", apiReferenceLink)
 		return response, err
 	}
@@ -501,9 +508,10 @@ func (client OceInstanceClient) listWorkRequestErrors(ctx context.Context, reque
 // See also
 //
 // Click https://docs.cloud.oracle.com/en-us/iaas/tools/go-sdk-examples/latest/oce/ListWorkRequestLogs.go.html to see an example of how to use ListWorkRequestLogs API.
+// A default retry strategy applies to this operation ListWorkRequestLogs()
 func (client OceInstanceClient) ListWorkRequestLogs(ctx context.Context, request ListWorkRequestLogsRequest) (response ListWorkRequestLogsResponse, err error) {
 	var ociResponse common.OCIResponse
-	policy := common.NoRetryPolicy()
+	policy := common.DefaultRetryPolicy()
 	if client.RetryPolicy() != nil {
 		policy = *client.RetryPolicy()
 	}
@@ -544,7 +552,7 @@ func (client OceInstanceClient) listWorkRequestLogs(ctx context.Context, request
 	defer common.CloseBodyIfValid(httpResponse)
 	response.RawResponse = httpResponse
 	if err != nil {
-		apiReferenceLink := ""
+		apiReferenceLink := "https://docs.oracle.com/iaas/api/#/en/oce/20190912/WorkRequestLogEntry/ListWorkRequestLogs"
 		err = common.PostProcessServiceError(err, "OceInstance", "ListWorkRequestLogs", apiReferenceLink)
 		return response, err
 	}
@@ -558,9 +566,10 @@ func (client OceInstanceClient) listWorkRequestLogs(ctx context.Context, request
 // See also
 //
 // Click https://docs.cloud.oracle.com/en-us/iaas/tools/go-sdk-examples/latest/oce/ListWorkRequests.go.html to see an example of how to use ListWorkRequests API.
+// A default retry strategy applies to this operation ListWorkRequests()
 func (client OceInstanceClient) ListWorkRequests(ctx context.Context, request ListWorkRequestsRequest) (response ListWorkRequestsResponse, err error) {
 	var ociResponse common.OCIResponse
-	policy := common.NoRetryPolicy()
+	policy := common.DefaultRetryPolicy()
 	if client.RetryPolicy() != nil {
 		policy = *client.RetryPolicy()
 	}
@@ -601,7 +610,7 @@ func (client OceInstanceClient) listWorkRequests(ctx context.Context, request co
 	defer common.CloseBodyIfValid(httpResponse)
 	response.RawResponse = httpResponse
 	if err != nil {
-		apiReferenceLink := ""
+		apiReferenceLink := "https://docs.oracle.com/iaas/api/#/en/oce/20190912/WorkRequest/ListWorkRequests"
 		err = common.PostProcessServiceError(err, "OceInstance", "ListWorkRequests", apiReferenceLink)
 		return response, err
 	}
@@ -615,9 +624,10 @@ func (client OceInstanceClient) listWorkRequests(ctx context.Context, request co
 // See also
 //
 // Click https://docs.cloud.oracle.com/en-us/iaas/tools/go-sdk-examples/latest/oce/UpdateOceInstance.go.html to see an example of how to use UpdateOceInstance API.
+// A default retry strategy applies to this operation UpdateOceInstance()
 func (client OceInstanceClient) UpdateOceInstance(ctx context.Context, request UpdateOceInstanceRequest) (response UpdateOceInstanceResponse, err error) {
 	var ociResponse common.OCIResponse
-	policy := common.NoRetryPolicy()
+	policy := common.DefaultRetryPolicy()
 	if client.RetryPolicy() != nil {
 		policy = *client.RetryPolicy()
 	}
@@ -658,7 +668,7 @@ func (client OceInstanceClient) updateOceInstance(ctx context.Context, request c
 	defer common.CloseBodyIfValid(httpResponse)
 	response.RawResponse = httpResponse
 	if err != nil {
-		apiReferenceLink := ""
+		apiReferenceLink := "https://docs.oracle.com/iaas/api/#/en/oce/20190912/OceInstance/UpdateOceInstance"
 		err = common.PostProcessServiceError(err, "OceInstance", "UpdateOceInstance", apiReferenceLink)
 		return response, err
 	}

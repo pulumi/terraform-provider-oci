@@ -9,8 +9,8 @@ import (
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
 	oci_database "github.com/oracle/oci-go-sdk/v65/database"
 
-	"github.com/terraform-providers/terraform-provider-oci/internal/client"
-	"github.com/terraform-providers/terraform-provider-oci/internal/tfresource"
+	"terraform-provider-oci/internal/client"
+	"terraform-provider-oci/internal/tfresource"
 )
 
 func DatabaseVmClustersDataSource() *schema.Resource {
@@ -122,6 +122,12 @@ func (s *DatabaseVmClustersDataSourceCrud) SetData() error {
 		if r.CpusEnabled != nil {
 			vmCluster["cpus_enabled"] = *r.CpusEnabled
 			vmCluster["cpu_core_count"] = *r.CpusEnabled
+		}
+
+		if r.DataCollectionOptions != nil {
+			vmCluster["data_collection_options"] = []interface{}{DataCollectionOptionsToMap(r.DataCollectionOptions)}
+		} else {
+			vmCluster["data_collection_options"] = nil
 		}
 
 		if r.DataStorageSizeInGBs != nil {

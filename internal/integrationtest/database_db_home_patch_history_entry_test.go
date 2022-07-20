@@ -9,17 +9,17 @@ import (
 
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/resource"
 
-	"github.com/terraform-providers/terraform-provider-oci/httpreplay"
-	"github.com/terraform-providers/terraform-provider-oci/internal/acctest"
-	"github.com/terraform-providers/terraform-provider-oci/internal/utils"
+	"terraform-provider-oci/httpreplay"
+	"terraform-provider-oci/internal/acctest"
+	"terraform-provider-oci/internal/utils"
 )
 
 var (
-	dbHomePatchHistoryEntryDataSourceRepresentation = map[string]interface{}{
+	DatabaseDatabaseDbHomePatchHistoryEntryDataSourceRepresentation = map[string]interface{}{
 		"db_home_id": acctest.Representation{RepType: acctest.Required, Create: `${data.oci_database_db_homes.t.db_homes.0.db_home_id}`},
 	}
 
-	DbHomePatchHistoryEntryResourceConfig = DbSystemResourceConfig
+	DatabaseDbHomePatchHistoryEntryResourceConfig = DbSystemResourceConfig
 )
 
 // issue-routing-tag: database/default
@@ -40,8 +40,8 @@ func TestDatabaseDbHomePatchHistoryEntryResource_basic(t *testing.T) {
 		// verify datasource
 		{
 			Config: config +
-				acctest.GenerateDataSourceFromRepresentationMap("oci_database_db_home_patch_history_entries", "test_db_home_patch_history_entries", acctest.Required, acctest.Create, dbHomePatchHistoryEntryDataSourceRepresentation) +
-				compartmentIdVariableStr + DbHomePatchHistoryEntryResourceConfig,
+				acctest.GenerateDataSourceFromRepresentationMap("oci_database_db_home_patch_history_entries", "test_db_home_patch_history_entries", acctest.Required, acctest.Create, DatabaseDatabaseDbHomePatchHistoryEntryDataSourceRepresentation) +
+				compartmentIdVariableStr + DatabaseDbHomePatchHistoryEntryResourceConfig,
 			Check: acctest.ComposeAggregateTestCheckFuncWrapper(
 				resource.TestCheckResourceAttrSet(datasourceName, "db_home_id"),
 				resource.TestCheckResourceAttr(datasourceName, "patch_history_entries.#", "0"),

@@ -9,8 +9,8 @@ import (
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
 	oci_oda "github.com/oracle/oci-go-sdk/v65/oda"
 
-	"github.com/terraform-providers/terraform-provider-oci/internal/client"
-	"github.com/terraform-providers/terraform-provider-oci/internal/tfresource"
+	"terraform-provider-oci/internal/client"
+	"terraform-provider-oci/internal/tfresource"
 )
 
 func OdaOdaInstancesDataSource() *schema.Resource {
@@ -110,6 +110,8 @@ func (s *OdaOdaInstancesDataSourceCrud) SetData() error {
 			"compartment_id": *r.CompartmentId,
 		}
 
+		odaInstance["attachment_types"] = r.AttachmentTypes
+
 		if r.DefinedTags != nil {
 			odaInstance["defined_tags"] = tfresource.DefinedTagsToMap(r.DefinedTags)
 		}
@@ -126,6 +128,16 @@ func (s *OdaOdaInstancesDataSourceCrud) SetData() error {
 
 		if r.Id != nil {
 			odaInstance["id"] = *r.Id
+		}
+
+		if r.IdentityDomain != nil {
+			odaInstance["identity_domain"] = *r.IdentityDomain
+		}
+
+		odaInstance["imported_package_names"] = r.ImportedPackageNames
+
+		if r.IsRoleBasedAccess != nil {
+			odaInstance["is_role_based_access"] = *r.IsRoleBasedAccess
 		}
 
 		odaInstance["lifecycle_sub_state"] = r.LifecycleSubState

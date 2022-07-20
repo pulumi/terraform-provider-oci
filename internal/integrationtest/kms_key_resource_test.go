@@ -12,10 +12,10 @@ import (
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/resource"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/terraform"
 
-	"github.com/terraform-providers/terraform-provider-oci/httpreplay"
-	"github.com/terraform-providers/terraform-provider-oci/internal/acctest"
-	"github.com/terraform-providers/terraform-provider-oci/internal/resourcediscovery"
-	"github.com/terraform-providers/terraform-provider-oci/internal/utils"
+	"terraform-provider-oci/httpreplay"
+	"terraform-provider-oci/internal/acctest"
+	"terraform-provider-oci/internal/resourcediscovery"
+	"terraform-provider-oci/internal/utils"
 )
 
 // issue-routing-tag: kms/default
@@ -37,7 +37,7 @@ func TestKmsKeyResource_ResourceDiscovery(t *testing.T) {
 		// verify resource discovery for KMS Keys
 		// Our vault is in root compartment, so we need to run Keys resource discovery in root compartment, as first RD tries to find the vault and then keys inside the vault
 		{
-			Config: config + compartmentIdVariableStr + KeyResourceDependencies,
+			Config: config + compartmentIdVariableStr + KmsKeyResourceDependencies,
 			Check: acctest.ComposeAggregateTestCheckFuncWrapper(
 
 				func(s *terraform.State) (err error) {

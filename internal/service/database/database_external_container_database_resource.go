@@ -6,8 +6,8 @@ package database
 import (
 	"context"
 
-	"github.com/terraform-providers/terraform-provider-oci/internal/client"
-	"github.com/terraform-providers/terraform-provider-oci/internal/tfresource"
+	"terraform-provider-oci/internal/client"
+	"terraform-provider-oci/internal/tfresource"
 
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
 
@@ -112,6 +112,27 @@ func DatabaseExternalContainerDatabaseResource() *schema.Resource {
 			"ncharacter_set": {
 				Type:     schema.TypeString,
 				Computed: true,
+			},
+			"stack_monitoring_config": {
+				Type:     schema.TypeList,
+				Computed: true,
+				Elem: &schema.Resource{
+					Schema: map[string]*schema.Schema{
+						// Required
+
+						// Optional
+
+						// Computed
+						"stack_monitoring_connector_id": {
+							Type:     schema.TypeString,
+							Computed: true,
+						},
+						"stack_monitoring_status": {
+							Type:     schema.TypeString,
+							Computed: true,
+						},
+					},
+				},
 			},
 			"state": {
 				Type:     schema.TypeString,
@@ -391,6 +412,12 @@ func (s *DatabaseExternalContainerDatabaseResourceCrud) SetData() error {
 		s.D.Set("ncharacter_set", *s.Res.NcharacterSet)
 	}
 
+	if s.Res.StackMonitoringConfig != nil {
+		s.D.Set("stack_monitoring_config", []interface{}{StackMonitoringContainerConfigToMap(s.Res.StackMonitoringConfig)})
+	} else {
+		s.D.Set("stack_monitoring_config", nil)
+	}
+
 	s.D.Set("state", s.Res.LifecycleState)
 
 	if s.Res.TimeCreated != nil {
@@ -402,6 +429,32 @@ func (s *DatabaseExternalContainerDatabaseResourceCrud) SetData() error {
 	}
 
 	return nil
+}
+
+func DatabaseManagementConfigToMap(obj *oci_database.DatabaseManagementConfig) map[string]interface{} {
+	result := map[string]interface{}{}
+
+	if obj.DatabaseManagementConnectionId != nil {
+		result["database_management_connection_id"] = string(*obj.DatabaseManagementConnectionId)
+	}
+
+	result["database_management_status"] = string(obj.DatabaseManagementStatus)
+
+	result["license_model"] = string(obj.LicenseModel)
+
+	return result
+}
+
+func StackMonitoringContainerConfigToMap(obj *oci_database.StackMonitoringConfig) map[string]interface{} {
+	result := map[string]interface{}{}
+
+	if obj.StackMonitoringConnectorId != nil {
+		result["stack_monitoring_connector_id"] = string(*obj.StackMonitoringConnectorId)
+	}
+
+	result["stack_monitoring_status"] = string(obj.StackMonitoringStatus)
+
+	return result
 }
 
 func (s *DatabaseExternalContainerDatabaseResourceCrud) updateCompartment(compartment interface{}) error {

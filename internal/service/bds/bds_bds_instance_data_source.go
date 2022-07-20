@@ -6,8 +6,8 @@ package bds
 import (
 	"context"
 
-	"github.com/terraform-providers/terraform-provider-oci/internal/client"
-	"github.com/terraform-providers/terraform-provider-oci/internal/tfresource"
+	"terraform-provider-oci/internal/client"
+	"terraform-provider-oci/internal/tfresource"
 
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
 	oci_bds "github.com/oracle/oci-go-sdk/v65/bds"
@@ -65,6 +65,10 @@ func (s *BdsBdsInstanceDataSourceCrud) SetData() error {
 	}
 
 	s.D.SetId(*s.Res.Id)
+
+	if s.Res.BootstrapScriptUrl != nil {
+		s.D.Set("bootstrap_script_url", *s.Res.BootstrapScriptUrl)
+	}
 
 	if s.Res.CloudSqlDetails != nil {
 		s.D.Set("cloud_sql_details", []interface{}{CloudSqlDetailsToMap(s.Res.CloudSqlDetails)})
@@ -127,6 +131,7 @@ func (s *BdsBdsInstanceDataSourceCrud) SetData() error {
 	s.D.Set("master_node", []interface{}{nodeMap["MASTER"]})
 	s.D.Set("util_node", []interface{}{nodeMap["UTILITY"]})
 	s.D.Set("worker_node", []interface{}{nodeMap["WORKER"]})
+	s.D.Set("compute_only_worker_node", []interface{}{nodeMap["COMPUTE_ONLY_WORKER"]})
 
 	if s.Res.NumberOfNodes != nil {
 		s.D.Set("number_of_nodes", *s.Res.NumberOfNodes)

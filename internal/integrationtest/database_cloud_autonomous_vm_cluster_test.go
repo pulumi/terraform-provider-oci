@@ -10,11 +10,11 @@ import (
 	"testing"
 	"time"
 
-	"github.com/terraform-providers/terraform-provider-oci/internal/acctest"
-	"github.com/terraform-providers/terraform-provider-oci/internal/client"
-	"github.com/terraform-providers/terraform-provider-oci/internal/resourcediscovery"
-	"github.com/terraform-providers/terraform-provider-oci/internal/tfresource"
-	"github.com/terraform-providers/terraform-provider-oci/internal/utils"
+	"terraform-provider-oci/internal/acctest"
+	"terraform-provider-oci/internal/client"
+	"terraform-provider-oci/internal/resourcediscovery"
+	"terraform-provider-oci/internal/tfresource"
+	"terraform-provider-oci/internal/utils"
 
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/resource"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
@@ -22,56 +22,60 @@ import (
 	"github.com/oracle/oci-go-sdk/v65/common"
 	oci_database "github.com/oracle/oci-go-sdk/v65/database"
 
-	"github.com/terraform-providers/terraform-provider-oci/httpreplay"
+	"terraform-provider-oci/httpreplay"
 )
 
 var (
-	CloudAutonomousVmClusterRequiredOnlyResource = CloudAutonomousVmClusterResourceDependencies +
-		acctest.GenerateResourceFromRepresentationMap("oci_database_cloud_autonomous_vm_cluster", "test_cloud_autonomous_vm_cluster", acctest.Required, acctest.Create, cloudAutonomousVmClusterRepresentation)
+	DatabaseCloudAutonomousVmClusterRequiredOnlyResource = DatabaseCloudAutonomousVmClusterResourceDependencies +
+		acctest.GenerateResourceFromRepresentationMap("oci_database_cloud_autonomous_vm_cluster", "test_cloud_autonomous_vm_cluster", acctest.Required, acctest.Create, DatabaseCloudAutonomousVmClusterRepresentation)
 
-	CloudAutonomousVmClusterResourceConfig = CloudAutonomousVmClusterResourceDependencies +
-		acctest.GenerateResourceFromRepresentationMap("oci_database_cloud_autonomous_vm_cluster", "test_cloud_autonomous_vm_cluster", acctest.Optional, acctest.Update, cloudAutonomousVmClusterRepresentation)
+	DatabaseCloudAutonomousVmClusterResourceConfig = DatabaseCloudAutonomousVmClusterResourceDependencies +
+		acctest.GenerateResourceFromRepresentationMap("oci_database_cloud_autonomous_vm_cluster", "test_cloud_autonomous_vm_cluster", acctest.Optional, acctest.Update, DatabaseCloudAutonomousVmClusterRepresentation)
 
-	cloudAutonomousVmClusterSingularDataSourceRepresentation = map[string]interface{}{
+	DatabaseDatabaseCloudAutonomousVmClusterSingularDataSourceRepresentation = map[string]interface{}{
 		"cloud_autonomous_vm_cluster_id": acctest.Representation{RepType: acctest.Required, Create: `${oci_database_cloud_autonomous_vm_cluster.test_cloud_autonomous_vm_cluster.id}`},
 	}
 
-	cloudAutonomousVmClusterDataSourceRepresentation = map[string]interface{}{
+	DatabaseDatabaseCloudAutonomousVmClusterDataSourceRepresentation = map[string]interface{}{
 		"compartment_id":                  acctest.Representation{RepType: acctest.Required, Create: `${var.compartment_id}`},
 		"cloud_exadata_infrastructure_id": acctest.Representation{RepType: acctest.Optional, Create: `${oci_database_cloud_exadata_infrastructure.test_cloud_exadata_infrastructure.id}`},
 		"display_name":                    acctest.Representation{RepType: acctest.Optional, Create: `displayName1`, Update: `displayName2`},
 		"state":                           acctest.Representation{RepType: acctest.Optional, Create: `AVAILABLE`},
-		"filter":                          acctest.RepresentationGroup{RepType: acctest.Required, Group: cloudAutonomousVmClusterDataSourceFilterRepresentation}}
-	cloudAutonomousVmClusterDataSourceFilterRepresentation = map[string]interface{}{
+		"filter":                          acctest.RepresentationGroup{RepType: acctest.Required, Group: DatabaseCloudAutonomousVmClusterDataSourceFilterRepresentation}}
+	DatabaseCloudAutonomousVmClusterDataSourceFilterRepresentation = map[string]interface{}{
 		"name":   acctest.Representation{RepType: acctest.Required, Create: `id`},
 		"values": acctest.Representation{RepType: acctest.Required, Create: []string{`${oci_database_cloud_autonomous_vm_cluster.test_cloud_autonomous_vm_cluster.id}`}},
 	}
 
-	cloudAutonomousVmClusterRepresentation = map[string]interface{}{
+	DatabaseCloudAutonomousVmClusterRepresentation = map[string]interface{}{
 		"cloud_exadata_infrastructure_id": acctest.Representation{RepType: acctest.Required, Create: `${oci_database_cloud_exadata_infrastructure.test_cloud_exadata_infrastructure.id}`},
 		"compartment_id":                  acctest.Representation{RepType: acctest.Required, Create: `${var.compartment_id}`},
 		"subnet_id":                       acctest.Representation{RepType: acctest.Required, Create: `${oci_core_subnet.exadata_subnet.id}`},
-		"defined_tags":                    acctest.Representation{RepType: acctest.Optional, Create: `${map("${oci_identity_tag_namespace.tag-namespace1.name}.${oci_identity_tag.tag1.name}", "value")}`, Update: `${map("${oci_identity_tag_namespace.tag-namespace1.name}.${oci_identity_tag.tag1.name}", "UpdatedValue")}`},
 		"display_name":                    acctest.Representation{RepType: acctest.Required, Create: `CloudAutonomousVmCluster`, Update: `displayName2`},
+		"cluster_time_zone":               acctest.Representation{RepType: acctest.Optional, Create: `Etc/UTC`},
+		"defined_tags":                    acctest.Representation{RepType: acctest.Optional, Create: `${map("${oci_identity_tag_namespace.tag-namespace1.name}.${oci_identity_tag.tag1.name}", "value")}`, Update: `${map("${oci_identity_tag_namespace.tag-namespace1.name}.${oci_identity_tag.tag1.name}", "updatedValue")}`},
+		"description":                     acctest.Representation{RepType: acctest.Optional, Create: `description`, Update: `description2`},
 		"freeform_tags":                   acctest.Representation{RepType: acctest.Optional, Create: map[string]string{"Department": "Finance"}, Update: map[string]string{"Department": "Accounting"}},
 		"license_model":                   acctest.Representation{RepType: acctest.Optional, Create: `LICENSE_INCLUDED`},
 		"nsg_ids":                         acctest.Representation{RepType: acctest.Optional, Create: []string{`${oci_core_network_security_group.test_network_security_group.id}`}, Update: []string{`${oci_core_network_security_group.test_network_security_group2.id}`}},
 	}
 
-	cloudAutonomousNetworkSecurityGroupRepresentation = map[string]interface{}{
+	DatabaseCloudAutonomousNetworkSecurityGroupRepresentation = map[string]interface{}{
 		"compartment_id": acctest.Representation{RepType: acctest.Required, Create: `${var.compartment_id}`},
 		"vcn_id":         acctest.Representation{RepType: acctest.Required, Create: `${oci_core_vcn.test_vcn.id}`},
 		"defined_tags":   acctest.Representation{RepType: acctest.Optional, Create: `${map("${oci_identity_tag_namespace.tag-namespace1.name}.${oci_identity_tag.tag1.name}", "value")}`, Update: `${map("${oci_identity_tag_namespace.tag-namespace1.name}.${oci_identity_tag.tag1.name}", "updatedValue")}`},
 		"display_name":   acctest.Representation{RepType: acctest.Optional, Create: `displayName`, Update: `displayName2`},
 		"freeform_tags":  acctest.Representation{RepType: acctest.Optional, Create: map[string]string{"Department": "Finance"}, Update: map[string]string{"Department": "Accounting"}},
-		"lifecycle":      acctest.RepresentationGroup{RepType: acctest.Required, Group: ignoreChangesNsgRepresentation},
+		"lifecycle":      acctest.RepresentationGroup{RepType: acctest.Required, Group: CoreNetworkSecurityIgnoreChangesNsgRepresentation},
 	}
 
-	CloudAutonomousVmClusterResourceDependencies = DefinedTagsDependencies + AvailabilityDomainConfig +
-		acctest.GenerateResourceFromRepresentationMap("oci_core_vcn", "test_vcn", acctest.Required, acctest.Create, vcnRepresentation) +
-		acctest.GenerateResourceFromRepresentationMap("oci_database_cloud_exadata_infrastructure", "test_cloud_exadata_infrastructure", acctest.Required, acctest.Create, cloudExadataInfrastructureRepresentation) +
+	DatabaseCloudAutonomousVmClusterResourceDependencies = DefinedTagsDependencies + AvailabilityDomainConfig +
+		acctest.GenerateResourceFromRepresentationMap("oci_core_vcn", "test_vcn", acctest.Required, acctest.Create, CoreVcnRepresentation) +
+		acctest.GenerateResourceFromRepresentationMap("oci_core_network_security_group", "test_network_security_group", acctest.Required, acctest.Create, CoreNetworkSecurityGroupRepresentation) +
+		acctest.GenerateResourceFromRepresentationMap("oci_core_network_security_group", "test_network_security_group2", acctest.Required, acctest.Create, CoreNetworkSecurityGroupRepresentation) +
+		acctest.GenerateResourceFromRepresentationMap("oci_database_cloud_exadata_infrastructure", "test_cloud_exadata_infrastructure", acctest.Required, acctest.Create, DatabaseCloudExadataInfrastructureRepresentation) +
 		`
-	#dataguard requires the port to be open on the subnet
+#dataguard requires the port to be open on the subnet
 	resource "oci_core_virtual_network" "t" {
 		compartment_id = "${var.compartment_id}"
 		cidr_block = "10.1.0.0/16"
@@ -184,8 +188,8 @@ func TestDatabaseCloudAutonomousVmClusterResource_basic(t *testing.T) {
 			// verify Create
 			{
 				Config: config +
-					compartmentIdVariableStr + CloudAutonomousVmClusterResourceDependencies +
-					acctest.GenerateResourceFromRepresentationMap("oci_database_cloud_autonomous_vm_cluster", "test_cloud_autonomous_vm_cluster", acctest.Required, acctest.Create, cloudAutonomousVmClusterRepresentation),
+					compartmentIdVariableStr + DatabaseCloudAutonomousVmClusterResourceDependencies +
+					acctest.GenerateResourceFromRepresentationMap("oci_database_cloud_autonomous_vm_cluster", "test_cloud_autonomous_vm_cluster", acctest.Required, acctest.Create, DatabaseCloudAutonomousVmClusterRepresentation),
 				Check: resource.ComposeAggregateTestCheckFunc(
 					resource.TestCheckResourceAttrSet(resourceName, "cloud_exadata_infrastructure_id"),
 					resource.TestCheckResourceAttr(resourceName, "compartment_id", compartmentId),
@@ -205,12 +209,13 @@ func TestDatabaseCloudAutonomousVmClusterResource_basic(t *testing.T) {
 				Config: config + compartmentIdVariableStr,
 			},
 
-			// verify create with optionals
+			// verify Create with optionals
 			{
-				Config: config + compartmentIdVariableStr + CloudAutonomousVmClusterResourceDependencies +
-					acctest.GenerateResourceFromRepresentationMap("oci_database_cloud_autonomous_vm_cluster", "test_cloud_autonomous_vm_cluster", acctest.Optional, acctest.Create, cloudAutonomousVmClusterRepresentation),
-				Check: resource.ComposeAggregateTestCheckFunc(
+				Config: config + compartmentIdVariableStr + DatabaseCloudAutonomousVmClusterResourceDependencies +
+					acctest.GenerateResourceFromRepresentationMap("oci_database_cloud_autonomous_vm_cluster", "test_cloud_autonomous_vm_cluster", acctest.Optional, acctest.Create, DatabaseCloudAutonomousVmClusterRepresentation),
+				Check: acctest.ComposeAggregateTestCheckFuncWrapper(
 					resource.TestCheckResourceAttrSet(resourceName, "cloud_exadata_infrastructure_id"),
+					resource.TestCheckResourceAttr(resourceName, "cluster_time_zone", "Etc/UTC"),
 					resource.TestCheckResourceAttr(resourceName, "compartment_id", compartmentId),
 					resource.TestCheckResourceAttr(resourceName, "defined_tags.%", "1"),
 					resource.TestCheckResourceAttr(resourceName, "display_name", "CloudAutonomousVmCluster"),
@@ -222,7 +227,7 @@ func TestDatabaseCloudAutonomousVmClusterResource_basic(t *testing.T) {
 
 					func(s *terraform.State) (err error) {
 						resId, err = acctest.FromInstanceState(s, resourceName, "id")
-						if isEnableExportCompartment, _ := strconv.ParseBool(utils.GetEnvSettingWithDefault("enable_export_compartment", "true")); isEnableExportCompartment {
+						if isEnableExportCompartment, _ := strconv.ParseBool(utils.GetEnvSettingWithDefault("enable_export_compartment", "false")); isEnableExportCompartment {
 							if errExport := resourcediscovery.TestExportCompartmentWithResourceName(&resId, &compartmentId, resourceName); errExport != nil {
 								return errExport
 							}
@@ -231,15 +236,17 @@ func TestDatabaseCloudAutonomousVmClusterResource_basic(t *testing.T) {
 					},
 				),
 			},
-			// verify update to the compartment (the compartment will be switched back in the next step)
+
+			// verify Update to the compartment (the compartment will be switched back in the next step)
 			{
-				Config: config + compartmentIdVariableStr + compartmentIdUVariableStr + CloudAutonomousVmClusterResourceDependencies +
+				Config: config + compartmentIdVariableStr + compartmentIdUVariableStr + DatabaseCloudAutonomousVmClusterResourceDependencies +
 					acctest.GenerateResourceFromRepresentationMap("oci_database_cloud_autonomous_vm_cluster", "test_cloud_autonomous_vm_cluster", acctest.Optional, acctest.Create,
-						acctest.RepresentationCopyWithNewProperties(cloudAutonomousVmClusterRepresentation, map[string]interface{}{
+						acctest.RepresentationCopyWithNewProperties(DatabaseCloudAutonomousVmClusterRepresentation, map[string]interface{}{
 							"compartment_id": acctest.Representation{RepType: acctest.Required, Create: `${var.compartment_id_for_update}`},
 						})),
-				Check: resource.ComposeAggregateTestCheckFunc(
+				Check: acctest.ComposeAggregateTestCheckFuncWrapper(
 					resource.TestCheckResourceAttrSet(resourceName, "cloud_exadata_infrastructure_id"),
+					resource.TestCheckResourceAttr(resourceName, "cluster_time_zone", "Etc/UTC"),
 					resource.TestCheckResourceAttr(resourceName, "compartment_id", compartmentIdU),
 					resource.TestCheckResourceAttr(resourceName, "defined_tags.%", "1"),
 					resource.TestCheckResourceAttr(resourceName, "display_name", "CloudAutonomousVmCluster"),
@@ -252,7 +259,7 @@ func TestDatabaseCloudAutonomousVmClusterResource_basic(t *testing.T) {
 					func(s *terraform.State) (err error) {
 						resId2, err = acctest.FromInstanceState(s, resourceName, "id")
 						if resId != resId2 {
-							return fmt.Errorf("resource reCreated when it was supposed to be updated")
+							return fmt.Errorf("resource recreated when it was supposed to be updated")
 						}
 						return err
 					},
@@ -261,10 +268,11 @@ func TestDatabaseCloudAutonomousVmClusterResource_basic(t *testing.T) {
 
 			// verify updates to updatable parameters
 			{
-				Config: config + compartmentIdVariableStr + CloudAutonomousVmClusterResourceDependencies +
-					acctest.GenerateResourceFromRepresentationMap("oci_database_cloud_autonomous_vm_cluster", "test_cloud_autonomous_vm_cluster", acctest.Optional, acctest.Update, cloudAutonomousVmClusterRepresentation),
-				Check: resource.ComposeAggregateTestCheckFunc(
+				Config: config + compartmentIdVariableStr + DatabaseCloudAutonomousVmClusterResourceDependencies +
+					acctest.GenerateResourceFromRepresentationMap("oci_database_cloud_autonomous_vm_cluster", "test_cloud_autonomous_vm_cluster", acctest.Optional, acctest.Update, DatabaseCloudAutonomousVmClusterRepresentation),
+				Check: acctest.ComposeAggregateTestCheckFuncWrapper(
 					resource.TestCheckResourceAttrSet(resourceName, "cloud_exadata_infrastructure_id"),
+					resource.TestCheckResourceAttr(resourceName, "cluster_time_zone", "Etc/UTC"),
 					resource.TestCheckResourceAttr(resourceName, "compartment_id", compartmentId),
 					resource.TestCheckResourceAttr(resourceName, "defined_tags.%", "1"),
 					resource.TestCheckResourceAttr(resourceName, "display_name", "displayName2"),
@@ -277,56 +285,7 @@ func TestDatabaseCloudAutonomousVmClusterResource_basic(t *testing.T) {
 					func(s *terraform.State) (err error) {
 						resId2, err = acctest.FromInstanceState(s, resourceName, "id")
 						if resId != resId2 {
-							return fmt.Errorf("Resource reCreated when it was supposed to be Updated.")
-						}
-						return err
-					},
-				),
-			},
-			{
-				Config: config + compartmentIdVariableStr + CloudAutonomousVmClusterResourceDependencies +
-					acctest.GenerateResourceFromRepresentationMap("oci_database_cloud_autonomous_vm_cluster", "test_cloud_autonomous_vm_cluster", acctest.Optional, acctest.Update,
-						acctest.RepresentationCopyWithNewProperties(cloudAutonomousVmClusterRepresentation, map[string]interface{}{})),
-				Check: resource.ComposeAggregateTestCheckFunc(
-					//resource.TestCheckResourceAttrSet(resourceName, "availability_domain"),
-					resource.TestCheckResourceAttrSet(resourceName, "cloud_exadata_infrastructure_id"),
-					resource.TestCheckResourceAttr(resourceName, "compartment_id", compartmentId),
-					resource.TestCheckResourceAttr(resourceName, "defined_tags.%", "1"),
-					resource.TestCheckResourceAttr(resourceName, "display_name", "displayName2"),
-					resource.TestCheckResourceAttr(resourceName, "freeform_tags.%", "1"),
-					resource.TestCheckResourceAttrSet(resourceName, "id"),
-					resource.TestCheckResourceAttr(resourceName, "license_model", "LICENSE_INCLUDED"),
-					resource.TestCheckResourceAttrSet(resourceName, "state"),
-					resource.TestCheckResourceAttrSet(resourceName, "subnet_id"),
-
-					func(s *terraform.State) (err error) {
-						resId2, err = acctest.FromInstanceState(s, resourceName, "id")
-						if resId != resId2 {
-							return fmt.Errorf("Resource reCreated when it was supposed to be Updated.")
-						}
-						return err
-					},
-				),
-			},
-			{
-				Config: config + compartmentIdVariableStr + CloudAutonomousVmClusterResourceDependencies +
-					acctest.GenerateResourceFromRepresentationMap("oci_database_cloud_autonomous_vm_cluster", "test_cloud_autonomous_vm_cluster", acctest.Optional, acctest.Update,
-						acctest.RepresentationCopyWithNewProperties(cloudAutonomousVmClusterRepresentation, map[string]interface{}{})),
-				Check: resource.ComposeAggregateTestCheckFunc(
-					resource.TestCheckResourceAttrSet(resourceName, "cloud_exadata_infrastructure_id"),
-					resource.TestCheckResourceAttr(resourceName, "compartment_id", compartmentId),
-					resource.TestCheckResourceAttr(resourceName, "defined_tags.%", "1"),
-					resource.TestCheckResourceAttr(resourceName, "display_name", "displayName2"),
-					resource.TestCheckResourceAttr(resourceName, "freeform_tags.%", "1"),
-					resource.TestCheckResourceAttrSet(resourceName, "id"),
-					resource.TestCheckResourceAttr(resourceName, "license_model", "LICENSE_INCLUDED"),
-					resource.TestCheckResourceAttrSet(resourceName, "state"),
-					resource.TestCheckResourceAttrSet(resourceName, "subnet_id"),
-
-					func(s *terraform.State) (err error) {
-						resId2, err = acctest.FromInstanceState(s, resourceName, "id")
-						if resId != resId2 {
-							return fmt.Errorf("Resource reCreated when it was supposed to be Updated.")
+							return fmt.Errorf("Resource recreated when it was supposed to be updated.")
 						}
 						return err
 					},
@@ -335,10 +294,10 @@ func TestDatabaseCloudAutonomousVmClusterResource_basic(t *testing.T) {
 			// verify datasource
 			{
 				Config: config +
-					acctest.GenerateDataSourceFromRepresentationMap("oci_database_cloud_autonomous_vm_clusters", "test_cloud_autonomous_vm_clusters", acctest.Optional, acctest.Update, cloudAutonomousVmClusterDataSourceRepresentation) +
-					compartmentIdVariableStr + CloudAutonomousVmClusterResourceDependencies +
-					acctest.GenerateResourceFromRepresentationMap("oci_database_cloud_autonomous_vm_cluster", "test_cloud_autonomous_vm_cluster", acctest.Optional, acctest.Update, cloudAutonomousVmClusterRepresentation),
-				Check: resource.ComposeAggregateTestCheckFunc(
+					acctest.GenerateDataSourceFromRepresentationMap("oci_database_cloud_autonomous_vm_clusters", "test_cloud_autonomous_vm_clusters", acctest.Optional, acctest.Update, DatabaseDatabaseCloudAutonomousVmClusterDataSourceRepresentation) +
+					compartmentIdVariableStr + DatabaseCloudAutonomousVmClusterResourceDependencies +
+					acctest.GenerateResourceFromRepresentationMap("oci_database_cloud_autonomous_vm_cluster", "test_cloud_autonomous_vm_cluster", acctest.Optional, acctest.Update, DatabaseCloudAutonomousVmClusterRepresentation),
+				Check: acctest.ComposeAggregateTestCheckFuncWrapper(
 					resource.TestCheckResourceAttrSet(datasourceName, "cloud_exadata_infrastructure_id"),
 					resource.TestCheckResourceAttr(datasourceName, "compartment_id", compartmentId),
 					resource.TestCheckResourceAttr(datasourceName, "display_name", "displayName2"),
@@ -346,6 +305,7 @@ func TestDatabaseCloudAutonomousVmClusterResource_basic(t *testing.T) {
 
 					resource.TestCheckResourceAttr(datasourceName, "cloud_autonomous_vm_clusters.#", "1"),
 					resource.TestCheckResourceAttrSet(datasourceName, "cloud_autonomous_vm_clusters.0.cloud_exadata_infrastructure_id"),
+					resource.TestCheckResourceAttr(datasourceName, "cloud_autonomous_vm_clusters.0.cluster_time_zone", "Etc/UTC"),
 					resource.TestCheckResourceAttr(datasourceName, "cloud_autonomous_vm_clusters.0.compartment_id", compartmentId),
 					resource.TestCheckResourceAttrSet(datasourceName, "cloud_autonomous_vm_clusters.0.cpu_core_count"),
 					resource.TestCheckResourceAttrSet(datasourceName, "cloud_autonomous_vm_clusters.0.data_storage_size_in_gb"),
@@ -369,11 +329,12 @@ func TestDatabaseCloudAutonomousVmClusterResource_basic(t *testing.T) {
 			// verify singular datasource
 			{
 				Config: config +
-					acctest.GenerateDataSourceFromRepresentationMap("oci_database_cloud_autonomous_vm_cluster", "test_cloud_autonomous_vm_cluster", acctest.Required, acctest.Create, cloudAutonomousVmClusterSingularDataSourceRepresentation) +
-					compartmentIdVariableStr + CloudAutonomousVmClusterResourceConfig,
-				Check: resource.ComposeAggregateTestCheckFunc(
+					acctest.GenerateDataSourceFromRepresentationMap("oci_database_cloud_autonomous_vm_cluster", "test_cloud_autonomous_vm_cluster", acctest.Required, acctest.Create, DatabaseDatabaseCloudAutonomousVmClusterSingularDataSourceRepresentation) +
+					compartmentIdVariableStr + DatabaseCloudAutonomousVmClusterResourceConfig,
+				Check: acctest.ComposeAggregateTestCheckFuncWrapper(
 					resource.TestCheckResourceAttrSet(singularDatasourceName, "cloud_autonomous_vm_cluster_id"),
 
+					resource.TestCheckResourceAttr(singularDatasourceName, "cluster_time_zone", "Etc/UTC"),
 					resource.TestCheckResourceAttr(singularDatasourceName, "compartment_id", compartmentId),
 					resource.TestCheckResourceAttrSet(singularDatasourceName, "cpu_core_count"),
 					resource.TestCheckResourceAttrSet(singularDatasourceName, "data_storage_size_in_gb"),
@@ -394,10 +355,10 @@ func TestDatabaseCloudAutonomousVmClusterResource_basic(t *testing.T) {
 			},
 			// verify resource import
 			{
-				Config:                  config + CloudAutonomousVmClusterRequiredOnlyResource,
+				Config:                  config + DatabaseCloudAutonomousVmClusterRequiredOnlyResource,
 				ImportState:             true,
 				ImportStateVerify:       true,
-				ImportStateVerifyIgnore: []string{},
+				ImportStateVerifyIgnore: []string{"description"},
 				ResourceName:            resourceName,
 			},
 		},
@@ -459,7 +420,7 @@ func init() {
 
 func sweepDatabaseCloudAutonomousVmClusterResource(compartment string) error {
 	databaseClient := acctest.GetTestClients(&schema.ResourceData{}).DatabaseClient()
-	cloudAutonomousVmClusterIds, err := getCloudAutonomousVmClusterIds(compartment)
+	cloudAutonomousVmClusterIds, err := getDatabaseCloudAutonomousVmClusterIds(compartment)
 	if err != nil {
 		return err
 	}
@@ -475,14 +436,14 @@ func sweepDatabaseCloudAutonomousVmClusterResource(compartment string) error {
 				fmt.Printf("Error deleting CloudAutonomousVmCluster %s %s, It is possible that the resource is already deleted. Please verify manually \n", cloudAutonomousVmClusterId, error)
 				continue
 			}
-			acctest.WaitTillCondition(acctest.TestAccProvider, &cloudAutonomousVmClusterId, cloudAutonomousVmClusterSweepWaitCondition, time.Duration(3*time.Minute),
-				cloudAutonomousVmClusterSweepResponseFetchOperation, "database", true)
+			acctest.WaitTillCondition(acctest.TestAccProvider, &cloudAutonomousVmClusterId, DatabaseCloudAutonomousVmClusterSweepWaitCondition, time.Duration(3*time.Minute),
+				DatabaseCloudAutonomousVmClusterSweepResponseFetchOperation, "database", true)
 		}
 	}
 	return nil
 }
 
-func getCloudAutonomousVmClusterIds(compartment string) ([]string, error) {
+func getDatabaseCloudAutonomousVmClusterIds(compartment string) ([]string, error) {
 	ids := acctest.GetResourceIdsToSweep(compartment, "CloudAutonomousVmClusterId")
 	if ids != nil {
 		return ids, nil
@@ -507,7 +468,7 @@ func getCloudAutonomousVmClusterIds(compartment string) ([]string, error) {
 	return resourceIds, nil
 }
 
-func cloudAutonomousVmClusterSweepWaitCondition(response common.OCIOperationResponse) bool {
+func DatabaseCloudAutonomousVmClusterSweepWaitCondition(response common.OCIOperationResponse) bool {
 	// Only stop if the resource is available beyond 3 mins. As there could be an issue for the sweeper to delete the resource and manual intervention required.
 	if cloudAutonomousVmClusterResponse, ok := response.Response.(oci_database.GetCloudAutonomousVmClusterResponse); ok {
 		return cloudAutonomousVmClusterResponse.LifecycleState != oci_database.CloudAutonomousVmClusterLifecycleStateTerminated
@@ -515,7 +476,7 @@ func cloudAutonomousVmClusterSweepWaitCondition(response common.OCIOperationResp
 	return false
 }
 
-func cloudAutonomousVmClusterSweepResponseFetchOperation(client *client.OracleClients, resourceId *string, retryPolicy *common.RetryPolicy) error {
+func DatabaseCloudAutonomousVmClusterSweepResponseFetchOperation(client *client.OracleClients, resourceId *string, retryPolicy *common.RetryPolicy) error {
 	_, err := client.DatabaseClient().GetCloudAutonomousVmCluster(context.Background(), oci_database.GetCloudAutonomousVmClusterRequest{
 		CloudAutonomousVmClusterId: resourceId,
 		RequestMetadata: common.RequestMetadata{

@@ -8,8 +8,8 @@ import (
 	"fmt"
 	"strconv"
 
-	"github.com/terraform-providers/terraform-provider-oci/internal/client"
-	"github.com/terraform-providers/terraform-provider-oci/internal/tfresource"
+	"terraform-provider-oci/internal/client"
+	"terraform-provider-oci/internal/tfresource"
 
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
 	oci_database_management "github.com/oracle/oci-go-sdk/v65/databasemanagement"
@@ -56,6 +56,10 @@ func DatabaseManagementManagedDatabaseSqlTuningAdvisorTasksRecommendationDataSou
 						},
 						"implement_action_sql": {
 							Type:     schema.TypeString,
+							Computed: true,
+						},
+						"is_parallel_execution": {
+							Type:     schema.TypeBool,
 							Computed: true,
 						},
 						"rationale": {
@@ -182,6 +186,10 @@ func SqlTuningAdvisorTaskRecommendationSummaryToMap(obj oci_database_management.
 
 	if obj.ImplementActionSql != nil {
 		result["implement_action_sql"] = string(*obj.ImplementActionSql)
+	}
+
+	if obj.IsParallelExecution != nil {
+		result["is_parallel_execution"] = bool(*obj.IsParallelExecution)
 	}
 
 	if obj.Rationale != nil {

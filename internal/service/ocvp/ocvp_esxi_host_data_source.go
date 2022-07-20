@@ -9,8 +9,8 @@ import (
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
 	oci_ocvp "github.com/oracle/oci-go-sdk/v65/ocvp"
 
-	"github.com/terraform-providers/terraform-provider-oci/internal/client"
-	"github.com/terraform-providers/terraform-provider-oci/internal/tfresource"
+	"terraform-provider-oci/internal/client"
+	"terraform-provider-oci/internal/tfresource"
 )
 
 func OcvpEsxiHostDataSource() *schema.Resource {
@@ -70,6 +70,10 @@ func (s *OcvpEsxiHostDataSourceCrud) SetData() error {
 		s.D.Set("billing_contract_end_date", s.Res.BillingContractEndDate.String())
 	}
 
+	if s.Res.CapacityReservationId != nil {
+		s.D.Set("capacity_reservation_id", *s.Res.CapacityReservationId)
+	}
+
 	if s.Res.CompartmentId != nil {
 		s.D.Set("compartment_id", *s.Res.CompartmentId)
 	}
@@ -100,6 +104,14 @@ func (s *OcvpEsxiHostDataSourceCrud) SetData() error {
 
 	if s.Res.GracePeriodEndDate != nil {
 		s.D.Set("grace_period_end_date", s.Res.GracePeriodEndDate.String())
+	}
+
+	if s.Res.HostOcpuCount != nil {
+		s.D.Set("host_ocpu_count", *s.Res.HostOcpuCount)
+	}
+
+	if s.Res.HostShapeName != nil {
+		s.D.Set("host_shape_name", *s.Res.HostShapeName)
 	}
 
 	s.D.Set("next_sku", s.Res.NextSku)

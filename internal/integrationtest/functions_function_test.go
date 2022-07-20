@@ -10,11 +10,11 @@ import (
 	"testing"
 	"time"
 
-	"github.com/terraform-providers/terraform-provider-oci/internal/acctest"
-	tf_client "github.com/terraform-providers/terraform-provider-oci/internal/client"
-	"github.com/terraform-providers/terraform-provider-oci/internal/resourcediscovery"
-	"github.com/terraform-providers/terraform-provider-oci/internal/tfresource"
-	"github.com/terraform-providers/terraform-provider-oci/internal/utils"
+	"terraform-provider-oci/internal/acctest"
+	tf_client "terraform-provider-oci/internal/client"
+	"terraform-provider-oci/internal/resourcediscovery"
+	"terraform-provider-oci/internal/tfresource"
+	"terraform-provider-oci/internal/utils"
 
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/resource"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
@@ -22,52 +22,57 @@ import (
 	"github.com/oracle/oci-go-sdk/v65/common"
 	oci_functions "github.com/oracle/oci-go-sdk/v65/functions"
 
-	"github.com/terraform-providers/terraform-provider-oci/httpreplay"
+	"terraform-provider-oci/httpreplay"
 )
 
 var (
-	FunctionRequiredOnlyResource = FunctionResourceDependencies +
-		acctest.GenerateResourceFromRepresentationMap("oci_functions_function", "test_function", acctest.Required, acctest.Create, functionRepresentation)
+	FunctionsFunctionRequiredOnlyResource = FunctionsFunctionResourceDependencies +
+		acctest.GenerateResourceFromRepresentationMap("oci_functions_function", "test_function", acctest.Required, acctest.Create, FunctionsFunctionRepresentation)
 
-	FunctionResourceConfig = FunctionResourceDependencies +
-		acctest.GenerateResourceFromRepresentationMap("oci_functions_function", "test_function", acctest.Optional, acctest.Update, functionRepresentation)
+	FunctionsFunctionResourceConfig = FunctionsFunctionResourceDependencies +
+		acctest.GenerateResourceFromRepresentationMap("oci_functions_function", "test_function", acctest.Optional, acctest.Update, FunctionsFunctionRepresentation)
 
-	functionSingularDataSourceRepresentation = map[string]interface{}{
+	FunctionsFunctionsFunctionSingularDataSourceRepresentation = map[string]interface{}{
 		"function_id": acctest.Representation{RepType: acctest.Required, Create: `${oci_functions_function.test_function.id}`},
 	}
 
-	functionDataSourceRepresentation = map[string]interface{}{
+	FunctionsFunctionsFunctionDataSourceRepresentation = map[string]interface{}{
 		"application_id": acctest.Representation{RepType: acctest.Required, Create: `${oci_functions_application.test_application.id}`},
 		"display_name":   acctest.Representation{RepType: acctest.Optional, Create: `ExampleFunction`},
 		"id":             acctest.Representation{RepType: acctest.Optional, Create: `${oci_functions_function.test_function.id}`},
 		"state":          acctest.Representation{RepType: acctest.Optional, Create: `ACTIVE`},
-		"filter":         acctest.RepresentationGroup{RepType: acctest.Required, Group: functionDataSourceFilterRepresentation}}
-	functionDataSourceFilterRepresentation = map[string]interface{}{
+		"filter":         acctest.RepresentationGroup{RepType: acctest.Required, Group: FunctionsFunctionDataSourceFilterRepresentation}}
+	FunctionsFunctionDataSourceFilterRepresentation = map[string]interface{}{
 		"name":   acctest.Representation{RepType: acctest.Required, Create: `id`},
 		"values": acctest.Representation{RepType: acctest.Required, Create: []string{`${oci_functions_function.test_function.id}`}},
 	}
 
-	functionRepresentation = map[string]interface{}{
-		"application_id":     acctest.Representation{RepType: acctest.Required, Create: `${oci_functions_application.test_application.id}`},
-		"display_name":       acctest.Representation{RepType: acctest.Required, Create: `ExampleFunction`},
-		"image":              acctest.Representation{RepType: acctest.Required, Create: `${var.image}`, Update: `${var.image_for_update}`},
-		"memory_in_mbs":      acctest.Representation{RepType: acctest.Required, Create: `128`, Update: `256`},
-		"config":             acctest.Representation{RepType: acctest.Optional, Create: map[string]string{"MY_FUNCTION_CONFIG": "ConfVal"}},
-		"defined_tags":       acctest.Representation{RepType: acctest.Optional, Create: `${map("${oci_identity_tag_namespace.tag-namespace1.name}.${oci_identity_tag.tag1.name}", "value")}`, Update: `${map("${oci_identity_tag_namespace.tag-namespace1.name}.${oci_identity_tag.tag1.name}", "updatedValue")}`},
-		"freeform_tags":      acctest.Representation{RepType: acctest.Optional, Create: map[string]string{"Department": "Finance"}, Update: map[string]string{"Department": "Accounting"}},
-		"image_digest":       acctest.Representation{RepType: acctest.Optional, Create: `${var.image_digest}`, Update: `${var.image_digest_for_update}`},
-		"timeout_in_seconds": acctest.Representation{RepType: acctest.Optional, Create: `30`, Update: `31`},
-		"trace_config":       acctest.RepresentationGroup{RepType: acctest.Optional, Group: functionTraceConfigRepresentation},
+	FunctionsFunctionRepresentation = map[string]interface{}{
+		"application_id":                 acctest.Representation{RepType: acctest.Required, Create: `${oci_functions_application.test_application.id}`},
+		"display_name":                   acctest.Representation{RepType: acctest.Required, Create: `ExampleFunction`},
+		"image":                          acctest.Representation{RepType: acctest.Required, Create: `${var.image}`, Update: `${var.image_for_update}`},
+		"memory_in_mbs":                  acctest.Representation{RepType: acctest.Required, Create: `128`, Update: `256`},
+		"config":                         acctest.Representation{RepType: acctest.Optional, Create: map[string]string{"MY_FUNCTION_CONFIG": "ConfVal"}},
+		"defined_tags":                   acctest.Representation{RepType: acctest.Optional, Create: `${map("${oci_identity_tag_namespace.tag-namespace1.name}.${oci_identity_tag.tag1.name}", "value")}`, Update: `${map("${oci_identity_tag_namespace.tag-namespace1.name}.${oci_identity_tag.tag1.name}", "updatedValue")}`},
+		"freeform_tags":                  acctest.Representation{RepType: acctest.Optional, Create: map[string]string{"Department": "Finance"}, Update: map[string]string{"Department": "Accounting"}},
+		"image_digest":                   acctest.Representation{RepType: acctest.Optional, Create: `${var.image_digest}`, Update: `${var.image_digest_for_update}`},
+		"provisioned_concurrency_config": acctest.RepresentationGroup{RepType: acctest.Optional, Group: FunctionsFunctionProvisionedConcurrencyConfigRepresentation},
+		"timeout_in_seconds":             acctest.Representation{RepType: acctest.Optional, Create: `30`, Update: `31`},
+		"trace_config":                   acctest.RepresentationGroup{RepType: acctest.Optional, Group: FunctionsFunctionTraceConfigRepresentation},
 	}
-	functionTraceConfigRepresentation = map[string]interface{}{
+	FunctionsFunctionProvisionedConcurrencyConfigRepresentation = map[string]interface{}{
+		"strategy": acctest.Representation{RepType: acctest.Required, Create: `CONSTANT`, Update: `NONE`},
+		"count":    acctest.Representation{RepType: acctest.Optional, Create: `40`, Update: `0`},
+	}
+	FunctionsFunctionTraceConfigRepresentation = map[string]interface{}{
 		"is_enabled": acctest.Representation{RepType: acctest.Optional, Create: `false`, Update: `true`},
 	}
 
 	functionApplicationDisplayName = utils.RandomString(1, utils.CharsetWithoutDigits) + utils.RandomString(13, utils.Charset)
 
-	FunctionResourceDependencies = acctest.GenerateResourceFromRepresentationMap("oci_core_subnet", "test_subnet", acctest.Required, acctest.Create, subnetRepresentation) +
-		acctest.GenerateResourceFromRepresentationMap("oci_core_vcn", "test_vcn", acctest.Required, acctest.Create, vcnRepresentation) +
-		acctest.GenerateResourceFromRepresentationMap("oci_functions_application", "test_application", acctest.Required, acctest.Create, applicationRepresentation) +
+	FunctionsFunctionResourceDependencies = acctest.GenerateResourceFromRepresentationMap("oci_core_subnet", "test_subnet", acctest.Required, acctest.Create, CoreSubnetRepresentation) +
+		acctest.GenerateResourceFromRepresentationMap("oci_core_vcn", "test_vcn", acctest.Required, acctest.Create, CoreVcnRepresentation) +
+		acctest.GenerateResourceFromRepresentationMap("oci_functions_application", "test_application", acctest.Required, acctest.Create, FunctionsApplicationRepresentation) +
 		DefinedTagsDependencies +
 		KeyResourceDependencyConfig
 )
@@ -100,14 +105,14 @@ func TestFunctionsFunctionResource_basic(t *testing.T) {
 
 	var resId, resId2 string
 	// Save TF content to Create resource with optional properties. This has to be exactly the same as the config part in the "Create with optionals" step in the test.
-	acctest.SaveConfigContent(config+compartmentIdVariableStr+FunctionResourceDependencies+
-		acctest.GenerateResourceFromRepresentationMap("oci_functions_function", "test_function", acctest.Optional, acctest.Create, functionRepresentation), "functions", "function", t)
+	acctest.SaveConfigContent(config+compartmentIdVariableStr+FunctionsFunctionResourceDependencies+
+		acctest.GenerateResourceFromRepresentationMap("oci_functions_function", "test_function", acctest.Optional, acctest.Create, FunctionsFunctionRepresentation), "functions", "function", t)
 
 	acctest.ResourceTest(t, testAccCheckFunctionsFunctionDestroy, []resource.TestStep{
 		// verify Create
 		{
-			Config: config + compartmentIdVariableStr + imageVariableStr + imageDigestVariableStr + FunctionResourceDependencies +
-				acctest.GenerateResourceFromRepresentationMap("oci_functions_function", "test_function", acctest.Required, acctest.Create, functionRepresentation),
+			Config: config + compartmentIdVariableStr + imageVariableStr + imageDigestVariableStr + FunctionsFunctionResourceDependencies +
+				acctest.GenerateResourceFromRepresentationMap("oci_functions_function", "test_function", acctest.Required, acctest.Create, FunctionsFunctionRepresentation),
 			Check: acctest.ComposeAggregateTestCheckFuncWrapper(
 				resource.TestCheckResourceAttrSet(resourceName, "application_id"),
 				resource.TestCheckResourceAttr(resourceName, "display_name", "ExampleFunction"),
@@ -123,12 +128,12 @@ func TestFunctionsFunctionResource_basic(t *testing.T) {
 
 		// delete before next Create
 		{
-			Config: config + compartmentIdVariableStr + FunctionResourceDependencies,
+			Config: config + compartmentIdVariableStr + FunctionsFunctionResourceDependencies,
 		},
 		// verify Create with optionals
 		{
-			Config: config + compartmentIdVariableStr + imageVariableStr + imageDigestVariableStr + FunctionResourceDependencies +
-				acctest.GenerateResourceFromRepresentationMap("oci_functions_function", "test_function", acctest.Optional, acctest.Create, functionRepresentation),
+			Config: config + compartmentIdVariableStr + imageVariableStr + imageDigestVariableStr + FunctionsFunctionResourceDependencies +
+				acctest.GenerateResourceFromRepresentationMap("oci_functions_function", "test_function", acctest.Optional, acctest.Create, FunctionsFunctionRepresentation),
 			Check: acctest.ComposeAggregateTestCheckFuncWrapper(
 				resource.TestCheckResourceAttrSet(resourceName, "application_id"),
 				resource.TestCheckResourceAttr(resourceName, "config.%", "1"),
@@ -138,6 +143,9 @@ func TestFunctionsFunctionResource_basic(t *testing.T) {
 				resource.TestCheckResourceAttr(resourceName, "image", image),
 				resource.TestCheckResourceAttr(resourceName, "image_digest", imageDigest),
 				resource.TestCheckResourceAttr(resourceName, "memory_in_mbs", "128"),
+				resource.TestCheckResourceAttr(resourceName, "provisioned_concurrency_config.#", "1"),
+				resource.TestCheckResourceAttr(resourceName, "provisioned_concurrency_config.0.count", "40"),
+				resource.TestCheckResourceAttr(resourceName, "provisioned_concurrency_config.0.strategy", "CONSTANT"),
 				resource.TestCheckResourceAttr(resourceName, "timeout_in_seconds", "30"),
 				resource.TestCheckResourceAttr(resourceName, "trace_config.#", "1"),
 				resource.TestCheckResourceAttr(resourceName, "trace_config.0.is_enabled", "false"),
@@ -156,8 +164,8 @@ func TestFunctionsFunctionResource_basic(t *testing.T) {
 
 		// verify updates to updatable parameters
 		{
-			Config: config + compartmentIdVariableStr + imageUVariableStr + imageDigestUVariableStr + FunctionResourceDependencies +
-				acctest.GenerateResourceFromRepresentationMap("oci_functions_function", "test_function", acctest.Optional, acctest.Update, functionRepresentation),
+			Config: config + compartmentIdVariableStr + imageUVariableStr + imageDigestUVariableStr + FunctionsFunctionResourceDependencies +
+				acctest.GenerateResourceFromRepresentationMap("oci_functions_function", "test_function", acctest.Optional, acctest.Update, FunctionsFunctionRepresentation),
 			Check: acctest.ComposeAggregateTestCheckFuncWrapper(
 				resource.TestCheckResourceAttrSet(resourceName, "application_id"),
 				resource.TestCheckResourceAttr(resourceName, "config.%", "1"),
@@ -167,6 +175,9 @@ func TestFunctionsFunctionResource_basic(t *testing.T) {
 				resource.TestCheckResourceAttr(resourceName, "image", imageU),
 				resource.TestCheckResourceAttr(resourceName, "image_digest", imageDigestU),
 				resource.TestCheckResourceAttr(resourceName, "memory_in_mbs", "256"),
+				resource.TestCheckResourceAttr(resourceName, "provisioned_concurrency_config.#", "1"),
+				resource.TestCheckResourceAttr(resourceName, "provisioned_concurrency_config.0.count", "0"),
+				resource.TestCheckResourceAttr(resourceName, "provisioned_concurrency_config.0.strategy", "NONE"),
 				resource.TestCheckResourceAttr(resourceName, "timeout_in_seconds", "31"),
 				resource.TestCheckResourceAttr(resourceName, "trace_config.#", "1"),
 				resource.TestCheckResourceAttr(resourceName, "trace_config.0.is_enabled", "true"),
@@ -183,9 +194,9 @@ func TestFunctionsFunctionResource_basic(t *testing.T) {
 		// verify datasource
 		{
 			Config: config +
-				acctest.GenerateDataSourceFromRepresentationMap("oci_functions_functions", "test_functions", acctest.Optional, acctest.Update, functionDataSourceRepresentation) +
-				compartmentIdVariableStr + imageUVariableStr + imageDigestUVariableStr + FunctionResourceDependencies +
-				acctest.GenerateResourceFromRepresentationMap("oci_functions_function", "test_function", acctest.Optional, acctest.Update, functionRepresentation),
+				acctest.GenerateDataSourceFromRepresentationMap("oci_functions_functions", "test_functions", acctest.Optional, acctest.Update, FunctionsFunctionsFunctionDataSourceRepresentation) +
+				compartmentIdVariableStr + imageUVariableStr + imageDigestUVariableStr + FunctionsFunctionResourceDependencies +
+				acctest.GenerateResourceFromRepresentationMap("oci_functions_function", "test_function", acctest.Optional, acctest.Update, FunctionsFunctionRepresentation),
 			Check: acctest.ComposeAggregateTestCheckFuncWrapper(
 				resource.TestCheckResourceAttrSet(datasourceName, "application_id"),
 				resource.TestCheckResourceAttr(datasourceName, "display_name", "ExampleFunction"),
@@ -202,6 +213,9 @@ func TestFunctionsFunctionResource_basic(t *testing.T) {
 				resource.TestCheckResourceAttr(datasourceName, "functions.0.image_digest", imageDigestU),
 				resource.TestCheckResourceAttrSet(datasourceName, "functions.0.invoke_endpoint"),
 				resource.TestCheckResourceAttr(datasourceName, "functions.0.memory_in_mbs", "256"),
+				resource.TestCheckResourceAttr(datasourceName, "functions.0.provisioned_concurrency_config.#", "1"),
+				resource.TestCheckResourceAttr(datasourceName, "functions.0.provisioned_concurrency_config.0.count", "0"),
+				resource.TestCheckResourceAttr(datasourceName, "functions.0.provisioned_concurrency_config.0.strategy", "NONE"),
 				resource.TestCheckResourceAttrSet(datasourceName, "functions.0.state"),
 				resource.TestCheckResourceAttrSet(datasourceName, "functions.0.time_created"),
 				resource.TestCheckResourceAttrSet(datasourceName, "functions.0.time_updated"),
@@ -213,8 +227,8 @@ func TestFunctionsFunctionResource_basic(t *testing.T) {
 		// verify singular datasource
 		{
 			Config: config +
-				acctest.GenerateDataSourceFromRepresentationMap("oci_functions_function", "test_function", acctest.Required, acctest.Create, functionSingularDataSourceRepresentation) +
-				compartmentIdVariableStr + imageUVariableStr + imageDigestUVariableStr + FunctionResourceConfig,
+				acctest.GenerateDataSourceFromRepresentationMap("oci_functions_function", "test_function", acctest.Required, acctest.Create, FunctionsFunctionsFunctionSingularDataSourceRepresentation) +
+				compartmentIdVariableStr + imageUVariableStr + imageDigestUVariableStr + FunctionsFunctionResourceConfig,
 			Check: acctest.ComposeAggregateTestCheckFuncWrapper(
 				resource.TestCheckResourceAttrSet(singularDatasourceName, "function_id"),
 
@@ -227,6 +241,9 @@ func TestFunctionsFunctionResource_basic(t *testing.T) {
 				resource.TestCheckResourceAttr(singularDatasourceName, "image_digest", imageDigestU),
 				resource.TestCheckResourceAttrSet(singularDatasourceName, "invoke_endpoint"),
 				resource.TestCheckResourceAttr(singularDatasourceName, "memory_in_mbs", "256"),
+				resource.TestCheckResourceAttr(singularDatasourceName, "provisioned_concurrency_config.#", "1"),
+				resource.TestCheckResourceAttr(singularDatasourceName, "provisioned_concurrency_config.0.count", "0"),
+				resource.TestCheckResourceAttr(singularDatasourceName, "provisioned_concurrency_config.0.strategy", "NONE"),
 				resource.TestCheckResourceAttrSet(singularDatasourceName, "state"),
 				resource.TestCheckResourceAttrSet(singularDatasourceName, "time_created"),
 				resource.TestCheckResourceAttrSet(singularDatasourceName, "time_updated"),
@@ -237,7 +254,7 @@ func TestFunctionsFunctionResource_basic(t *testing.T) {
 		},
 		// verify resource import
 		{
-			Config:                  config + FunctionRequiredOnlyResource,
+			Config:                  config + FunctionsFunctionRequiredOnlyResource,
 			ImportState:             true,
 			ImportStateVerify:       true,
 			ImportStateVerifyIgnore: []string{},
@@ -301,7 +318,7 @@ func init() {
 
 func sweepFunctionsFunctionResource(compartment string) error {
 	functionsManagementClient := acctest.GetTestClients(&schema.ResourceData{}).FunctionsManagementClient()
-	functionIds, err := getFunctionIds(compartment)
+	functionIds, err := getFunctionsFunctionIds(compartment)
 	if err != nil {
 		return err
 	}
@@ -317,14 +334,14 @@ func sweepFunctionsFunctionResource(compartment string) error {
 				fmt.Printf("Error deleting Function %s %s, It is possible that the resource is already deleted. Please verify manually \n", functionId, error)
 				continue
 			}
-			acctest.WaitTillCondition(acctest.TestAccProvider, &functionId, functionSweepWaitCondition, time.Duration(3*time.Minute),
-				functionSweepResponseFetchOperation, "functions", true)
+			acctest.WaitTillCondition(acctest.TestAccProvider, &functionId, FunctionsFunctionSweepWaitCondition, time.Duration(3*time.Minute),
+				FunctionsFunctionSweepResponseFetchOperation, "functions", true)
 		}
 	}
 	return nil
 }
 
-func getFunctionIds(compartment string) ([]string, error) {
+func getFunctionsFunctionIds(compartment string) ([]string, error) {
 	ids := acctest.GetResourceIdsToSweep(compartment, "FunctionId")
 	if ids != nil {
 		return ids, nil
@@ -335,7 +352,7 @@ func getFunctionIds(compartment string) ([]string, error) {
 
 	listFunctionsRequest := oci_functions.ListFunctionsRequest{}
 
-	applicationIds, error := getApplicationIds(compartment)
+	applicationIds, error := getFunctionsApplicationIds(compartment)
 	if error != nil {
 		return resourceIds, fmt.Errorf("Error getting applicationId required for Function resource requests \n")
 	}
@@ -358,7 +375,7 @@ func getFunctionIds(compartment string) ([]string, error) {
 	return resourceIds, nil
 }
 
-func functionSweepWaitCondition(response common.OCIOperationResponse) bool {
+func FunctionsFunctionSweepWaitCondition(response common.OCIOperationResponse) bool {
 	// Only stop if the resource is available beyond 3 mins. As there could be an issue for the sweeper to delete the resource and manual intervention required.
 	if functionResponse, ok := response.Response.(oci_functions.GetFunctionResponse); ok {
 		return functionResponse.LifecycleState != oci_functions.FunctionLifecycleStateDeleted
@@ -366,7 +383,7 @@ func functionSweepWaitCondition(response common.OCIOperationResponse) bool {
 	return false
 }
 
-func functionSweepResponseFetchOperation(client *tf_client.OracleClients, resourceId *string, retryPolicy *common.RetryPolicy) error {
+func FunctionsFunctionSweepResponseFetchOperation(client *tf_client.OracleClients, resourceId *string, retryPolicy *common.RetryPolicy) error {
 	_, err := client.FunctionsManagementClient().GetFunction(context.Background(), oci_functions.GetFunctionRequest{
 		FunctionId: resourceId,
 		RequestMetadata: common.RequestMetadata{

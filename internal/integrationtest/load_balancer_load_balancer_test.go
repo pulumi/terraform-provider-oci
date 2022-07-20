@@ -16,12 +16,12 @@ import (
 	"github.com/oracle/oci-go-sdk/v65/common"
 	oci_load_balancer "github.com/oracle/oci-go-sdk/v65/loadbalancer"
 
-	"github.com/terraform-providers/terraform-provider-oci/httpreplay"
-	"github.com/terraform-providers/terraform-provider-oci/internal/acctest"
-	tf_client "github.com/terraform-providers/terraform-provider-oci/internal/client"
-	"github.com/terraform-providers/terraform-provider-oci/internal/resourcediscovery"
-	"github.com/terraform-providers/terraform-provider-oci/internal/tfresource"
-	"github.com/terraform-providers/terraform-provider-oci/internal/utils"
+	"terraform-provider-oci/httpreplay"
+	"terraform-provider-oci/internal/acctest"
+	tf_client "terraform-provider-oci/internal/client"
+	"terraform-provider-oci/internal/resourcediscovery"
+	"terraform-provider-oci/internal/tfresource"
+	"terraform-provider-oci/internal/utils"
 )
 
 var (
@@ -71,7 +71,7 @@ var (
 		"id": acctest.Representation{RepType: acctest.Optional, Create: `${oci_core_public_ip.test_public_ip.id}`},
 	}
 
-	LoadBalancerSubnetDependencies = acctest.GenerateResourceFromRepresentationMap("oci_core_vcn", "test_lb_vcn", acctest.Required, acctest.Create, acctest.RepresentationCopyWithNewProperties(vcnRepresentation, map[string]interface{}{
+	LoadBalancerSubnetDependencies = acctest.GenerateResourceFromRepresentationMap("oci_core_vcn", "test_lb_vcn", acctest.Required, acctest.Create, acctest.RepresentationCopyWithNewProperties(CoreVcnRepresentation, map[string]interface{}{
 		"dns_label": acctest.Representation{RepType: acctest.Required, Create: `dnslabel`},
 	})) +
 		`
@@ -123,11 +123,11 @@ var (
 	}
 `
 
-	LoadBalancerReservedIpDependencies = acctest.GenerateResourceFromRepresentationMap("oci_core_public_ip", "test_public_ip", acctest.Required, acctest.Create, publicIpRepresentation)
+	LoadBalancerReservedIpDependencies = acctest.GenerateResourceFromRepresentationMap("oci_core_public_ip", "test_public_ip", acctest.Required, acctest.Create, CorePublicIpRepresentation)
 
 	LoadBalancerResourceDependencies = LoadBalancerSubnetDependencies + LoadBalancerReservedIpDependencies +
 		acctest.GenerateResourceFromRepresentationMap("oci_core_network_security_group",
-			"test_network_security_group1", acctest.Required, acctest.Create, acctest.RepresentationCopyWithNewProperties(networkSecurityGroupRepresentation, map[string]interface{}{
+			"test_network_security_group1", acctest.Required, acctest.Create, acctest.RepresentationCopyWithNewProperties(CoreNetworkSecurityGroupRepresentation, map[string]interface{}{
 				"vcn_id": acctest.Representation{RepType: acctest.Required, Create: `${oci_core_vcn.test_lb_vcn.id}`},
 			})) +
 		DefinedTagsDependencies

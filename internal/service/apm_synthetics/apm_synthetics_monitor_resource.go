@@ -14,8 +14,8 @@ import (
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/validation"
 
-	"github.com/terraform-providers/terraform-provider-oci/internal/client"
-	"github.com/terraform-providers/terraform-provider-oci/internal/tfresource"
+	"terraform-provider-oci/internal/client"
+	"terraform-provider-oci/internal/tfresource"
 
 	oci_apm_synthetics "github.com/oracle/oci-go-sdk/v65/apmsynthetics"
 )
@@ -656,7 +656,7 @@ func (s *ApmSyntheticsMonitorResourceCrud) Update() error {
 		request.MonitorId = &monitorId
 		request.ApmDomainId = &apmDomainId
 	} else {
-		log.Printf("[WARN] Get() unable to parse current ID: %s", s.D.Id())
+		log.Printf("[WARN] Update() unable to parse current ID: %s", s.D.Id())
 	}
 
 	if repeatIntervalInSeconds, ok := s.D.GetOkExists("repeat_interval_in_seconds"); ok {
@@ -671,7 +671,7 @@ func (s *ApmSyntheticsMonitorResourceCrud) Update() error {
 			request.ScriptId = &scriptId
 			request.ApmDomainId = &apmDomainId
 		} else {
-			log.Printf("[WARN] Get() unable to parse current ID: %s", s.D.Id())
+			log.Printf("[WARN] Update() unable to parse current ID: %s", s.D.Id())
 		}
 	}
 
@@ -741,7 +741,7 @@ func (s *ApmSyntheticsMonitorResourceCrud) Delete() error {
 			request.MonitorId = &monitorId
 			request.ApmDomainId = &apmDomainId
 		} else {
-			log.Printf("[WARN] Get() unable to parse current ID: %s", s.D.Id())
+			log.Printf("[WARN] Delete() unable to parse current ID: %s", s.D.Id())
 		}
 	}
 

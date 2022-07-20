@@ -9,22 +9,22 @@ import (
 
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/resource"
 
-	"github.com/terraform-providers/terraform-provider-oci/httpreplay"
-	"github.com/terraform-providers/terraform-provider-oci/internal/acctest"
-	"github.com/terraform-providers/terraform-provider-oci/internal/utils"
+	"terraform-provider-oci/httpreplay"
+	"terraform-provider-oci/internal/acctest"
+	"terraform-provider-oci/internal/utils"
 )
 
 var (
-	imageShapeSingularDataSourceRepresentation = map[string]interface{}{
+	CoreCoreImageShapeSingularDataSourceRepresentation = map[string]interface{}{
 		"image_id":   acctest.Representation{RepType: acctest.Required, Create: `${var.FlexInstanceImageOCID[var.region]}`},
 		"shape_name": acctest.Representation{RepType: acctest.Required, Create: `VM.Standard.E3.Flex`},
 	}
 
-	imageShapeDataSourceRepresentation = map[string]interface{}{
+	CoreCoreImageShapeDataSourceRepresentation = map[string]interface{}{
 		"image_id": acctest.Representation{RepType: acctest.Required, Create: `${var.FlexInstanceImageOCID[var.region]}`},
 	}
 
-	ImageShapeResourceConfig = utils.FlexVmImageIdsVariable
+	CoreImageShapeResourceConfig = utils.FlexVmImageIdsVariable
 )
 
 // issue-routing-tag: core/computeImaging
@@ -46,8 +46,8 @@ func TestCoreImageShapeResource_basic(t *testing.T) {
 		// verify datasource
 		{
 			Config: config +
-				acctest.GenerateDataSourceFromRepresentationMap("oci_core_image_shapes", "test_image_shapes", acctest.Required, acctest.Create, imageShapeDataSourceRepresentation) +
-				compartmentIdVariableStr + ImageShapeResourceConfig,
+				acctest.GenerateDataSourceFromRepresentationMap("oci_core_image_shapes", "test_image_shapes", acctest.Required, acctest.Create, CoreCoreImageShapeDataSourceRepresentation) +
+				compartmentIdVariableStr + CoreImageShapeResourceConfig,
 			Check: acctest.ComposeAggregateTestCheckFuncWrapper(
 				resource.TestCheckResourceAttrSet(datasourceName, "image_id"),
 
@@ -59,8 +59,8 @@ func TestCoreImageShapeResource_basic(t *testing.T) {
 		// verify singular datasource
 		{
 			Config: config +
-				acctest.GenerateDataSourceFromRepresentationMap("oci_core_image_shape", "test_image_shape", acctest.Required, acctest.Create, imageShapeSingularDataSourceRepresentation) +
-				compartmentIdVariableStr + ImageShapeResourceConfig,
+				acctest.GenerateDataSourceFromRepresentationMap("oci_core_image_shape", "test_image_shape", acctest.Required, acctest.Create, CoreCoreImageShapeSingularDataSourceRepresentation) +
+				compartmentIdVariableStr + CoreImageShapeResourceConfig,
 			Check: acctest.ComposeAggregateTestCheckFuncWrapper(
 				resource.TestCheckResourceAttrSet(singularDatasourceName, "image_id"),
 				resource.TestCheckResourceAttrSet(singularDatasourceName, "shape_name"),

@@ -9,8 +9,8 @@ import (
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
 	oci_budget "github.com/oracle/oci-go-sdk/v65/budget"
 
-	"github.com/terraform-providers/terraform-provider-oci/internal/client"
-	"github.com/terraform-providers/terraform-provider-oci/internal/tfresource"
+	"terraform-provider-oci/internal/client"
+	"terraform-provider-oci/internal/tfresource"
 )
 
 func BudgetBudgetDataSource() *schema.Resource {
@@ -103,6 +103,8 @@ func (s *BudgetBudgetDataSourceCrud) SetData() error {
 	}
 
 	s.D.Set("freeform_tags", s.Res.FreeformTags)
+
+	s.D.Set("processing_period_type", s.Res.ProcessingPeriodType)
 
 	s.D.Set("reset_period", s.Res.ResetPeriod)
 

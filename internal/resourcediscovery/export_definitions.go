@@ -4,16 +4,24 @@
 package resourcediscovery
 
 import (
+	oci_adm "github.com/oracle/oci-go-sdk/v65/adm"
 	oci_ai_anomaly_detection "github.com/oracle/oci-go-sdk/v65/aianomalydetection"
 	oci_ai_vision "github.com/oracle/oci-go-sdk/v65/aivision"
 	oci_analytics "github.com/oracle/oci-go-sdk/v65/analytics"
 	oci_apigateway "github.com/oracle/oci-go-sdk/v65/apigateway"
 	oci_apm "github.com/oracle/oci-go-sdk/v65/apmcontrolplane"
 	oci_artifacts "github.com/oracle/oci-go-sdk/v65/artifacts"
+	oci_bastion "github.com/oracle/oci-go-sdk/v65/bastion"
 	oci_bds "github.com/oracle/oci-go-sdk/v65/bds"
+	oci_blockchain "github.com/oracle/oci-go-sdk/v65/blockchain"
+	oci_budget "github.com/oracle/oci-go-sdk/v65/budget"
 	oci_certificates_management "github.com/oracle/oci-go-sdk/v65/certificatesmanagement"
+	oci_cloud_guard "github.com/oracle/oci-go-sdk/v65/cloudguard"
 	oci_containerengine "github.com/oracle/oci-go-sdk/v65/containerengine"
+	oci_core "github.com/oracle/oci-go-sdk/v65/core"
+	oci_database "github.com/oracle/oci-go-sdk/v65/database"
 	oci_database_migration "github.com/oracle/oci-go-sdk/v65/databasemigration"
+	oci_database_tools "github.com/oracle/oci-go-sdk/v65/databasetools"
 	oci_datacatalog "github.com/oracle/oci-go-sdk/v65/datacatalog"
 	oci_data_connectivity "github.com/oracle/oci-go-sdk/v65/dataconnectivity"
 	oci_dataflow "github.com/oracle/oci-go-sdk/v65/dataflow"
@@ -23,9 +31,19 @@ import (
 	oci_datascience "github.com/oracle/oci-go-sdk/v65/datascience"
 	oci_devops "github.com/oracle/oci-go-sdk/v65/devops"
 	oci_dns "github.com/oracle/oci-go-sdk/v65/dns"
+	oci_email "github.com/oracle/oci-go-sdk/v65/email"
+	oci_em_warehouse "github.com/oracle/oci-go-sdk/v65/emwarehouse"
+	oci_events "github.com/oracle/oci-go-sdk/v65/events"
 	oci_file_storage "github.com/oracle/oci-go-sdk/v65/filestorage"
+	oci_functions "github.com/oracle/oci-go-sdk/v65/functions"
 	oci_golden_gate "github.com/oracle/oci-go-sdk/v65/goldengate"
+	oci_identity "github.com/oracle/oci-go-sdk/v65/identity"
 	oci_integration "github.com/oracle/oci-go-sdk/v65/integration"
+	oci_jms "github.com/oracle/oci-go-sdk/v65/jms"
+	oci_kms "github.com/oracle/oci-go-sdk/v65/keymanagement"
+	oci_license_manager "github.com/oracle/oci-go-sdk/v65/licensemanager"
+	oci_limits "github.com/oracle/oci-go-sdk/v65/limits"
+	oci_load_balancer "github.com/oracle/oci-go-sdk/v65/loadbalancer"
 	oci_log_analytics "github.com/oracle/oci-go-sdk/v65/loganalytics"
 	oci_logging "github.com/oracle/oci-go-sdk/v65/logging"
 	oci_management_agent "github.com/oracle/oci-go-sdk/v65/managementagent"
@@ -35,77 +53,52 @@ import (
 	oci_network_load_balancer "github.com/oracle/oci-go-sdk/v65/networkloadbalancer"
 	oci_nosql "github.com/oracle/oci-go-sdk/v65/nosql"
 	oci_oce "github.com/oracle/oci-go-sdk/v65/oce"
-	oci_ons "github.com/oracle/oci-go-sdk/v65/ons"
-	oci_opsi "github.com/oracle/oci-go-sdk/v65/opsi"
-	oci_sch "github.com/oracle/oci-go-sdk/v65/sch"
-	oci_stack_monitoring "github.com/oracle/oci-go-sdk/v65/stackmonitoring"
-	oci_streaming "github.com/oracle/oci-go-sdk/v65/streaming"
-	oci_vault "github.com/oracle/oci-go-sdk/v65/vault"
-	oci_visual_builder "github.com/oracle/oci-go-sdk/v65/visualbuilder"
-	oci_vulnerability_scanning "github.com/oracle/oci-go-sdk/v65/vulnerabilityscanning"
-	oci_waas "github.com/oracle/oci-go-sdk/v65/waas"
-	oci_waf "github.com/oracle/oci-go-sdk/v65/waf"
-
-	//oci_artifacts "github.com/oracle/oci-go-sdk/v65/artifacts"
-	//oci_bastion "github.com/oracle/oci-go-sdk/v65/bastion"
-	//oci_bds "github.com/oracle/oci-go-sdk/v65/bds"
-	oci_blockchain "github.com/oracle/oci-go-sdk/v65/blockchain"
-
-	//oci_dataflow "github.com/oracle/oci-go-sdk/v65/dataflow"
-	//oci_dataintegration "github.com/oracle/oci-go-sdk/v65/dataintegration"
-	//oci_data_labeling_service "github.com/oracle/oci-go-sdk/v65/datalabelingservice"
-	//oci_data_safe "github.com/oracle/oci-go-sdk/v65/datasafe"
-	//oci_datascience "github.com/oracle/oci-go-sdk/v65/datascience"
-	//oci_devops "github.com/oracle/oci-go-sdk/v65/devops"
-	//oci_dns "github.com/oracle/oci-go-sdk/v65/dns"
-	//oci_email "github.com/oracle/oci-go-sdk/v65/email"
-	//oci_events "github.com/oracle/oci-go-sdk/v65/events"
-	//oci_file_storage "github.com/oracle/oci-go-sdk/v65/filestorage"
-	//oci_functions "github.com/oracle/oci-go-sdk/v65/functions"
-	//oci_golden_gate "github.com/oracle/oci-go-sdk/v65/goldengate"
-	//oci_core "github.com/oracle/oci-go-sdk/v65/core"
-	oci_bastion "github.com/oracle/oci-go-sdk/v65/bastion"
-	oci_budget "github.com/oracle/oci-go-sdk/v65/budget"
-	oci_cloud_guard "github.com/oracle/oci-go-sdk/v65/cloudguard"
-	oci_core "github.com/oracle/oci-go-sdk/v65/core"
-	oci_database "github.com/oracle/oci-go-sdk/v65/database"
-	oci_database_tools "github.com/oracle/oci-go-sdk/v65/databasetools"
-	oci_email "github.com/oracle/oci-go-sdk/v65/email"
-	oci_events "github.com/oracle/oci-go-sdk/v65/events"
-	oci_functions "github.com/oracle/oci-go-sdk/v65/functions"
-	oci_identity "github.com/oracle/oci-go-sdk/v65/identity"
-	oci_kms "github.com/oracle/oci-go-sdk/v65/keymanagement"
-	oci_load_balancer "github.com/oracle/oci-go-sdk/v65/loadbalancer"
-	oci_osmanagement "github.com/oracle/oci-go-sdk/v65/osmanagement"
-
-	//oci_load_balancer "github.com/oracle/oci-go-sdk/v65/loadbalancer"
-	//oci_integration "github.com/oracle/oci-go-sdk/v65/integration"
-	//oci_jms "github.com/oracle/oci-go-sdk/v65/jms"
-	oci_jms "github.com/oracle/oci-go-sdk/v65/jms"
-	//oci_kms "github.com/oracle/oci-go-sdk/v65/keymanagement"
-	//oci_limits "github.com/oracle/oci-go-sdk/v65/limits"
-	oci_limits "github.com/oracle/oci-go-sdk/v65/limits"
-
-	//oci_monitoring "github.com/oracle/oci-go-sdk/v65/monitoring"
-	//oci_mysql "github.com/oracle/oci-go-sdk/v65/mysql"
-	//oci_network_load_balancer "github.com/oracle/oci-go-sdk/v65/networkloadbalancer"
-	//oci_nosql "github.com/oracle/oci-go-sdk/v65/nosql"
-	//oci_oce "github.com/oracle/oci-go-sdk/v65/oce"
 	oci_ocvp "github.com/oracle/oci-go-sdk/v65/ocvp"
 	oci_oda "github.com/oracle/oci-go-sdk/v65/oda"
+	oci_ons "github.com/oracle/oci-go-sdk/v65/ons"
 	oci_operator_access_control "github.com/oracle/oci-go-sdk/v65/operatoraccesscontrol"
-
-	//oci_opsi "github.com/oracle/oci-go-sdk/v65/opsi"
+	oci_opsi "github.com/oracle/oci-go-sdk/v65/opsi"
 	oci_optimizer "github.com/oracle/oci-go-sdk/v65/optimizer"
-	//oci_osmanagement "github.com/oracle/oci-go-sdk/v65/osmanagement"
-	//oci_sch "github.com/oracle/oci-go-sdk/v65/sch"
-	//oci_streaming "github.com/oracle/oci-go-sdk/v65/streaming"
-	//oci_vulnerability_scanning "github.com/oracle/oci-go-sdk/v65/vulnerabilityscanning"
-	//oci_waas "github.com/oracle/oci-go-sdk/v65/waas"
-	//oci_waf "github.com/oracle/oci-go-sdk/v65/waf"
+	oci_osmanagement "github.com/oracle/oci-go-sdk/v65/osmanagement"
+	oci_resourcemanager "github.com/oracle/oci-go-sdk/v65/resourcemanager"
+	oci_sch "github.com/oracle/oci-go-sdk/v65/sch"
+	oci_service_mesh "github.com/oracle/oci-go-sdk/v65/servicemesh"
+	oci_stack_monitoring "github.com/oracle/oci-go-sdk/v65/stackmonitoring"
+	oci_streaming "github.com/oracle/oci-go-sdk/v65/streaming"
+	oci_metering_computation "github.com/oracle/oci-go-sdk/v65/usageapi"
+	oci_vault "github.com/oracle/oci-go-sdk/v65/vault"
+	oci_visual_builder "github.com/oracle/oci-go-sdk/v65/visualbuilder"
+	oci_vn_monitoring "github.com/oracle/oci-go-sdk/v65/vnmonitoring"
+	oci_vulnerability_scanning "github.com/oracle/oci-go-sdk/v65/vulnerabilityscanning"
+	oci_waa "github.com/oracle/oci-go-sdk/v65/waa"
+	oci_waas "github.com/oracle/oci-go-sdk/v65/waas"
+	oci_waf "github.com/oracle/oci-go-sdk/v65/waf"
 )
 
 // Hints for discovering and exporting this resource to configuration and state files
+var exportAdmVulnerabilityAuditHints = &TerraformResourceHints{
+	resourceClass:          "oci_adm_vulnerability_audit",
+	datasourceClass:        "oci_adm_vulnerability_audits",
+	datasourceItemsAttr:    "vulnerability_audit_collection",
+	isDatasourceCollection: true,
+	resourceAbbreviation:   "vulnerability_audit",
+	requireResourceRefresh: true,
+	discoverableLifecycleStates: []string{
+		string(oci_adm.VulnerabilityAuditLifecycleStateActive),
+	},
+}
+
+var exportAdmKnowledgeBaseHints = &TerraformResourceHints{
+	resourceClass:          "oci_adm_knowledge_base",
+	datasourceClass:        "oci_adm_knowledge_bases",
+	datasourceItemsAttr:    "knowledge_base_collection",
+	isDatasourceCollection: true,
+	resourceAbbreviation:   "knowledge_base",
+	requireResourceRefresh: true,
+	discoverableLifecycleStates: []string{
+		string(oci_adm.KnowledgeBaseLifecycleStateActive),
+	},
+}
 
 var exportAiAnomalyDetectionDataAssetHints = &TerraformResourceHints{
 	resourceClass:          "oci_ai_anomaly_detection_data_asset",
@@ -254,6 +247,30 @@ var exportApigatewayCertificateHints = &TerraformResourceHints{
 	},
 }
 
+var exportApigatewaySubscriberHints = &TerraformResourceHints{
+	resourceClass:          "oci_apigateway_subscriber",
+	datasourceClass:        "oci_apigateway_subscribers",
+	datasourceItemsAttr:    "subscriber_collection",
+	isDatasourceCollection: true,
+	resourceAbbreviation:   "subscriber",
+	requireResourceRefresh: true,
+	discoverableLifecycleStates: []string{
+		string(oci_apigateway.SubscriberLifecycleStateActive),
+	},
+}
+
+var exportApigatewayUsagePlanHints = &TerraformResourceHints{
+	resourceClass:          "oci_apigateway_usage_plan",
+	datasourceClass:        "oci_apigateway_usage_plans",
+	datasourceItemsAttr:    "usage_plan_collection",
+	isDatasourceCollection: true,
+	resourceAbbreviation:   "usage_plan",
+	requireResourceRefresh: true,
+	discoverableLifecycleStates: []string{
+		string(oci_apigateway.UsagePlanLifecycleStateActive),
+	},
+}
+
 var exportApmApmDomainHints = &TerraformResourceHints{
 	resourceClass:        "oci_apm_apm_domain",
 	datasourceClass:      "oci_apm_apm_domains",
@@ -286,6 +303,15 @@ var exportApmSyntheticsMonitorHints = &TerraformResourceHints{
 	datasourceClass:        "oci_apm_synthetics_monitors",
 	datasourceItemsAttr:    "monitor_collection",
 	resourceAbbreviation:   "monitor",
+	requireResourceRefresh: true,
+}
+
+var exportApmSyntheticsDedicatedVantagePointHints = &TerraformResourceHints{
+	resourceClass:          "oci_apm_synthetics_dedicated_vantage_point",
+	datasourceClass:        "oci_apm_synthetics_dedicated_vantage_points",
+	datasourceItemsAttr:    "dedicated_vantage_point_collection",
+	isDatasourceCollection: true,
+	resourceAbbreviation:   "dedicated_vantage_point",
 	requireResourceRefresh: true,
 }
 
@@ -541,6 +567,30 @@ var exportCloudGuardDetectorRecipeHints = &TerraformResourceHints{
 	},
 }
 
+var exportCloudGuardSecurityRecipeHints = &TerraformResourceHints{
+	resourceClass:          "oci_cloud_guard_security_recipe",
+	datasourceClass:        "oci_cloud_guard_security_recipes",
+	datasourceItemsAttr:    "security_recipe_collection",
+	isDatasourceCollection: true,
+	resourceAbbreviation:   "security_recipe",
+	requireResourceRefresh: true,
+	discoverableLifecycleStates: []string{
+		string(oci_cloud_guard.LifecycleStateActive),
+	},
+}
+
+var exportCloudGuardSecurityZoneHints = &TerraformResourceHints{
+	resourceClass:          "oci_cloud_guard_security_zone",
+	datasourceClass:        "oci_cloud_guard_security_zones",
+	datasourceItemsAttr:    "security_zone_collection",
+	isDatasourceCollection: true,
+	resourceAbbreviation:   "security_zone",
+	requireResourceRefresh: true,
+	discoverableLifecycleStates: []string{
+		string(oci_cloud_guard.LifecycleStateActive),
+	},
+}
+
 var exportContainerengineClusterHints = &TerraformResourceHints{
 	resourceClass:          "oci_containerengine_cluster",
 	datasourceClass:        "oci_containerengine_clusters",
@@ -558,6 +608,10 @@ var exportContainerengineNodePoolHints = &TerraformResourceHints{
 	datasourceItemsAttr:    "node_pools",
 	resourceAbbreviation:   "node_pool",
 	requireResourceRefresh: true,
+	discoverableLifecycleStates: []string{
+		string(oci_containerengine.NodePoolLifecycleStateActive),
+		string(oci_containerengine.NodePoolLifecycleStateNeedsAttention),
+	},
 }
 
 var exportCoreBootVolumeBackupHints = &TerraformResourceHints{
@@ -1011,6 +1065,26 @@ var exportCoreDrgRouteDistributionHints = &TerraformResourceHints{
 var exportCoreDrgRouteTableRouteRuleHints = &TerraformResourceHints{
 	resourceClass:        "oci_core_drg_route_table_route_rule",
 	resourceAbbreviation: "drg_route_table_route_rule",
+}
+
+var exportCoreCaptureFilterHints = &TerraformResourceHints{
+	resourceClass:        "oci_core_capture_filter",
+	datasourceClass:      "oci_core_capture_filters",
+	datasourceItemsAttr:  "capture_filters",
+	resourceAbbreviation: "capture_filter",
+	discoverableLifecycleStates: []string{
+		string(oci_core.CaptureFilterLifecycleStateAvailable),
+	},
+}
+
+var exportCoreVtapHints = &TerraformResourceHints{
+	resourceClass:        "oci_core_vtap",
+	datasourceClass:      "oci_core_vtaps",
+	datasourceItemsAttr:  "vtaps",
+	resourceAbbreviation: "vtap",
+	discoverableLifecycleStates: []string{
+		string(oci_core.VtapLifecycleStateAvailable),
+	},
 }
 
 var exportDataConnectivityRegistryHints = &TerraformResourceHints{
@@ -1958,6 +2032,18 @@ var exportDnsRrsetHints = &TerraformResourceHints{
 	resourceAbbreviation: "rrset",
 }
 
+var exportEmWarehouseEmWarehouseHints = &TerraformResourceHints{
+	resourceClass:          "oci_em_warehouse_em_warehouse",
+	datasourceClass:        "oci_em_warehouse_em_warehouses",
+	datasourceItemsAttr:    "em_warehouse_collection",
+	isDatasourceCollection: true,
+	resourceAbbreviation:   "em_warehouse",
+	requireResourceRefresh: true,
+	discoverableLifecycleStates: []string{
+		string(oci_em_warehouse.EmWarehouseLifecycleStateActive),
+	},
+}
+
 var exportEmailSuppressionHints = &TerraformResourceHints{
 	resourceClass:        "oci_email_suppression",
 	datasourceClass:      "oci_email_suppressions",
@@ -2410,6 +2496,36 @@ var exportKmsVerifyHints = &TerraformResourceHints{
 	resourceAbbreviation: "verify",
 }
 
+var exportLicenseManagerConfigurationHints = &TerraformResourceHints{
+	resourceClass:        "oci_license_manager_configuration",
+	datasourceClass:      "oci_license_manager_configuration",
+	resourceAbbreviation: "configuration",
+}
+
+var exportLicenseManagerProductLicenseHints = &TerraformResourceHints{
+	resourceClass:          "oci_license_manager_product_license",
+	datasourceClass:        "oci_license_manager_product_licenses",
+	datasourceItemsAttr:    "product_license_collection",
+	isDatasourceCollection: true,
+	resourceAbbreviation:   "product_license",
+	requireResourceRefresh: true,
+	discoverableLifecycleStates: []string{
+		string(oci_license_manager.LifeCycleStateActive),
+	},
+}
+
+var exportLicenseManagerLicenseRecordHints = &TerraformResourceHints{
+	resourceClass:          "oci_license_manager_license_record",
+	datasourceClass:        "oci_license_manager_license_records",
+	datasourceItemsAttr:    "license_record_collection",
+	isDatasourceCollection: true,
+	resourceAbbreviation:   "license_record",
+	requireResourceRefresh: true,
+	discoverableLifecycleStates: []string{
+		string(oci_license_manager.LifeCycleStateActive),
+	},
+}
+
 var exportKmsCreateReplicaHints = &TerraformResourceHints{
 	resourceClass:        "oci_kms_vault_replication",
 	resourceAbbreviation: "vault_replication",
@@ -2634,6 +2750,18 @@ var exportMeteringComputationCustomTableHints = &TerraformResourceHints{
 	isDatasourceCollection: true,
 	resourceAbbreviation:   "custom_table",
 	requireResourceRefresh: true,
+}
+
+var exportMeteringComputationScheduleHints = &TerraformResourceHints{
+	resourceClass:          "oci_metering_computation_schedule",
+	datasourceClass:        "oci_metering_computation_schedules",
+	datasourceItemsAttr:    "schedule_collection",
+	isDatasourceCollection: true,
+	resourceAbbreviation:   "schedule",
+	requireResourceRefresh: true,
+	discoverableLifecycleStates: []string{
+		string(oci_metering_computation.ScheduleLifecycleStateActive),
+	},
 }
 
 var exportMonitoringAlarmHints = &TerraformResourceHints{
@@ -3039,6 +3167,18 @@ var exportOspGatewaySubscriptionHints = &TerraformResourceHints{
 	resourceAbbreviation:   "subscription",
 }
 
+var exportResourcemanagerPrivateEndpointHints = &TerraformResourceHints{
+	resourceClass:          "oci_resourcemanager_private_endpoint",
+	datasourceClass:        "oci_resourcemanager_private_endpoints",
+	datasourceItemsAttr:    "private_endpoint_collection",
+	isDatasourceCollection: true,
+	resourceAbbreviation:   "private_endpoint",
+	requireResourceRefresh: true,
+	discoverableLifecycleStates: []string{
+		string(oci_resourcemanager.PrivateEndpointLifecycleStateActive),
+	},
+}
+
 var exportSchServiceConnectorHints = &TerraformResourceHints{
 	resourceClass:          "oci_sch_service_connector",
 	datasourceClass:        "oci_sch_service_connectors",
@@ -3048,6 +3188,89 @@ var exportSchServiceConnectorHints = &TerraformResourceHints{
 	requireResourceRefresh: true,
 	discoverableLifecycleStates: []string{
 		string(oci_sch.LifecycleStateActive),
+	},
+}
+var exportServiceMeshVirtualServiceHints = &TerraformResourceHints{
+	resourceClass:          "oci_service_mesh_virtual_service",
+	datasourceClass:        "oci_service_mesh_virtual_services",
+	datasourceItemsAttr:    "virtual_service_collection",
+	isDatasourceCollection: true,
+	resourceAbbreviation:   "virtual_service",
+	requireResourceRefresh: true,
+	discoverableLifecycleStates: []string{
+		string(oci_service_mesh.VirtualServiceLifecycleStateActive),
+	},
+}
+
+var exportServiceMeshAccessPolicyHints = &TerraformResourceHints{
+	resourceClass:          "oci_service_mesh_access_policy",
+	datasourceClass:        "oci_service_mesh_access_policies",
+	datasourceItemsAttr:    "access_policy_collection",
+	isDatasourceCollection: true,
+	resourceAbbreviation:   "access_policy",
+	requireResourceRefresh: true,
+	discoverableLifecycleStates: []string{
+		string(oci_service_mesh.AccessPolicyLifecycleStateActive),
+	},
+}
+
+var exportServiceMeshMeshHints = &TerraformResourceHints{
+	resourceClass:          "oci_service_mesh_mesh",
+	datasourceClass:        "oci_service_mesh_meshes",
+	datasourceItemsAttr:    "mesh_collection",
+	isDatasourceCollection: true,
+	resourceAbbreviation:   "mesh",
+	requireResourceRefresh: true,
+	discoverableLifecycleStates: []string{
+		string(oci_service_mesh.MeshLifecycleStateActive),
+	},
+}
+
+var exportServiceMeshIngressGatewayRouteTableHints = &TerraformResourceHints{
+	resourceClass:          "oci_service_mesh_ingress_gateway_route_table",
+	datasourceClass:        "oci_service_mesh_ingress_gateway_route_tables",
+	datasourceItemsAttr:    "ingress_gateway_route_table_collection",
+	isDatasourceCollection: true,
+	resourceAbbreviation:   "ingress_gateway_route_table",
+	requireResourceRefresh: true,
+	discoverableLifecycleStates: []string{
+		string(oci_service_mesh.IngressGatewayRouteTableLifecycleStateActive),
+	},
+}
+
+var exportServiceMeshVirtualServiceRouteTableHints = &TerraformResourceHints{
+	resourceClass:          "oci_service_mesh_virtual_service_route_table",
+	datasourceClass:        "oci_service_mesh_virtual_service_route_tables",
+	datasourceItemsAttr:    "virtual_service_route_table_collection",
+	isDatasourceCollection: true,
+	resourceAbbreviation:   "virtual_service_route_table",
+	requireResourceRefresh: true,
+	discoverableLifecycleStates: []string{
+		string(oci_service_mesh.VirtualServiceRouteTableLifecycleStateActive),
+	},
+}
+
+var exportServiceMeshVirtualDeploymentHints = &TerraformResourceHints{
+	resourceClass:          "oci_service_mesh_virtual_deployment",
+	datasourceClass:        "oci_service_mesh_virtual_deployments",
+	datasourceItemsAttr:    "virtual_deployment_collection",
+	isDatasourceCollection: true,
+	resourceAbbreviation:   "virtual_deployment",
+	requireResourceRefresh: true,
+	discoverableLifecycleStates: []string{
+		string(oci_service_mesh.VirtualDeploymentLifecycleStateActive),
+	},
+}
+
+var exportServiceMeshIngressGatewayHints = &TerraformResourceHints{
+	resourceClass:          "oci_service_mesh_ingress_gateway",
+	datasourceClass:        "oci_service_mesh_ingress_gateways",
+	datasourceItemsAttr:    "ingress_gateway_collection",
+	isDatasourceCollection: true,
+	resourceAbbreviation:   "ingress_gateway",
+	requireResourceRefresh: true,
+	discoverableLifecycleStates: []string{
+		string(oci_service_mesh.IngressGatewayLifecycleStateActive),
 	},
 }
 
@@ -3144,6 +3367,23 @@ var exportVisualBuilderVbInstanceHints = &TerraformResourceHints{
 	},
 }
 
+var exportVnMonitoringPathAnalyzerTestHints = &TerraformResourceHints{
+	resourceClass:          "oci_vn_monitoring_path_analyzer_test",
+	datasourceClass:        "oci_vn_monitoring_path_analyzer_tests",
+	datasourceItemsAttr:    "path_analyzer_test_collection",
+	isDatasourceCollection: true,
+	resourceAbbreviation:   "path_analyzer_test",
+	requireResourceRefresh: true,
+	discoverableLifecycleStates: []string{
+		string(oci_vn_monitoring.PathAnalyzerTestLifecycleStateActive),
+	},
+}
+
+var exportVnMonitoringPathAnalysiHints = &TerraformResourceHints{
+	resourceClass:        "oci_vn_monitoring_path_analysi",
+	resourceAbbreviation: "path_analysi",
+}
+
 var exportVaultSecretHints = &TerraformResourceHints{
 	resourceClass:          "oci_vault_secret",
 	datasourceClass:        "oci_vault_secrets",
@@ -3200,6 +3440,30 @@ var exportVulnerabilityScanningContainerScanTargetHints = &TerraformResourceHint
 	requireResourceRefresh: true,
 	discoverableLifecycleStates: []string{
 		string(oci_vulnerability_scanning.LifecycleStateActive),
+	},
+}
+
+var exportWaaWebAppAccelerationPolicyHints = &TerraformResourceHints{
+	resourceClass:          "oci_waa_web_app_acceleration_policy",
+	datasourceClass:        "oci_waa_web_app_acceleration_policies",
+	datasourceItemsAttr:    "web_app_acceleration_policy_collection",
+	isDatasourceCollection: true,
+	resourceAbbreviation:   "web_app_acceleration_policy",
+	requireResourceRefresh: true,
+	discoverableLifecycleStates: []string{
+		string(oci_waa.WebAppAccelerationPolicyLifecycleStateActive),
+	},
+}
+
+var exportWaaWebAppAccelerationHints = &TerraformResourceHints{
+	resourceClass:          "oci_waa_web_app_acceleration",
+	datasourceClass:        "oci_waa_web_app_accelerations",
+	datasourceItemsAttr:    "web_app_acceleration_collection",
+	isDatasourceCollection: true,
+	resourceAbbreviation:   "web_app_acceleration",
+	requireResourceRefresh: true,
+	discoverableLifecycleStates: []string{
+		string(oci_waa.WebAppAccelerationLifecycleStateActive),
 	},
 }
 

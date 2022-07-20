@@ -70,6 +70,7 @@ The following attributes are exported:
 			* `vpus_per_gb` - The number of volume performance units (VPUs) that will be applied to this volume per GB, representing the Block Volume service's elastic performance options. See [Block Volume Performance Levels](https://docs.cloud.oracle.com/iaas/Content/Block/Concepts/blockvolumeperformance.htm#perf_levels) for more information.
 
 				Allowed values:
+				* `0`: Represents Lower Cost option.
 				* `10`: Represents Balanced option.
 				* `20`: Represents Higher Performance option.
 				* `30`-`120`: Represents the Ultra High Performance option. 
@@ -208,10 +209,15 @@ The following attributes are exported:
 			If you provide the parameter, the instance is created with the platform configuration that you specify. For any values that you omit, the instance uses the default configuration values for the `shape` that you specify. If you don't provide the parameter, the default values for the `shape` are used.
 
 			Each shape only supports certain configurable values. If the values that you provide are not valid for the specified `shape`, an error is returned. 
+			* `are_virtual_instructions_enabled` - Whether virtualization instructions are available. 
+			* `is_access_control_service_enabled` - Whether the Access Control Service is enabled on the instance. When enabled, the platform can enforce PCIe device isolation, required for VFIO device passthrough. 
+			* `is_input_output_memory_management_unit_enabled` - Whether the input-output memory management unit is enabled. 
 			* `is_measured_boot_enabled` - Whether the Measured Boot feature is enabled on the instance. 
 			* `is_secure_boot_enabled` - Whether Secure Boot is enabled on the instance. 
+			* `is_symmetric_multi_threading_enabled` - Whether symmetric multi-threading is enabled on the instance. 
 			* `is_trusted_platform_module_enabled` - Whether the Trusted Platform Module (TPM) is enabled on the instance. 
 			* `numa_nodes_per_socket` - The number of NUMA nodes per socket (NPS). 
+			* `percentage_of_cores_enabled` - The percentage of cores enabled. 
 			* `type` - The type of platform being configured. 
 		* `preemptible_instance_config` - Configuration options for preemptible instances. 
 			* `preemption_action` - The action to run when the preemptible instance is interrupted for eviction. 
@@ -235,10 +241,17 @@ The following attributes are exported:
 				* `BASELINE_1_2` - baseline usage is 1/2 of an OCPU.
 				* `BASELINE_1_1` - baseline usage is an entire OCPU. This represents a non-burstable instance. 
 			* `memory_in_gbs` - The total amount of memory available to the instance, in gigabytes. 
+			* `nvmes` - The number of NVMe drives to be used for storage. A single drive has 6.8 TB available. 
 			* `ocpus` - The total number of OCPUs available to the instance. 
 		* `source_details` - 
 			* `boot_volume_id` - The OCID of the boot volume used to boot the instance.
 			* `boot_volume_size_in_gbs` - The size of the boot volume in GBs. The minimum value is 50 GB and the maximum value is 32,768 GB (32 TB). 
+			* `boot_volume_vpus_per_gb` - The number of volume performance units (VPUs) that will be applied to this volume per GB, representing the Block Volume service's elastic performance options. See [Block Volume Performance Levels](https://docs.cloud.oracle.com/iaas/Content/Block/Concepts/blockvolumeperformance.htm#perf_levels) for more information.
+
+				Allowed values:
+				* `10`: Represents Balanced option.
+				* `20`: Represents Higher Performance option.
+				* `30`-`120`: Represents the Ultra High Performance option. 
 			* `image_id` - The OCID of the image used to boot the instance.
 			* `source_type` - The source type for the instance. Use `image` when specifying the image OCID. Use `bootVolume` when specifying the boot volume OCID. 
 	* `secondary_vnics` - 

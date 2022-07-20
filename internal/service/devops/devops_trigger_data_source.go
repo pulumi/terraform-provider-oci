@@ -9,8 +9,8 @@ import (
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
 	oci_devops "github.com/oracle/oci-go-sdk/v65/devops"
 
-	"github.com/terraform-providers/terraform-provider-oci/internal/client"
-	"github.com/terraform-providers/terraform-provider-oci/internal/tfresource"
+	"terraform-provider-oci/internal/client"
+	"terraform-provider-oci/internal/tfresource"
 )
 
 func DevopsTriggerDataSource() *schema.Resource {
@@ -121,6 +121,12 @@ func (s *DevopsTriggerDataSourceCrud) SetData() error {
 		}
 	case oci_devops.GitlabTrigger:
 		s.D.Set("trigger_source", "GITLAB")
+
+		if v.TriggerUrl != nil {
+			s.D.Set("trigger_url", v.TriggerUrl)
+		}
+	case oci_devops.BitbucketCloudTrigger:
+		s.D.Set("trigger_source", "BITBUCKET_CLOUD")
 
 		if v.TriggerUrl != nil {
 			s.D.Set("trigger_url", v.TriggerUrl)

@@ -7,8 +7,8 @@ import (
 	"context"
 	"strconv"
 
-	"github.com/terraform-providers/terraform-provider-oci/internal/client"
-	"github.com/terraform-providers/terraform-provider-oci/internal/tfresource"
+	"terraform-provider-oci/internal/client"
+	"terraform-provider-oci/internal/tfresource"
 
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
 	oci_database "github.com/oracle/oci-go-sdk/v65/database"
@@ -140,6 +140,12 @@ func (s *DatabaseCloudVmClustersDataSourceCrud) SetData() error {
 
 		if r.CpuCoreCount != nil {
 			cloudVmCluster["cpu_core_count"] = *r.CpuCoreCount
+		}
+
+		if r.DataCollectionOptions != nil {
+			cloudVmCluster["data_collection_options"] = []interface{}{DataCollectionOptionsToMap(r.DataCollectionOptions)}
+		} else {
+			cloudVmCluster["data_collection_options"] = nil
 		}
 
 		if r.DataStoragePercentage != nil {

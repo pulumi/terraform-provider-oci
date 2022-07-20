@@ -6,8 +6,8 @@ package database
 import (
 	"context"
 
-	"github.com/terraform-providers/terraform-provider-oci/internal/client"
-	"github.com/terraform-providers/terraform-provider-oci/internal/tfresource"
+	"terraform-provider-oci/internal/client"
+	"terraform-provider-oci/internal/tfresource"
 
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
 	oci_database "github.com/oracle/oci-go-sdk/v65/database"
@@ -166,6 +166,12 @@ func (s *DatabaseExternalNonContainerDatabasesDataSourceCrud) SetData() error {
 			externalNonContainerDatabase["operations_insights_config"] = []interface{}{OperationsInsightsConfigToMap(r.OperationsInsightsConfig)}
 		} else {
 			externalNonContainerDatabase["operations_insights_config"] = nil
+		}
+
+		if r.StackMonitoringConfig != nil {
+			externalNonContainerDatabase["stack_monitoring_config"] = []interface{}{StackMonitoringConfigToMap(r.StackMonitoringConfig)}
+		} else {
+			externalNonContainerDatabase["stack_monitoring_config"] = nil
 		}
 
 		externalNonContainerDatabase["state"] = r.LifecycleState

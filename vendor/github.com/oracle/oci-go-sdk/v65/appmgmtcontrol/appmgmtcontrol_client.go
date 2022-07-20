@@ -2,9 +2,9 @@
 // This software is dual-licensed to you under the Universal Permissive License (UPL) 1.0 as shown at https://oss.oracle.com/licenses/upl or Apache License 2.0 as shown at http://www.apache.org/licenses/LICENSE-2.0. You may choose either license.
 // Code generated. DO NOT EDIT.
 
-// AppMgmt Control API
+// Resource Discovery and Monitoring Control API
 //
-// AppMgmt Control API
+// Use the Resource Discovery and Monitoring Control API to get details about monitored instances and perform actions. For more information, see Resource Discovery and Monitoring (https://docs.oracle.com/iaas/os-management/osms/osms-resource-discovery-monitoring.htm).
 //
 
 package appmgmtcontrol
@@ -137,7 +137,7 @@ func (client AppmgmtControlClient) activateMonitoringPlugin(ctx context.Context,
 	defer common.CloseBodyIfValid(httpResponse)
 	response.RawResponse = httpResponse
 	if err != nil {
-		apiReferenceLink := ""
+		apiReferenceLink := "https://docs.oracle.com/iaas/api/#/en/resource-discovery-monitoring-control-api/20210330/MonitoredInstance/ActivateMonitoringPlugin"
 		err = common.PostProcessServiceError(err, "AppmgmtControl", "ActivateMonitoringPlugin", apiReferenceLink)
 		return response, err
 	}
@@ -151,9 +151,10 @@ func (client AppmgmtControlClient) activateMonitoringPlugin(ctx context.Context,
 // See also
 //
 // Click https://docs.cloud.oracle.com/en-us/iaas/tools/go-sdk-examples/latest/appmgmtcontrol/GetMonitoredInstance.go.html to see an example of how to use GetMonitoredInstance API.
+// A default retry strategy applies to this operation GetMonitoredInstance()
 func (client AppmgmtControlClient) GetMonitoredInstance(ctx context.Context, request GetMonitoredInstanceRequest) (response GetMonitoredInstanceResponse, err error) {
 	var ociResponse common.OCIResponse
-	policy := common.NoRetryPolicy()
+	policy := common.DefaultRetryPolicy()
 	if client.RetryPolicy() != nil {
 		policy = *client.RetryPolicy()
 	}
@@ -194,7 +195,7 @@ func (client AppmgmtControlClient) getMonitoredInstance(ctx context.Context, req
 	defer common.CloseBodyIfValid(httpResponse)
 	response.RawResponse = httpResponse
 	if err != nil {
-		apiReferenceLink := ""
+		apiReferenceLink := "https://docs.oracle.com/iaas/api/#/en/resource-discovery-monitoring-control-api/20210330/MonitoredInstance/GetMonitoredInstance"
 		err = common.PostProcessServiceError(err, "AppmgmtControl", "GetMonitoredInstance", apiReferenceLink)
 		return response, err
 	}
@@ -208,9 +209,10 @@ func (client AppmgmtControlClient) getMonitoredInstance(ctx context.Context, req
 // See also
 //
 // Click https://docs.cloud.oracle.com/en-us/iaas/tools/go-sdk-examples/latest/appmgmtcontrol/GetWorkRequest.go.html to see an example of how to use GetWorkRequest API.
+// A default retry strategy applies to this operation GetWorkRequest()
 func (client AppmgmtControlClient) GetWorkRequest(ctx context.Context, request GetWorkRequestRequest) (response GetWorkRequestResponse, err error) {
 	var ociResponse common.OCIResponse
-	policy := common.NoRetryPolicy()
+	policy := common.DefaultRetryPolicy()
 	if client.RetryPolicy() != nil {
 		policy = *client.RetryPolicy()
 	}
@@ -251,7 +253,7 @@ func (client AppmgmtControlClient) getWorkRequest(ctx context.Context, request c
 	defer common.CloseBodyIfValid(httpResponse)
 	response.RawResponse = httpResponse
 	if err != nil {
-		apiReferenceLink := ""
+		apiReferenceLink := "https://docs.oracle.com/iaas/api/#/en/resource-discovery-monitoring-control-api/20210330/WorkRequest/GetWorkRequest"
 		err = common.PostProcessServiceError(err, "AppmgmtControl", "GetWorkRequest", apiReferenceLink)
 		return response, err
 	}
@@ -265,9 +267,10 @@ func (client AppmgmtControlClient) getWorkRequest(ctx context.Context, request c
 // See also
 //
 // Click https://docs.cloud.oracle.com/en-us/iaas/tools/go-sdk-examples/latest/appmgmtcontrol/ListMonitoredInstances.go.html to see an example of how to use ListMonitoredInstances API.
+// A default retry strategy applies to this operation ListMonitoredInstances()
 func (client AppmgmtControlClient) ListMonitoredInstances(ctx context.Context, request ListMonitoredInstancesRequest) (response ListMonitoredInstancesResponse, err error) {
 	var ociResponse common.OCIResponse
-	policy := common.NoRetryPolicy()
+	policy := common.DefaultRetryPolicy()
 	if client.RetryPolicy() != nil {
 		policy = *client.RetryPolicy()
 	}
@@ -308,7 +311,7 @@ func (client AppmgmtControlClient) listMonitoredInstances(ctx context.Context, r
 	defer common.CloseBodyIfValid(httpResponse)
 	response.RawResponse = httpResponse
 	if err != nil {
-		apiReferenceLink := ""
+		apiReferenceLink := "https://docs.oracle.com/iaas/api/#/en/resource-discovery-monitoring-control-api/20210330/MonitoredInstanceCollection/ListMonitoredInstances"
 		err = common.PostProcessServiceError(err, "AppmgmtControl", "ListMonitoredInstances", apiReferenceLink)
 		return response, err
 	}
@@ -322,9 +325,10 @@ func (client AppmgmtControlClient) listMonitoredInstances(ctx context.Context, r
 // See also
 //
 // Click https://docs.cloud.oracle.com/en-us/iaas/tools/go-sdk-examples/latest/appmgmtcontrol/ListWorkRequestErrors.go.html to see an example of how to use ListWorkRequestErrors API.
+// A default retry strategy applies to this operation ListWorkRequestErrors()
 func (client AppmgmtControlClient) ListWorkRequestErrors(ctx context.Context, request ListWorkRequestErrorsRequest) (response ListWorkRequestErrorsResponse, err error) {
 	var ociResponse common.OCIResponse
-	policy := common.NoRetryPolicy()
+	policy := common.DefaultRetryPolicy()
 	if client.RetryPolicy() != nil {
 		policy = *client.RetryPolicy()
 	}
@@ -365,7 +369,7 @@ func (client AppmgmtControlClient) listWorkRequestErrors(ctx context.Context, re
 	defer common.CloseBodyIfValid(httpResponse)
 	response.RawResponse = httpResponse
 	if err != nil {
-		apiReferenceLink := ""
+		apiReferenceLink := "https://docs.oracle.com/iaas/api/#/en/resource-discovery-monitoring-control-api/20210330/WorkRequestError/ListWorkRequestErrors"
 		err = common.PostProcessServiceError(err, "AppmgmtControl", "ListWorkRequestErrors", apiReferenceLink)
 		return response, err
 	}
@@ -379,9 +383,10 @@ func (client AppmgmtControlClient) listWorkRequestErrors(ctx context.Context, re
 // See also
 //
 // Click https://docs.cloud.oracle.com/en-us/iaas/tools/go-sdk-examples/latest/appmgmtcontrol/ListWorkRequestLogs.go.html to see an example of how to use ListWorkRequestLogs API.
+// A default retry strategy applies to this operation ListWorkRequestLogs()
 func (client AppmgmtControlClient) ListWorkRequestLogs(ctx context.Context, request ListWorkRequestLogsRequest) (response ListWorkRequestLogsResponse, err error) {
 	var ociResponse common.OCIResponse
-	policy := common.NoRetryPolicy()
+	policy := common.DefaultRetryPolicy()
 	if client.RetryPolicy() != nil {
 		policy = *client.RetryPolicy()
 	}
@@ -422,7 +427,7 @@ func (client AppmgmtControlClient) listWorkRequestLogs(ctx context.Context, requ
 	defer common.CloseBodyIfValid(httpResponse)
 	response.RawResponse = httpResponse
 	if err != nil {
-		apiReferenceLink := ""
+		apiReferenceLink := "https://docs.oracle.com/iaas/api/#/en/resource-discovery-monitoring-control-api/20210330/WorkRequestLogEntry/ListWorkRequestLogs"
 		err = common.PostProcessServiceError(err, "AppmgmtControl", "ListWorkRequestLogs", apiReferenceLink)
 		return response, err
 	}
@@ -436,9 +441,10 @@ func (client AppmgmtControlClient) listWorkRequestLogs(ctx context.Context, requ
 // See also
 //
 // Click https://docs.cloud.oracle.com/en-us/iaas/tools/go-sdk-examples/latest/appmgmtcontrol/ListWorkRequests.go.html to see an example of how to use ListWorkRequests API.
+// A default retry strategy applies to this operation ListWorkRequests()
 func (client AppmgmtControlClient) ListWorkRequests(ctx context.Context, request ListWorkRequestsRequest) (response ListWorkRequestsResponse, err error) {
 	var ociResponse common.OCIResponse
-	policy := common.NoRetryPolicy()
+	policy := common.DefaultRetryPolicy()
 	if client.RetryPolicy() != nil {
 		policy = *client.RetryPolicy()
 	}
@@ -479,7 +485,7 @@ func (client AppmgmtControlClient) listWorkRequests(ctx context.Context, request
 	defer common.CloseBodyIfValid(httpResponse)
 	response.RawResponse = httpResponse
 	if err != nil {
-		apiReferenceLink := ""
+		apiReferenceLink := "https://docs.oracle.com/iaas/api/#/en/resource-discovery-monitoring-control-api/20210330/WorkRequest/ListWorkRequests"
 		err = common.PostProcessServiceError(err, "AppmgmtControl", "ListWorkRequests", apiReferenceLink)
 		return response, err
 	}
@@ -541,7 +547,7 @@ func (client AppmgmtControlClient) publishTopProcessesMetrics(ctx context.Contex
 	defer common.CloseBodyIfValid(httpResponse)
 	response.RawResponse = httpResponse
 	if err != nil {
-		apiReferenceLink := ""
+		apiReferenceLink := "https://docs.oracle.com/iaas/api/#/en/resource-discovery-monitoring-control-api/20210330/MonitoredInstance/PublishTopProcessesMetrics"
 		err = common.PostProcessServiceError(err, "AppmgmtControl", "PublishTopProcessesMetrics", apiReferenceLink)
 		return response, err
 	}

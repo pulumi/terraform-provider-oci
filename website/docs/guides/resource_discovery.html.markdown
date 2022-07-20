@@ -102,6 +102,9 @@ terraform-provider-oci -command=export -compartment_id=<OCID of compartment to e
 This command will discover resources within your compartment and generates Terraform configuration files in the given `output_path`.
 The generated `.tf` files contain the Terraform configuration with the resources that the command has discovered.
 
+> **Note:**
+Make sure the `output_path` is empty before running resource discovery
+
 **Parameter Description**
 
 * `command` - Command to run. Supported commands include:
@@ -110,11 +113,15 @@ The generated `.tf` files contain the Terraform configuration with the resources
     * `list_export_services` - Lists the allowed values for services arguments along with scope in json format
 * `compartment_id` - OCID of a compartment to export. If `compartment_id`  or `compartment_name` is not specified, the root compartment will be used
 * `compartment_name` - The name of a compartment to export. Use this instead of `compartment_id` to provide a compartment name
+* `exclude_services` - Comma-separated list of service resources to exclude from export. If a service is present in both 'services' and 'exclude_services' argument, it will be excluded
 * `generate_state` - Provide this flag to import the discovered resources into a state file along with the Terraform configuration
-* `ids` - Comma-separated list of resource IDs to export. The ID could either be an OCID or a Terraform import ID. By default, all resources are exported
+* `ids` - Comma-separated list of tuples <resource Type:resource ID> e.g. `oci_core_instance:ocid.....`for resources to export. The ID could either be an OCID or a Terraform import ID. By default, all resources are exported
 * `list_export_services_path` - Path to output list of supported services in json format, must include json file name
 * `output_path` - Absolute path to output generated configurations and state files of the exported compartment
+* `parallelism` - The number of threads to use for resource discovery. By default the value is 1
+* `retry_timeout` - The time duration for which API calls will wait and retry operation in case of API errors. By default, the retry timeout duration is 15s
 * `services` - Comma-separated list of service resources to export. If not specified, all resources within the given compartment (which excludes identity resources) are exported. The following values can be specified:
+    * `adm` - Discovers adm resources within the specified compartment
     * `ai_anomaly_detection` - Discovers ai_anomaly_detection resources within the specified compartment
     * `ai_vision` - Discovers ai_vision resources within the specified compartment
     * `analytics` - Discovers analytics resources within the specified compartment
@@ -144,6 +151,7 @@ The generated `.tf` files contain the Terraform configuration with the resources
     * `datascience` - Discovers datascience resources within the specified compartment
     * `devops` - Discovers devops resources within the specified compartment
     * `dns` - Discovers dns resources (except record) within the specified compartment
+    * `em_warehouse` - Discovers em_warehouse resources within the specified compartment
     * `email` - Discovers email_sender resources within the specified compartment
     * `events` - Discovers events resources within the specified compartment
     * `file_storage` - Discovers file_storage resources within the specified compartment
@@ -155,6 +163,7 @@ The generated `.tf` files contain the Terraform configuration with the resources
     * `integration` - Discovers integration resources within the specified compartment
     * `jms` - Discovers jms resources within the specified compartment
     * `kms` - Discovers kms resources within the specified compartment
+    * `license_manager` - Discovers license_manager resources within the specified compartment
     * `limits` - Discovers limits resources across the entire tenancy
     * `load_balancer` - Discovers load balancer resources within the specified compartment
     * `log_analytics` - Discovers log_analytics resources within the specified compartment
@@ -176,13 +185,17 @@ The generated `.tf` files contain the Terraform configuration with the resources
     * `optimizer` - Discovers optimizer resources across the entire tenancy
     * `osmanagement` - Discovers osmanagement resources within the specified compartment
     * `osp_gateway` - Discovers osp_gateway resources within the specified compartment
+    * `resourcemanager` - Discovers resourcemanager resources within the specified compartment
     * `sch` - Discovers sch resources within the specified compartment
+    *`service_mesh` - Discovers service_mesh resources within the specified compartment
     * `stack_monitoring` - Discovers stack_monitoring resources within the specified compartment
     * `streaming` - Discovers streaming resources within the specified compartment
     * `usage_proxy` - Discovers usage_proxy resources within the specified compartment
     * `vault` - Discovers vault resources within the specified compartment
     * `visual_builder` - Discovers visual_builder resources within the specified compartment
+    * `vn_monitoring` - Discovers vn_monitoring resources within the specified compartment
     * `vulnerability_scanning` - Discovers vulnerability_scanning resources within the specified compartment
+    * `waa` - Discovers waa resources within the specified compartment
     * `waas` - Discovers waas resources within the specified compartment
     * `waf` - Discovers waf resources within the specified compartment
 * `tf_version` - The version of terraform syntax to generate for configurations. Default is v0.12. The state file will be written in v0.12 only. The allowed values are:
@@ -282,6 +295,11 @@ The list of supported resources can also be retrieved by running this command:
 terraform-provider-oci -command=list_export_resources
 ```
 
+adm
+    
+* oci\_adm\_vulnerability\_audit
+* oci\_adm\_knowledge\_base
+
 ai_anomaly_detection
     
 * oci\_ai\_anomaly\_detection\_data\_asset
@@ -290,9 +308,7 @@ ai_anomaly_detection
 * oci\_ai\_anomaly\_detection\_ai\_private\_endpoint
 
 ai_vision
-    
-* oci\_ai\_vision\_document\_job
-* oci\_ai\_vision\_image\_job
+
 * oci\_ai\_vision\_project
 * oci\_ai\_vision\_model
 
@@ -306,6 +322,8 @@ apigateway
 * oci\_apigateway\_gateway
 * oci\_apigateway\_deployment
 * oci\_apigateway\_certificate
+* oci\_apigateway\_subscriber
+* oci\_apigateway\_usage\_plan
 
 apm
     
@@ -319,6 +337,7 @@ apm_synthetics
     
 * oci\_apm\_synthetics\_script
 * oci\_apm\_synthetics\_monitor
+* oci\_apm\_synthetics\_dedicated\_vantage\_point
 
 artifacts
     
@@ -366,6 +385,8 @@ cloud_guard
 * oci\_cloud\_guard\_responder\_recipe
 * oci\_cloud\_guard\_data\_mask\_rule
 * oci\_cloud\_guard\_detector\_recipe
+* oci\_cloud\_guard\_security\_recipe
+* oci\_cloud\_guard\_security\_zone
 
 containerengine
     
@@ -421,6 +442,8 @@ core
 * oci\_core\_drg\_route\_table
 * oci\_core\_drg\_route\_distribution
 * oci\_core\_drg\_route\_table\_route\_rule
+* oci\_core\_capture\_filter
+* oci\_core\_vtap
 
 data_connectivity
     
@@ -547,6 +570,10 @@ dns
 * oci\_dns\_tsig\_key
 * oci\_dns\_rrset
 
+em_warehouse
+    
+* oci\_em\_warehouse\_em\_warehouse
+
 email
     
 * oci\_email\_suppression
@@ -626,6 +653,12 @@ kms
 * oci\_kms\_sign
 * oci\_kms\_verify
 
+license_manager
+    
+* oci\_license\_manager\_configuration
+* oci\_license\_manager\_product\_license
+* oci\_license\_manager\_license\_record
+
 limits
     
 * oci\_limits\_quota
@@ -671,6 +704,7 @@ metering_computation
     
 * oci\_metering\_computation\_query
 * oci\_metering\_computation\_custom\_table
+* oci\_metering\_computation\_schedule
 
 monitoring
     
@@ -754,9 +788,23 @@ osp_gateway
     
 * oci\_osp\_gateway\_subscription
 
+resourcemanager
+    
+* oci\_resourcemanager\_private\_endpoint
+
 sch
     
 * oci\_sch\_service\_connector
+
+service_mesh
+
+* oci\_service\_mesh\_virtual\_service
+* oci\_service\_mesh\_access\_policy
+* oci\_service\_mesh\_mesh
+* oci\_service\_mesh\_ingress\_gateway\_route\_table
+* oci\_service\_mesh\_virtual\_service\_route\_table
+* oci\_service\_mesh\_virtual\_deployment
+* oci\_service\_mesh\_ingress\_gateway
 
 stack_monitoring
     
@@ -785,12 +833,22 @@ visual_builder
     
 * oci\_visual\_builder\_vb\_instance
 
+vn_monitoring
+    
+* oci\_vn\_monitoring\_path\_analyzer\_test
+* oci\_vn\_monitoring\_path\_analysi
+
 vulnerability_scanning
     
 * oci\_vulnerability\_scanning\_host\_scan\_recipe
 * oci\_vulnerability\_scanning\_host\_scan\_target
 * oci\_vulnerability\_scanning\_container\_scan\_recipe
 * oci\_vulnerability\_scanning\_container\_scan\_target
+
+waa
+    
+* oci\_waa\_web\_app\_acceleration\_policy
+* oci\_waa\_web\_app\_acceleration
 
 waas
     

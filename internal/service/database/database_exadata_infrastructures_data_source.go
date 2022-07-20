@@ -6,8 +6,8 @@ package database
 import (
 	"context"
 
-	"github.com/terraform-providers/terraform-provider-oci/internal/client"
-	"github.com/terraform-providers/terraform-provider-oci/internal/tfresource"
+	"terraform-provider-oci/internal/client"
+	"terraform-provider-oci/internal/tfresource"
 
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
 	oci_database "github.com/oracle/oci-go-sdk/v65/database"
@@ -186,6 +186,10 @@ func (s *DatabaseExadataInfrastructuresDataSourceCrud) SetData() error {
 
 		if r.InfiniBandNetworkCIDR != nil {
 			exadataInfrastructure["infini_band_network_cidr"] = *r.InfiniBandNetworkCIDR
+		}
+
+		if r.IsCpsOfflineReportEnabled != nil {
+			exadataInfrastructure["is_cps_offline_report_enabled"] = *r.IsCpsOfflineReportEnabled
 		}
 
 		if r.LifecycleDetails != nil {

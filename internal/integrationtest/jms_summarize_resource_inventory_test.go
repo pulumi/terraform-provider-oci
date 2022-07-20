@@ -7,16 +7,16 @@ import (
 	"fmt"
 	"testing"
 
-	"github.com/terraform-providers/terraform-provider-oci/internal/acctest"
-	"github.com/terraform-providers/terraform-provider-oci/internal/utils"
+	"terraform-provider-oci/internal/acctest"
+	"terraform-provider-oci/internal/utils"
 
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/resource"
 
-	"github.com/terraform-providers/terraform-provider-oci/httpreplay"
+	"terraform-provider-oci/httpreplay"
 )
 
 var (
-	summarizeResourceInventorySingularDataSourceRepresentation = map[string]interface{}{
+	JmsJmsSummarizeResourceInventorySingularDataSourceRepresentation = map[string]interface{}{
 		"compartment_id": acctest.Representation{RepType: acctest.Optional, Create: `${var.compartment_id}`},
 		"time_end":       acctest.Representation{RepType: acctest.Optional, Create: `2021-11-20T01:00:00Z`},
 		"time_start":     acctest.Representation{RepType: acctest.Optional, Create: `2021-11-01T01:00:00Z`},
@@ -41,7 +41,7 @@ func TestJmsSummarizeResourceInventoryResource_basic(t *testing.T) {
 		// verify singular datasource
 		{
 			Config: config +
-				acctest.GenerateDataSourceFromRepresentationMap("oci_jms_summarize_resource_inventory", "test_summarize_resource_inventory", acctest.Optional, acctest.Create, summarizeResourceInventorySingularDataSourceRepresentation) +
+				acctest.GenerateDataSourceFromRepresentationMap("oci_jms_summarize_resource_inventory", "test_summarize_resource_inventory", acctest.Optional, acctest.Create, JmsJmsSummarizeResourceInventorySingularDataSourceRepresentation) +
 				compartmentIdVariableStr,
 			Check: acctest.ComposeAggregateTestCheckFuncWrapper(
 				resource.TestCheckResourceAttr(singularDatasourceName, "compartment_id", compartmentId),

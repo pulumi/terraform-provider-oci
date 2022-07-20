@@ -9,13 +9,13 @@ import (
 
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/resource"
 
-	"github.com/terraform-providers/terraform-provider-oci/httpreplay"
-	"github.com/terraform-providers/terraform-provider-oci/internal/acctest"
-	"github.com/terraform-providers/terraform-provider-oci/internal/utils"
+	"terraform-provider-oci/httpreplay"
+	"terraform-provider-oci/internal/acctest"
+	"terraform-provider-oci/internal/utils"
 )
 
 var (
-	regionDataSourceRepresentation = map[string]interface{}{
+	IdentityIdentityRegionDataSourceRepresentation = map[string]interface{}{
 		"filter": acctest.RepresentationGroup{RepType: acctest.Required, Group: regionDataSourceFilterRepresentation}}
 
 	regionDataSourceFilterRepresentation = map[string]interface{}{
@@ -23,7 +23,7 @@ var (
 		"values": acctest.Representation{RepType: acctest.Required, Create: []string{`${var.region}`}},
 	}
 
-	RegionResourceConfig = ""
+	IdentityRegionResourceConfig = ""
 )
 
 // issue-routing-tag: identity/default
@@ -44,8 +44,8 @@ func TestIdentityRegionResource_basic(t *testing.T) {
 		// verify datasource
 		{
 			Config: config +
-				acctest.GenerateDataSourceFromRepresentationMap("oci_identity_regions", "test_regions", acctest.Required, acctest.Create, regionDataSourceRepresentation) +
-				compartmentIdVariableStr + RegionResourceConfig,
+				acctest.GenerateDataSourceFromRepresentationMap("oci_identity_regions", "test_regions", acctest.Required, acctest.Create, IdentityIdentityRegionDataSourceRepresentation) +
+				compartmentIdVariableStr + IdentityRegionResourceConfig,
 			Check: acctest.ComposeAggregateTestCheckFuncWrapper(
 
 				resource.TestCheckResourceAttrSet(datasourceName, "regions.#"),

@@ -9,21 +9,21 @@ import (
 
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/resource"
 
-	"github.com/terraform-providers/terraform-provider-oci/httpreplay"
-	"github.com/terraform-providers/terraform-provider-oci/internal/acctest"
+	"terraform-provider-oci/httpreplay"
+	"terraform-provider-oci/internal/acctest"
 
-	"github.com/terraform-providers/terraform-provider-oci/internal/utils"
+	"terraform-provider-oci/internal/utils"
 )
 
 var (
-	secretbundleSingularDataSourceRepresentation = map[string]interface{}{
+	SecretsSecretsSecretbundleSingularDataSourceRepresentation = map[string]interface{}{
 		"secret_id":           acctest.Representation{RepType: acctest.Required, Create: `${oci_vault_secret.test_secret.id}`},
 		"secret_version_name": acctest.Representation{RepType: acctest.Optional, Create: `name`},
 		"stage":               acctest.Representation{RepType: acctest.Optional, Create: `CURRENT`},
 		"version_number":      acctest.Representation{RepType: acctest.Optional, Create: `1`},
 	}
 
-	SecretbundleResourceConfig = acctest.GenerateResourceFromRepresentationMap("oci_vault_secret", "test_secret", acctest.Required, acctest.Create, secretRepresentation)
+	SecretsSecretbundleResourceConfig = acctest.GenerateResourceFromRepresentationMap("oci_vault_secret", "test_secret", acctest.Required, acctest.Create, VaultSecretRepresentation)
 )
 
 // issue-routing-tag: secrets/default
@@ -50,8 +50,8 @@ func TestSecretsSecretbundleResource_basic(t *testing.T) {
 		// verify singular datasource
 		{
 			Config: config + vaultIdVariableStr + keyIdVariableStr +
-				acctest.GenerateDataSourceFromRepresentationMap("oci_secrets_secretbundle", "test_secretbundle", acctest.Required, acctest.Create, secretbundleSingularDataSourceRepresentation) +
-				compartmentIdVariableStr + SecretbundleResourceConfig,
+				acctest.GenerateDataSourceFromRepresentationMap("oci_secrets_secretbundle", "test_secretbundle", acctest.Required, acctest.Create, SecretsSecretsSecretbundleSingularDataSourceRepresentation) +
+				compartmentIdVariableStr + SecretsSecretbundleResourceConfig,
 			Check: acctest.ComposeAggregateTestCheckFuncWrapper(
 				resource.TestCheckResourceAttrSet(singularDatasourceName, "secret_id"),
 

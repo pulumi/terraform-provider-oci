@@ -9,8 +9,8 @@ import (
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
 	oci_ocvp "github.com/oracle/oci-go-sdk/v65/ocvp"
 
-	"github.com/terraform-providers/terraform-provider-oci/internal/client"
-	"github.com/terraform-providers/terraform-provider-oci/internal/tfresource"
+	"terraform-provider-oci/internal/client"
+	"terraform-provider-oci/internal/tfresource"
 )
 
 func OcvpSupportedHostShapesDataSource() *schema.Resource {
@@ -76,6 +76,13 @@ func OcvpSupportedHostShapesDataSource() *schema.Resource {
 							},
 						},
 						"supported_sddc_types": {
+							Type:     schema.TypeList,
+							Computed: true,
+							Elem: &schema.Schema{
+								Type: schema.TypeString,
+							},
+						},
+						"supported_vmware_software_versions": {
 							Type:     schema.TypeList,
 							Computed: true,
 							Elem: &schema.Schema{
@@ -198,6 +205,8 @@ func SupportedHostShapeSummaryToMap(obj oci_ocvp.SupportedHostShapeSummary) map[
 	result["supported_operations"] = obj.SupportedOperations
 
 	result["supported_sddc_types"] = obj.SupportedSddcTypes
+
+	result["supported_vmware_software_versions"] = obj.SupportedVmwareSoftwareVersions
 
 	return result
 }

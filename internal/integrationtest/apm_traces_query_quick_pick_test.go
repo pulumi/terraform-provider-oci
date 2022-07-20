@@ -9,18 +9,18 @@ import (
 
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/resource"
 
-	"github.com/terraform-providers/terraform-provider-oci/httpreplay"
-	"github.com/terraform-providers/terraform-provider-oci/internal/acctest"
+	"terraform-provider-oci/httpreplay"
+	"terraform-provider-oci/internal/acctest"
 
-	"github.com/terraform-providers/terraform-provider-oci/internal/utils"
+	"terraform-provider-oci/internal/utils"
 )
 
 var (
-	queryQuickPickDataSourceRepresentation = map[string]interface{}{
+	ApmTracesApmTracesqueryQuickPickDataSourceRepresentation = map[string]interface{}{
 		"apm_domain_id": acctest.Representation{RepType: acctest.Required, Create: `${oci_apm_apm_domain.test_apm_domain.id}`},
 	}
 
-	QueryQuickPickResourceConfig = acctest.GenerateResourceFromRepresentationMap("oci_apm_apm_domain", "test_apm_domain", acctest.Required, acctest.Create, apmDomainRepresentation)
+	ApmTracesQueryQuickPickResourceConfig = acctest.GenerateResourceFromRepresentationMap("oci_apm_apm_domain", "test_apm_domain", acctest.Required, acctest.Create, apmDomainRepresentation)
 )
 
 // issue-routing-tag: apm_traces/default
@@ -41,8 +41,8 @@ func TestApmTracesQueryQuickPickResource_basic(t *testing.T) {
 		// verify datasource
 		{
 			Config: config +
-				acctest.GenerateDataSourceFromRepresentationMap("oci_apm_traces_query_quick_picks", "test_query_quick_picks", acctest.Required, acctest.Create, queryQuickPickDataSourceRepresentation) +
-				compartmentIdVariableStr + QueryQuickPickResourceConfig,
+				acctest.GenerateDataSourceFromRepresentationMap("oci_apm_traces_query_quick_picks", "test_query_quick_picks", acctest.Required, acctest.Create, ApmTracesApmTracesqueryQuickPickDataSourceRepresentation) +
+				compartmentIdVariableStr + ApmTracesQueryQuickPickResourceConfig,
 			Check: acctest.ComposeAggregateTestCheckFuncWrapper(
 				resource.TestCheckResourceAttrSet(datasourceName, "apm_domain_id"),
 

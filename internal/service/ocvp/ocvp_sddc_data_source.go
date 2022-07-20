@@ -9,8 +9,8 @@ import (
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
 	oci_ocvp "github.com/oracle/oci-go-sdk/v65/ocvp"
 
-	"github.com/terraform-providers/terraform-provider-oci/internal/client"
-	"github.com/terraform-providers/terraform-provider-oci/internal/tfresource"
+	"terraform-provider-oci/internal/client"
+	"terraform-provider-oci/internal/tfresource"
 )
 
 func OcvpSddcDataSource() *schema.Resource {
@@ -66,6 +66,10 @@ func (s *OcvpSddcDataSourceCrud) SetData() error {
 
 	s.D.SetId(*s.Res.Id)
 
+	if s.Res.CapacityReservationId != nil {
+		s.D.Set("capacity_reservation_id", *s.Res.CapacityReservationId)
+	}
+
 	if s.Res.CompartmentId != nil {
 		s.D.Set("compartment_id", *s.Res.CompartmentId)
 	}
@@ -113,6 +117,14 @@ func (s *OcvpSddcDataSourceCrud) SetData() error {
 
 	if s.Res.HcxVlanId != nil {
 		s.D.Set("hcx_vlan_id", *s.Res.HcxVlanId)
+	}
+
+	if s.Res.InitialHostOcpuCount != nil {
+		s.D.Set("initial_host_ocpu_count", *s.Res.InitialHostOcpuCount)
+	}
+
+	if s.Res.InitialHostShapeName != nil {
+		s.D.Set("initial_host_shape_name", *s.Res.InitialHostShapeName)
 	}
 
 	s.D.Set("initial_sku", s.Res.InitialSku)

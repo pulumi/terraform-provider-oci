@@ -6,8 +6,8 @@ package database
 import (
 	"context"
 
-	"github.com/terraform-providers/terraform-provider-oci/internal/client"
-	"github.com/terraform-providers/terraform-provider-oci/internal/tfresource"
+	"terraform-provider-oci/internal/client"
+	"terraform-provider-oci/internal/tfresource"
 
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
 	oci_database "github.com/oracle/oci-go-sdk/v65/database"
@@ -66,12 +66,32 @@ func (s *DatabaseCloudAutonomousVmClusterDataSourceCrud) SetData() error {
 
 	s.D.SetId(*s.Res.Id)
 
+	if s.Res.AutonomousDataStorageSizeInTBs != nil {
+		s.D.Set("autonomous_data_storage_size_in_tbs", *s.Res.AutonomousDataStorageSizeInTBs)
+	}
+
 	if s.Res.AvailabilityDomain != nil {
 		s.D.Set("availability_domain", *s.Res.AvailabilityDomain)
 	}
 
+	if s.Res.AvailableAutonomousDataStorageSizeInTBs != nil {
+		s.D.Set("available_autonomous_data_storage_size_in_tbs", *s.Res.AvailableAutonomousDataStorageSizeInTBs)
+	}
+
+	if s.Res.AvailableContainerDatabases != nil {
+		s.D.Set("available_container_databases", *s.Res.AvailableContainerDatabases)
+	}
+
+	if s.Res.AvailableCpus != nil {
+		s.D.Set("available_cpus", *s.Res.AvailableCpus)
+	}
+
 	if s.Res.CloudExadataInfrastructureId != nil {
 		s.D.Set("cloud_exadata_infrastructure_id", *s.Res.CloudExadataInfrastructureId)
+	}
+
+	if s.Res.ClusterTimeZone != nil {
+		s.D.Set("cluster_time_zone", *s.Res.ClusterTimeZone)
 	}
 
 	if s.Res.CompartmentId != nil {
@@ -88,6 +108,10 @@ func (s *DatabaseCloudAutonomousVmClusterDataSourceCrud) SetData() error {
 
 	if s.Res.DataStorageSizeInTBs != nil {
 		s.D.Set("data_storage_size_in_tbs", *s.Res.DataStorageSizeInTBs)
+	}
+
+	if s.Res.DbNodeStorageSizeInGBs != nil {
+		s.D.Set("db_node_storage_size_in_gbs", *s.Res.DbNodeStorageSizeInGBs)
 	}
 
 	if s.Res.DefinedTags != nil {
@@ -126,6 +150,10 @@ func (s *DatabaseCloudAutonomousVmClusterDataSourceCrud) SetData() error {
 		s.D.Set("lifecycle_details", *s.Res.LifecycleDetails)
 	}
 
+	if s.Res.MemoryPerOracleComputeUnitInGBs != nil {
+		s.D.Set("memory_per_oracle_compute_unit_in_gbs", *s.Res.MemoryPerOracleComputeUnitInGBs)
+	}
+
 	if s.Res.MemorySizeInGBs != nil {
 		s.D.Set("memory_size_in_gbs", *s.Res.MemorySizeInGBs)
 	}
@@ -144,6 +172,10 @@ func (s *DatabaseCloudAutonomousVmClusterDataSourceCrud) SetData() error {
 		s.D.Set("ocpu_count", *s.Res.OcpuCount)
 	}
 
+	if s.Res.ReclaimableCpus != nil {
+		s.D.Set("reclaimable_cpus", *s.Res.ReclaimableCpus)
+	}
+
 	if s.Res.Shape != nil {
 		s.D.Set("shape", *s.Res.Shape)
 	}
@@ -160,6 +192,10 @@ func (s *DatabaseCloudAutonomousVmClusterDataSourceCrud) SetData() error {
 
 	if s.Res.TimeUpdated != nil {
 		s.D.Set("time_updated", s.Res.TimeUpdated.String())
+	}
+
+	if s.Res.TotalContainerDatabases != nil {
+		s.D.Set("total_container_databases", *s.Res.TotalContainerDatabases)
 	}
 
 	return nil

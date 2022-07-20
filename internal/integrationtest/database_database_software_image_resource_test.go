@@ -17,12 +17,12 @@ import (
 	"github.com/oracle/oci-go-sdk/v65/common"
 	oci_database "github.com/oracle/oci-go-sdk/v65/database"
 
-	"github.com/terraform-providers/terraform-provider-oci/httpreplay"
-	"github.com/terraform-providers/terraform-provider-oci/internal/acctest"
-	"github.com/terraform-providers/terraform-provider-oci/internal/client"
-	"github.com/terraform-providers/terraform-provider-oci/internal/resourcediscovery"
-	"github.com/terraform-providers/terraform-provider-oci/internal/tfresource"
-	"github.com/terraform-providers/terraform-provider-oci/internal/utils"
+	"terraform-provider-oci/httpreplay"
+	"terraform-provider-oci/internal/acctest"
+	"terraform-provider-oci/internal/client"
+	"terraform-provider-oci/internal/resourcediscovery"
+	"terraform-provider-oci/internal/tfresource"
+	"terraform-provider-oci/internal/utils"
 )
 
 var (
@@ -79,8 +79,8 @@ var (
 
 	DatabaseSoftwareImageResourceDependenciesForExaShape = DefinedTagsDependencies
 
-	DatabaseSoftwareImageResourceDependenciesForSourceDbHome = acctest.GenerateResourceFromRepresentationMap("oci_database_database", "test_database", acctest.Required, acctest.Create, databaseRepresentation) +
-		acctest.GenerateResourceFromRepresentationMap("oci_database_db_home", "test_db_home", acctest.Required, acctest.Create, dbHomeRepresentation) +
+	DatabaseSoftwareImageResourceDependenciesForSourceDbHome = acctest.GenerateResourceFromRepresentationMap("oci_database_database", "test_database", acctest.Required, acctest.Create, DatabaseDatabaseRepresentation) +
+		acctest.GenerateResourceFromRepresentationMap("oci_database_db_home", "test_db_home", acctest.Required, acctest.Create, DatabaseDbHomeRepresentation) +
 		ExaBaseDependencies + AvailabilityDomainConfig +
 		DatabaseSoftwareImageResourceDependenciesForExaShape
 
@@ -549,7 +549,7 @@ func TestDatabaseDatabaseSoftwareImageResourceExadata_basic(t *testing.T) {
 		},
 		// verify resource import
 		{
-			Config:                  config + DatabaseSoftwareImageRequiredOnlyResource,
+			Config:                  config + DatabaseDatabaseSoftwareImageRequiredOnlyResource,
 			ImportState:             true,
 			ImportStateVerify:       true,
 			ImportStateVerifyIgnore: []string{

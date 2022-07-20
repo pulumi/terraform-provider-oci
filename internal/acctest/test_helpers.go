@@ -20,23 +20,23 @@ import (
 
 	"github.com/stretchr/testify/assert"
 
-	"github.com/terraform-providers/terraform-provider-oci/internal/globalvar"
+	"terraform-provider-oci/internal/globalvar"
 
 	"github.com/hashicorp/go-multierror"
 
-	"github.com/terraform-providers/terraform-provider-oci/httpreplay"
+	"terraform-provider-oci/httpreplay"
 
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/resource"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/terraform"
 	oci_common "github.com/oracle/oci-go-sdk/v65/common"
 
-	tf_client "github.com/terraform-providers/terraform-provider-oci/internal/client"
-	tf_provider "github.com/terraform-providers/terraform-provider-oci/internal/provider"
+	tf_client "terraform-provider-oci/internal/client"
+	tf_provider "terraform-provider-oci/internal/provider"
 
-	//tf_resource_discovery "github.com/terraform-providers/terraform-provider-oci/oci/resourcediscovery"
-	tf_resource "github.com/terraform-providers/terraform-provider-oci/internal/tfresource"
-	"github.com/terraform-providers/terraform-provider-oci/internal/utils"
+	//tf_resource_discovery "terraform-provider-oci/oci/resourcediscovery"
+	tf_resource "terraform-provider-oci/internal/tfresource"
+	"terraform-provider-oci/internal/utils"
 )
 
 var (
@@ -295,16 +295,16 @@ func GetRepresentationCopyWithMultipleRemovedProperties(propertyNames []string, 
 
 func RepresentationCopyWithRemovedNestedProperties(propertyNameStr string, representation map[string]interface{}) map[string]interface{} {
 	propertyNames := strings.Split(propertyNameStr, ".")
-	return updateNestedRepresentationRemoveProperty(0, propertyNames, cloneRepresentation(representation))
+	return UpdateNestedRepresentationRemoveProperty(0, propertyNames, cloneRepresentation(representation))
 }
 
-func updateNestedRepresentationRemoveProperty(currIndex int, propertyNames []string, representation map[string]interface{}) map[string]interface{} {
+func UpdateNestedRepresentationRemoveProperty(currIndex int, propertyNames []string, representation map[string]interface{}) map[string]interface{} {
 	//recursively search the property to remove
 	for prop := range representation {
 		if prop == propertyNames[currIndex] {
 			representationGroup, ok := representation[prop].(RepresentationGroup)
 			if ok && currIndex+1 < len(propertyNames) {
-				updateNestedRepresentationRemoveProperty(currIndex+1, propertyNames, representationGroup.Group)
+				UpdateNestedRepresentationRemoveProperty(currIndex+1, propertyNames, representationGroup.Group)
 			} else {
 				delete(representation, prop)
 			}

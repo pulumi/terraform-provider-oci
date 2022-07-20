@@ -7,18 +7,18 @@ import (
 	"fmt"
 	"testing"
 
-	"github.com/terraform-providers/terraform-provider-oci/internal/acctest"
-	"github.com/terraform-providers/terraform-provider-oci/internal/utils"
+	"terraform-provider-oci/internal/acctest"
+	"terraform-provider-oci/internal/utils"
 
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/resource"
 
-	"github.com/terraform-providers/terraform-provider-oci/httpreplay"
+	"terraform-provider-oci/httpreplay"
 )
 
 var (
-	edgeSubnetDataSourceRepresentation = map[string]interface{}{}
+	WaasWaasEdgeSubnetDataSourceRepresentation = map[string]interface{}{}
 
-	EdgeSubnetResourceConfig = ""
+	WaasEdgeSubnetResourceConfig = ""
 )
 
 // issue-routing-tag: waas/default
@@ -39,8 +39,8 @@ func TestWaasEdgeSubnetResource_basic(t *testing.T) {
 		// verify datasource
 		{
 			Config: config +
-				acctest.GenerateDataSourceFromRepresentationMap("oci_waas_edge_subnets", "test_edge_subnets", acctest.Required, acctest.Create, edgeSubnetDataSourceRepresentation) +
-				compartmentIdVariableStr + EdgeSubnetResourceConfig,
+				acctest.GenerateDataSourceFromRepresentationMap("oci_waas_edge_subnets", "test_edge_subnets", acctest.Required, acctest.Create, WaasWaasEdgeSubnetDataSourceRepresentation) +
+				compartmentIdVariableStr + WaasEdgeSubnetResourceConfig,
 			Check: acctest.ComposeAggregateTestCheckFuncWrapper(
 
 				resource.TestCheckResourceAttrSet(datasourceName, "edge_subnets.#"),

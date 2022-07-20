@@ -12,8 +12,8 @@ import (
 	"github.com/oracle/oci-go-sdk/v65/apigateway"
 	oci_apigateway "github.com/oracle/oci-go-sdk/v65/apigateway"
 
-	"github.com/terraform-providers/terraform-provider-oci/internal/client"
-	"github.com/terraform-providers/terraform-provider-oci/internal/tfresource"
+	"terraform-provider-oci/internal/client"
+	"terraform-provider-oci/internal/tfresource"
 )
 
 func ApigatewayApiDeploymentSpecificationDataSource() *schema.Resource {
@@ -340,6 +340,26 @@ func ApigatewayApiDeploymentSpecificationDataSource() *schema.Resource {
 									"rate_key": {
 										Type:     schema.TypeString,
 										Computed: true,
+									},
+								},
+							},
+						},
+						"usage_plans": {
+							Type:     schema.TypeList,
+							Computed: true,
+							Elem: &schema.Resource{
+								Schema: map[string]*schema.Schema{
+									// Required
+
+									// Optional
+
+									// Computed
+									"token_locations": {
+										Type:     schema.TypeList,
+										Computed: true,
+										Elem: &schema.Schema{
+											Type: schema.TypeString,
+										},
 									},
 								},
 							},

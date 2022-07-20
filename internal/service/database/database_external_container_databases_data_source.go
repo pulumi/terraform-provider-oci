@@ -6,8 +6,8 @@ package database
 import (
 	"context"
 
-	"github.com/terraform-providers/terraform-provider-oci/internal/client"
-	"github.com/terraform-providers/terraform-provider-oci/internal/tfresource"
+	"terraform-provider-oci/internal/client"
+	"terraform-provider-oci/internal/tfresource"
 
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
 	oci_database "github.com/oracle/oci-go-sdk/v65/database"
@@ -160,6 +160,12 @@ func (s *DatabaseExternalContainerDatabasesDataSourceCrud) SetData() error {
 
 		if r.NcharacterSet != nil {
 			externalContainerDatabase["ncharacter_set"] = *r.NcharacterSet
+		}
+
+		if r.StackMonitoringConfig != nil {
+			externalContainerDatabase["stack_monitoring_config"] = []interface{}{StackMonitoringConfigToMap(r.StackMonitoringConfig)}
+		} else {
+			externalContainerDatabase["stack_monitoring_config"] = nil
 		}
 
 		externalContainerDatabase["state"] = r.LifecycleState

@@ -9,8 +9,8 @@ import (
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
 	oci_cloud_guard "github.com/oracle/oci-go-sdk/v65/cloudguard"
 
-	"github.com/terraform-providers/terraform-provider-oci/internal/client"
-	"github.com/terraform-providers/terraform-provider-oci/internal/tfresource"
+	"terraform-provider-oci/internal/client"
+	"terraform-provider-oci/internal/tfresource"
 )
 
 func CloudGuardTargetsDataSource() *schema.Resource {
@@ -32,6 +32,10 @@ func CloudGuardTargetsDataSource() *schema.Resource {
 			},
 			"display_name": {
 				Type:     schema.TypeString,
+				Optional: true,
+			},
+			"is_non_security_zone_targets_only_query": {
+				Type:     schema.TypeBool,
 				Optional: true,
 			},
 			"state": {
@@ -94,6 +98,11 @@ func (s *CloudGuardTargetsDataSourceCrud) Get() error {
 	if displayName, ok := s.D.GetOkExists("display_name"); ok {
 		tmp := displayName.(string)
 		request.DisplayName = &tmp
+	}
+
+	if isNonSecurityZoneTargetsOnlyQuery, ok := s.D.GetOkExists("is_non_security_zone_targets_only_query"); ok {
+		tmp := isNonSecurityZoneTargetsOnlyQuery.(bool)
+		request.IsNonSecurityZoneTargetsOnlyQuery = &tmp
 	}
 
 	if state, ok := s.D.GetOkExists("state"); ok {

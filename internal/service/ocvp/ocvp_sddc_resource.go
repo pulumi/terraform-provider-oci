@@ -18,8 +18,8 @@ import (
 	oci_common "github.com/oracle/oci-go-sdk/v65/common"
 	oci_ocvp "github.com/oracle/oci-go-sdk/v65/ocvp"
 
-	"github.com/terraform-providers/terraform-provider-oci/internal/client"
-	"github.com/terraform-providers/terraform-provider-oci/internal/tfresource"
+	"terraform-provider-oci/internal/client"
+	"terraform-provider-oci/internal/tfresource"
 )
 
 func OcvpSddcResource() *schema.Resource {
@@ -93,6 +93,12 @@ func OcvpSddcResource() *schema.Resource {
 			},
 
 			// Optional
+			"capacity_reservation_id": {
+				Type:     schema.TypeString,
+				Optional: true,
+				Computed: true,
+				ForceNew: true,
+			},
 			"defined_tags": {
 				Type:             schema.TypeMap,
 				Optional:         true,
@@ -125,6 +131,18 @@ func OcvpSddcResource() *schema.Resource {
 					DowngradeHcxAction,
 					CancelDowngradeHcxAction,
 				}, true),
+			},
+			"initial_host_ocpu_count": {
+				Type:     schema.TypeFloat,
+				Optional: true,
+				Computed: true,
+				ForceNew: true,
+			},
+			"initial_host_shape_name": {
+				Type:     schema.TypeString,
+				Optional: true,
+				Computed: true,
+				ForceNew: true,
 			},
 			"initial_sku": {
 				Type:     schema.TypeString,
@@ -377,6 +395,11 @@ func (s *OcvpSddcResourceCrud) DeletedTarget() []string {
 func (s *OcvpSddcResourceCrud) Create() error {
 	request := oci_ocvp.CreateSddcRequest{}
 
+	if capacityReservationId, ok := s.D.GetOkExists("capacity_reservation_id"); ok {
+		tmp := capacityReservationId.(string)
+		request.CapacityReservationId = &tmp
+	}
+
 	if compartmentId, ok := s.D.GetOkExists("compartment_id"); ok {
 		tmp := compartmentId.(string)
 		request.CompartmentId = &tmp
@@ -412,6 +435,16 @@ func (s *OcvpSddcResourceCrud) Create() error {
 	if hcxVlanId, ok := s.D.GetOkExists("hcx_vlan_id"); ok {
 		tmp := hcxVlanId.(string)
 		request.HcxVlanId = &tmp
+	}
+
+	if initialHostOcpuCount, ok := s.D.GetOkExists("initial_host_ocpu_count"); ok {
+		tmp := float32(initialHostOcpuCount.(float64))
+		request.InitialHostOcpuCount = &tmp
+	}
+
+	if initialHostShapeName, ok := s.D.GetOkExists("initial_host_shape_name"); ok {
+		tmp := initialHostShapeName.(string)
+		request.InitialHostShapeName = &tmp
 	}
 
 	if initialSku, ok := s.D.GetOkExists("initial_sku"); ok {
@@ -884,6 +917,10 @@ func (s *OcvpSddcResourceCrud) Delete() error {
 }
 
 func (s *OcvpSddcResourceCrud) SetData() error {
+	if s.Res.CapacityReservationId != nil {
+		s.D.Set("capacity_reservation_id", *s.Res.CapacityReservationId)
+	}
+
 	if s.Res.CompartmentId != nil {
 		s.D.Set("compartment_id", *s.Res.CompartmentId)
 	}
@@ -943,6 +980,14 @@ func (s *OcvpSddcResourceCrud) SetData() error {
 
 	if s.Res.HcxVlanId != nil {
 		s.D.Set("hcx_vlan_id", *s.Res.HcxVlanId)
+	}
+
+	if s.Res.InitialHostOcpuCount != nil {
+		s.D.Set("initial_host_ocpu_count", *s.Res.InitialHostOcpuCount)
+	}
+
+	if s.Res.InitialHostShapeName != nil {
+		s.D.Set("initial_host_shape_name", *s.Res.InitialHostShapeName)
 	}
 
 	s.D.Set("initial_sku", s.Res.InitialSku)
@@ -1128,6 +1173,14 @@ func SddcSummaryToMap(obj oci_ocvp.SddcSummary) map[string]interface{} {
 
 	if obj.Id != nil {
 		result["id"] = string(*obj.Id)
+	}
+
+	if obj.InitialHostOcpuCount != nil {
+		result["initial_host_ocpu_count"] = float32(*obj.InitialHostOcpuCount)
+	}
+
+	if obj.InitialHostShapeName != nil {
+		result["initial_host_shape_name"] = string(*obj.InitialHostShapeName)
 	}
 
 	if obj.IsHcxEnabled != nil {

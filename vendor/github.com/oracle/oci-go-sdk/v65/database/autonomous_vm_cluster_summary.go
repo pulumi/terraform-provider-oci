@@ -89,7 +89,7 @@ type AutonomousVmClusterSummary struct {
 	// The total data storage allocated in GBs.
 	DataStorageSizeInGBs *float64 `mandatory:"false" json:"dataStorageSizeInGBs"`
 
-	// The data storage available in TBs
+	// **Deprecated.** Use `availableAutonomousDataStorageSizeInTBs` for Autonomous Databases' data storage availability in TBs.
 	AvailableDataStorageSizeInTBs *float64 `mandatory:"false" json:"availableDataStorageSizeInTBs"`
 
 	// The Oracle license model that applies to the Autonomous VM cluster. The default is LICENSE_INCLUDED.
@@ -103,6 +103,15 @@ type AutonomousVmClusterSummary struct {
 	// Defined tags for this resource. Each key is predefined and scoped to a namespace.
 	// For more information, see Resource Tags (https://docs.cloud.oracle.com/Content/General/Concepts/resourcetags.htm).
 	DefinedTags map[string]map[string]interface{} `mandatory:"false" json:"definedTags"`
+
+	// CPU cores that continue to be included in the count of OCPUs available to the Autonomous Container Database even after one of its Autonomous Database is terminated or scaled down. You can release them to the available OCPUs at its parent AVMC level by restarting the Autonomous Container Database.
+	ReclaimableCpus *int `mandatory:"false" json:"reclaimableCpus"`
+
+	// The number of Autonomous Container Databases that can be created with the currently available local storage.
+	AvailableContainerDatabases *int `mandatory:"false" json:"availableContainerDatabases"`
+
+	// The data disk group size available for Autonomous Databases, in TBs.
+	AvailableAutonomousDataStorageSizeInTBs *float64 `mandatory:"false" json:"availableAutonomousDataStorageSizeInTBs"`
 }
 
 func (m AutonomousVmClusterSummary) String() string {

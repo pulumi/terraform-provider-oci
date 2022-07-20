@@ -9,25 +9,25 @@ import (
 	"strconv"
 	"testing"
 
-	"github.com/terraform-providers/terraform-provider-oci/internal/acctest"
-	tf_client "github.com/terraform-providers/terraform-provider-oci/internal/client"
-	"github.com/terraform-providers/terraform-provider-oci/internal/resourcediscovery"
-	"github.com/terraform-providers/terraform-provider-oci/internal/tfresource"
-	"github.com/terraform-providers/terraform-provider-oci/internal/utils"
+	"terraform-provider-oci/internal/acctest"
+	tf_client "terraform-provider-oci/internal/client"
+	"terraform-provider-oci/internal/resourcediscovery"
+	"terraform-provider-oci/internal/tfresource"
+	"terraform-provider-oci/internal/utils"
 
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/resource"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/terraform"
 	oci_analytics "github.com/oracle/oci-go-sdk/v65/analytics"
 	"github.com/oracle/oci-go-sdk/v65/common"
 
-	"github.com/terraform-providers/terraform-provider-oci/httpreplay"
+	"terraform-provider-oci/httpreplay"
 )
 
 var (
-	AnalyticsInstancePrivateAccessChannelRequiredOnlyResource = acctest.GenerateResourceFromRepresentationMap("oci_analytics_analytics_instance_private_access_channel", "test_analytics_instance_private_access_channel", acctest.Required, acctest.Create, analyticsInstancePrivateAccessChannelRepresentation)
-
-	AnalyticsInstancePrivateAccessChannelResourceConfig = AnalyticsInstancePrivateAccessChannelResourceDependencies +
+	AnalyticsAnalyticsInstancePrivateAccessChannelResourceConfig = AnalyticsAnalyticsInstancePrivateAccessChannelResourceDependencies +
 		acctest.GenerateResourceFromRepresentationMap("oci_analytics_analytics_instance_private_access_channel", "test_analytics_instance_private_access_channel", acctest.Optional, acctest.Update, analyticsInstancePrivateAccessChannelRepresentation)
+
+	AnalyticsAnalyticsInstancePrivateAccessChannelRequiredOnlyResource = acctest.GenerateResourceFromRepresentationMap("oci_analytics_analytics_instance_private_access_channel", "test_analytics_instance_private_access_channel", acctest.Required, acctest.Create, analyticsInstancePrivateAccessChannelRepresentation)
 
 	analyticsInstancePrivateAccessChannelRepresentation = map[string]interface{}{
 		"analytics_instance_id":    acctest.Representation{RepType: acctest.Required, Create: `${oci_analytics_analytics_instance.test_analytics_instance.id}`},
@@ -41,9 +41,9 @@ var (
 		"description": acctest.Representation{RepType: acctest.Optional, Create: `Tenant VCN DNS Zone`, Update: `Tenant VCN DNS Zone 2`},
 	}
 
-	AnalyticsInstancePrivateAccessChannelResourceDependencies = acctest.GenerateResourceFromRepresentationMap("oci_analytics_analytics_instance", "test_analytics_instance", acctest.Required, acctest.Create, analyticsInstanceRepresentation) +
-		acctest.GenerateResourceFromRepresentationMap("oci_core_subnet", "test_subnet", acctest.Required, acctest.Create, subnetRepresentation) +
-		acctest.GenerateResourceFromRepresentationMap("oci_core_vcn", "test_vcn", acctest.Required, acctest.Create, vcnRepresentation)
+	AnalyticsAnalyticsInstancePrivateAccessChannelResourceDependencies = acctest.GenerateResourceFromRepresentationMap("oci_analytics_analytics_instance", "test_analytics_instance", acctest.Required, acctest.Create, analyticsInstanceRepresentation) +
+		acctest.GenerateResourceFromRepresentationMap("oci_core_subnet", "test_subnet", acctest.Required, acctest.Create, CoreSubnetRepresentation) +
+		acctest.GenerateResourceFromRepresentationMap("oci_core_vcn", "test_vcn", acctest.Required, acctest.Create, CoreVcnRepresentation)
 )
 
 // issue-routing-tag: analytics/default
@@ -62,14 +62,15 @@ func TestAnalyticsAnalyticsInstancePrivateAccessChannelResource_basic(t *testing
 	resourceName := "oci_analytics_analytics_instance_private_access_channel.test_analytics_instance_private_access_channel"
 
 	var resId, resId2 string
-	// Save TF content to Create resource with only required properties. This has to be exactly the same as the config part in the Create step in the test.
-	acctest.SaveConfigContent(config+compartmentIdVariableStr+AnalyticsInstancePrivateAccessChannelResourceDependencies+
+	// Save TF content to Create resource with only required properties. This has to be exactly the same as the config part in the create step in the test.
+	acctest.SaveConfigContent(config+compartmentIdVariableStr+AnalyticsAnalyticsInstancePrivateAccessChannelResourceDependencies+
+
 		acctest.GenerateResourceFromRepresentationMap("oci_analytics_analytics_instance_private_access_channel", "test_analytics_instance_private_access_channel", acctest.Required, acctest.Create, analyticsInstancePrivateAccessChannelRepresentation), "analytics", "analyticsInstancePrivateAccessChannel", t)
 
 	acctest.ResourceTest(t, testAccCheckAnalyticsAnalyticsInstancePrivateAccessChannelDestroy, []resource.TestStep{
 		// verify Create
 		{
-			Config: config + compartmentIdVariableStr + idcsAccessTokenVariableStr + AnalyticsInstancePrivateAccessChannelResourceDependencies +
+			Config: config + compartmentIdVariableStr + idcsAccessTokenVariableStr + AnalyticsAnalyticsInstancePrivateAccessChannelResourceDependencies +
 				acctest.GenerateResourceFromRepresentationMap("oci_analytics_analytics_instance_private_access_channel", "test_analytics_instance_private_access_channel", acctest.Required, acctest.Create, analyticsInstancePrivateAccessChannelRepresentation),
 			Check: acctest.ComposeAggregateTestCheckFuncWrapper(
 				resource.TestCheckResourceAttrSet(resourceName, "analytics_instance_id"),
@@ -93,7 +94,7 @@ func TestAnalyticsAnalyticsInstancePrivateAccessChannelResource_basic(t *testing
 
 		// verify updates to updatable parameters
 		{
-			Config: config + compartmentIdVariableStr + idcsAccessTokenVariableStr + AnalyticsInstancePrivateAccessChannelResourceDependencies +
+			Config: config + compartmentIdVariableStr + idcsAccessTokenVariableStr + AnalyticsAnalyticsInstancePrivateAccessChannelResourceDependencies +
 				acctest.GenerateResourceFromRepresentationMap("oci_analytics_analytics_instance_private_access_channel", "test_analytics_instance_private_access_channel", acctest.Optional, acctest.Update, analyticsInstancePrivateAccessChannelRepresentation),
 			Check: acctest.ComposeAggregateTestCheckFuncWrapper(
 				resource.TestCheckResourceAttrSet(resourceName, "analytics_instance_id"),
@@ -117,7 +118,7 @@ func TestAnalyticsAnalyticsInstancePrivateAccessChannelResource_basic(t *testing
 			),
 		},
 		{
-			Config:                  config + AnalyticsInstancePrivateAccessChannelRequiredOnlyResource,
+			Config:                  config + AnalyticsAnalyticsInstancePrivateAccessChannelRequiredOnlyResource,
 			ImportState:             true,
 			ImportStateVerify:       true,
 			ImportStateVerifyIgnore: []string{},

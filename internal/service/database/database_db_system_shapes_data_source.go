@@ -6,8 +6,8 @@ package database
 import (
 	"context"
 
-	"github.com/terraform-providers/terraform-provider-oci/internal/client"
-	"github.com/terraform-providers/terraform-provider-oci/internal/tfresource"
+	"terraform-provider-oci/internal/client"
+	"terraform-provider-oci/internal/tfresource"
 
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
 	oci_database "github.com/oracle/oci-go-sdk/v65/database"
@@ -118,6 +118,10 @@ func DatabaseDbSystemShapesDataSource() *schema.Resource {
 							Deprecated: tfresource.FieldDeprecatedForAnother("shape", "name"),
 						},
 						"shape_family": {
+							Type:     schema.TypeString,
+							Computed: true,
+						},
+						"shape_type": {
 							Type:     schema.TypeString,
 							Computed: true,
 						},
@@ -276,6 +280,8 @@ func (s *DatabaseDbSystemShapesDataSourceCrud) SetData() error {
 		if r.ShapeFamily != nil {
 			dbSystemShape["shape_family"] = *r.ShapeFamily
 		}
+
+		dbSystemShape["shape_type"] = r.ShapeType
 
 		resources = append(resources, dbSystemShape)
 	}

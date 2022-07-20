@@ -9,17 +9,17 @@ import (
 
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/resource"
 
-	"github.com/terraform-providers/terraform-provider-oci/httpreplay"
-	"github.com/terraform-providers/terraform-provider-oci/internal/acctest"
-	"github.com/terraform-providers/terraform-provider-oci/internal/utils"
+	"terraform-provider-oci/httpreplay"
+	"terraform-provider-oci/internal/acctest"
+	"terraform-provider-oci/internal/utils"
 )
 
 var (
-	categoryDataSourceRepresentation = map[string]interface{}{
+	MarketplaceMarketplaceCategoryDataSourceRepresentation = map[string]interface{}{
 		"compartment_id": acctest.Representation{RepType: acctest.Optional, Create: `${var.compartment_id}`},
 	}
 
-	CategoryResourceConfig = ""
+	MarketplaceCategoryResourceConfig = ""
 )
 
 // issue-routing-tag: marketplace/default
@@ -40,8 +40,8 @@ func TestMarketplaceCategoryResource_basic(t *testing.T) {
 		// verify datasource
 		{
 			Config: config +
-				acctest.GenerateDataSourceFromRepresentationMap("oci_marketplace_categories", "test_categories", acctest.Required, acctest.Create, categoryDataSourceRepresentation) +
-				compartmentIdVariableStr + CategoryResourceConfig,
+				acctest.GenerateDataSourceFromRepresentationMap("oci_marketplace_categories", "test_categories", acctest.Required, acctest.Create, MarketplaceMarketplaceCategoryDataSourceRepresentation) +
+				compartmentIdVariableStr + MarketplaceCategoryResourceConfig,
 			Check: acctest.ComposeAggregateTestCheckFuncWrapper(
 
 				resource.TestCheckResourceAttrSet(datasourceName, "categories.#"),

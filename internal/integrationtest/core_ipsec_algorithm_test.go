@@ -9,15 +9,15 @@ import (
 
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/resource"
 
-	"github.com/terraform-providers/terraform-provider-oci/httpreplay"
-	"github.com/terraform-providers/terraform-provider-oci/internal/acctest"
-	"github.com/terraform-providers/terraform-provider-oci/internal/utils"
+	"terraform-provider-oci/httpreplay"
+	"terraform-provider-oci/internal/acctest"
+	"terraform-provider-oci/internal/utils"
 )
 
 var (
-	ipsecAlgorithmSingularDataSourceRepresentation = map[string]interface{}{}
+	CoreCoreIpsecAlgorithmSingularDataSourceRepresentation = map[string]interface{}{}
 
-	IpsecAlgorithmResourceConfig = ""
+	CoreIpsecAlgorithmResourceConfig = ""
 )
 
 // issue-routing-tag: core/default
@@ -38,8 +38,8 @@ func TestCoreIpsecAlgorithmResource_basic(t *testing.T) {
 		// verify singular datasource
 		{
 			Config: config +
-				acctest.GenerateDataSourceFromRepresentationMap("oci_core_ipsec_algorithm", "test_ipsec_algorithm", acctest.Required, acctest.Create, ipsecAlgorithmSingularDataSourceRepresentation) +
-				compartmentIdVariableStr + IpsecAlgorithmResourceConfig,
+				acctest.GenerateDataSourceFromRepresentationMap("oci_core_ipsec_algorithm", "test_ipsec_algorithm", acctest.Required, acctest.Create, CoreCoreIpsecAlgorithmSingularDataSourceRepresentation) +
+				compartmentIdVariableStr + CoreIpsecAlgorithmResourceConfig,
 			Check: acctest.ComposeAggregateTestCheckFuncWrapper(
 
 				resource.TestCheckResourceAttr(singularDatasourceName, "allowed_phase_one_parameters.#", "1"),

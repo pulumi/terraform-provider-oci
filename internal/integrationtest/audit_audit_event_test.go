@@ -7,23 +7,23 @@ import (
 	"fmt"
 	"testing"
 
-	"github.com/terraform-providers/terraform-provider-oci/internal/utils"
+	"terraform-provider-oci/internal/utils"
 
-	"github.com/terraform-providers/terraform-provider-oci/internal/acctest"
+	"terraform-provider-oci/internal/acctest"
 
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/resource"
 
-	"github.com/terraform-providers/terraform-provider-oci/httpreplay"
+	"terraform-provider-oci/httpreplay"
 )
 
 var (
-	auditEventDataSourceRepresentation = map[string]interface{}{
+	AuditAuditauditEventDataSourceRepresentation = map[string]interface{}{
 		"compartment_id": acctest.Representation{RepType: acctest.Required, Create: `${var.compartment_id}`},
 		"end_time":       acctest.Representation{RepType: acctest.Required, Create: `${timestamp()}`},
 		"start_time":     acctest.Representation{RepType: acctest.Required, Create: `${timeadd(timestamp(), "-1m")}`},
 	}
 
-	AuditEventResourceConfig = ""
+	AuditAuditEventResourceConfig = ""
 )
 
 // issue-routing-tag: audit/default
@@ -44,8 +44,8 @@ func TestAuditAuditEventResource_basic(t *testing.T) {
 		// verify datasource
 		{
 			Config: config +
-				acctest.GenerateDataSourceFromRepresentationMap("oci_audit_events", "test_audit_events", acctest.Required, acctest.Create, auditEventDataSourceRepresentation) +
-				compartmentIdVariableStr + AuditEventResourceConfig,
+				acctest.GenerateDataSourceFromRepresentationMap("oci_audit_events", "test_audit_events", acctest.Required, acctest.Create, AuditAuditauditEventDataSourceRepresentation) +
+				compartmentIdVariableStr + AuditAuditEventResourceConfig,
 			Check: acctest.ComposeAggregateTestCheckFuncWrapper(
 				resource.TestCheckResourceAttr(datasourceName, "compartment_id", compartmentId),
 				resource.TestCheckResourceAttrSet(datasourceName, "end_time"),

@@ -134,10 +134,15 @@ resource "oci_core_instance_configuration" "test_instance_configuration" {
 				type = var.instance_configuration_instance_details_launch_details_platform_config_type
 
 				#Optional
+				are_virtual_instructions_enabled = var.instance_configuration_instance_details_launch_details_platform_config_are_virtual_instructions_enabled
+				is_access_control_service_enabled = var.instance_configuration_instance_details_launch_details_platform_config_is_access_control_service_enabled
+				is_input_output_memory_management_unit_enabled = var.instance_configuration_instance_details_launch_details_platform_config_is_input_output_memory_management_unit_enabled
 				is_measured_boot_enabled = var.instance_configuration_instance_details_launch_details_platform_config_is_measured_boot_enabled
 				is_secure_boot_enabled = var.instance_configuration_instance_details_launch_details_platform_config_is_secure_boot_enabled
+				is_symmetric_multi_threading_enabled = var.instance_configuration_instance_details_launch_details_platform_config_is_symmetric_multi_threading_enabled
 				is_trusted_platform_module_enabled = var.instance_configuration_instance_details_launch_details_platform_config_is_trusted_platform_module_enabled
 				numa_nodes_per_socket = var.instance_configuration_instance_details_launch_details_platform_config_numa_nodes_per_socket
+				percentage_of_cores_enabled = var.instance_configuration_instance_details_launch_details_platform_config_percentage_of_cores_enabled
 			}
 			preemptible_instance_config {
 				#Required
@@ -156,6 +161,7 @@ resource "oci_core_instance_configuration" "test_instance_configuration" {
 				#Optional
 				baseline_ocpu_utilization = var.instance_configuration_instance_details_launch_details_shape_config_baseline_ocpu_utilization
 				memory_in_gbs = var.instance_configuration_instance_details_launch_details_shape_config_memory_in_gbs
+				nvmes = var.instance_configuration_instance_details_launch_details_shape_config_nvmes
 				ocpus = var.instance_configuration_instance_details_launch_details_shape_config_ocpus
 			}
 			source_details {
@@ -165,6 +171,7 @@ resource "oci_core_instance_configuration" "test_instance_configuration" {
 				#Optional
 				boot_volume_id = oci_core_boot_volume.test_boot_volume.id
 				boot_volume_size_in_gbs = var.instance_configuration_instance_details_launch_details_source_details_boot_volume_size_in_gbs
+				boot_volume_vpus_per_gb = var.instance_configuration_instance_details_launch_details_source_details_boot_volume_vpus_per_gb
 				image_id = oci_core_image.test_image.id
 			}
 		}
@@ -227,6 +234,7 @@ The following arguments are supported:
 			* `vpus_per_gb` - (Optional) The number of volume performance units (VPUs) that will be applied to this volume per GB, representing the Block Volume service's elastic performance options. See [Block Volume Performance Levels](https://docs.cloud.oracle.com/iaas/Content/Block/Concepts/blockvolumeperformance.htm#perf_levels) for more information.
 
 				Allowed values:
+				* `0`: Represents Lower Cost option.
 				* `10`: Represents Balanced option.
 				* `20`: Represents Higher Performance option.
 				* `30`-`120`: Represents the Ultra High Performance option. 
@@ -365,10 +373,15 @@ The following arguments are supported:
 			If you provide the parameter, the instance is created with the platform configuration that you specify. For any values that you omit, the instance uses the default configuration values for the `shape` that you specify. If you don't provide the parameter, the default values for the `shape` are used.
 
 			Each shape only supports certain configurable values. If the values that you provide are not valid for the specified `shape`, an error is returned. 
+			* `are_virtual_instructions_enabled` - (Applicable when type=AMD_MILAN_BM | AMD_ROME_BM | AMD_ROME_BM_GPU) Whether virtualization instructions are available. 
+			* `is_access_control_service_enabled` - (Applicable when type=AMD_MILAN_BM | AMD_ROME_BM | AMD_ROME_BM_GPU) Whether the Access Control Service is enabled on the instance. When enabled, the platform can enforce PCIe device isolation, required for VFIO device passthrough. 
+			* `is_input_output_memory_management_unit_enabled` - (Applicable when type=AMD_MILAN_BM | AMD_ROME_BM | AMD_ROME_BM_GPU | INTEL_ICELAKE_BM) Whether the input-output memory management unit is enabled. 
 			* `is_measured_boot_enabled` - (Applicable when instance_type=compute) Whether the Measured Boot feature is enabled on the instance. 
 			* `is_secure_boot_enabled` - (Applicable when instance_type=compute) Whether Secure Boot is enabled on the instance. 
+			* `is_symmetric_multi_threading_enabled` - (Applicable when type=AMD_MILAN_BM | AMD_ROME_BM | AMD_ROME_BM_GPU | INTEL_ICELAKE_BM) Whether symmetric multi-threading is enabled on the instance. 
 			* `is_trusted_platform_module_enabled` - (Applicable when instance_type=compute) Whether the Trusted Platform Module (TPM) is enabled on the instance. 
-			* `numa_nodes_per_socket` - (Applicable when type=AMD_MILAN_BM) The number of NUMA nodes per socket (NPS). 
+			* `numa_nodes_per_socket` - (Applicable when type=AMD_MILAN_BM | AMD_ROME_BM | AMD_ROME_BM_GPU | INTEL_ICELAKE_BM) The number of NUMA nodes per socket (NPS). 
+			* `percentage_of_cores_enabled` - (Applicable when type=AMD_MILAN_BM | AMD_ROME_BM | INTEL_ICELAKE_BM) The percentage of cores enabled. 
 			* `type` - (Required) The type of platform being configured. 
 		* `preemptible_instance_config` - (Optional) Configuration options for preemptible instances. 
 			* `preemption_action` - (Required) The action to run when the preemptible instance is interrupted for eviction. 
@@ -392,10 +405,17 @@ The following arguments are supported:
 				* `BASELINE_1_2` - baseline usage is 1/2 of an OCPU.
 				* `BASELINE_1_1` - baseline usage is an entire OCPU. This represents a non-burstable instance. 
 			* `memory_in_gbs` - (Optional) The total amount of memory available to the instance, in gigabytes. 
+			* `nvmes` - (Optional) The number of NVMe drives to be used for storage. A single drive has 6.8 TB available. 
 			* `ocpus` - (Optional) The total number of OCPUs available to the instance. 
 		* `source_details` - (Optional) 
 			* `boot_volume_id` - (Applicable when source_type=bootVolume) The OCID of the boot volume used to boot the instance.
 			* `boot_volume_size_in_gbs` - (Applicable when source_type=image) The size of the boot volume in GBs. The minimum value is 50 GB and the maximum value is 32,768 GB (32 TB). 
+			* `boot_volume_vpus_per_gb` - (Applicable when source_type=image) The number of volume performance units (VPUs) that will be applied to this volume per GB, representing the Block Volume service's elastic performance options. See [Block Volume Performance Levels](https://docs.cloud.oracle.com/iaas/Content/Block/Concepts/blockvolumeperformance.htm#perf_levels) for more information.
+
+				Allowed values:
+				* `10`: Represents Balanced option.
+				* `20`: Represents Higher Performance option.
+				* `30`-`120`: Represents the Ultra High Performance option. 
 			* `image_id` - (Applicable when source_type=image) The OCID of the image used to boot the instance.
 			* `source_type` - (Required) The source type for the instance. Use `image` when specifying the image OCID. Use `bootVolume` when specifying the boot volume OCID. 
 	* `secondary_vnics` - (Optional) 
@@ -464,6 +484,7 @@ The following attributes are exported:
 			* `vpus_per_gb` - The number of volume performance units (VPUs) that will be applied to this volume per GB, representing the Block Volume service's elastic performance options. See [Block Volume Performance Levels](https://docs.cloud.oracle.com/iaas/Content/Block/Concepts/blockvolumeperformance.htm#perf_levels) for more information.
 
 				Allowed values:
+				* `0`: Represents Lower Cost option.
 				* `10`: Represents Balanced option.
 				* `20`: Represents Higher Performance option.
 				* `30`-`120`: Represents the Ultra High Performance option. 
@@ -602,10 +623,15 @@ The following attributes are exported:
 			If you provide the parameter, the instance is created with the platform configuration that you specify. For any values that you omit, the instance uses the default configuration values for the `shape` that you specify. If you don't provide the parameter, the default values for the `shape` are used.
 
 			Each shape only supports certain configurable values. If the values that you provide are not valid for the specified `shape`, an error is returned. 
+			* `are_virtual_instructions_enabled` - Whether virtualization instructions are available. 
+			* `is_access_control_service_enabled` - Whether the Access Control Service is enabled on the instance. When enabled, the platform can enforce PCIe device isolation, required for VFIO device passthrough. 
+			* `is_input_output_memory_management_unit_enabled` - Whether the input-output memory management unit is enabled. 
 			* `is_measured_boot_enabled` - Whether the Measured Boot feature is enabled on the instance. 
 			* `is_secure_boot_enabled` - Whether Secure Boot is enabled on the instance. 
+			* `is_symmetric_multi_threading_enabled` - Whether symmetric multi-threading is enabled on the instance. 
 			* `is_trusted_platform_module_enabled` - Whether the Trusted Platform Module (TPM) is enabled on the instance. 
 			* `numa_nodes_per_socket` - The number of NUMA nodes per socket (NPS). 
+			* `percentage_of_cores_enabled` - The percentage of cores enabled. 
 			* `type` - The type of platform being configured. 
 		* `preemptible_instance_config` - Configuration options for preemptible instances. 
 			* `preemption_action` - The action to run when the preemptible instance is interrupted for eviction. 
@@ -629,10 +655,17 @@ The following attributes are exported:
 				* `BASELINE_1_2` - baseline usage is 1/2 of an OCPU.
 				* `BASELINE_1_1` - baseline usage is an entire OCPU. This represents a non-burstable instance. 
 			* `memory_in_gbs` - The total amount of memory available to the instance, in gigabytes. 
+			* `nvmes` - The number of NVMe drives to be used for storage. A single drive has 6.8 TB available. 
 			* `ocpus` - The total number of OCPUs available to the instance. 
 		* `source_details` - 
 			* `boot_volume_id` - The OCID of the boot volume used to boot the instance.
 			* `boot_volume_size_in_gbs` - The size of the boot volume in GBs. The minimum value is 50 GB and the maximum value is 32,768 GB (32 TB). 
+			* `boot_volume_vpus_per_gb` - The number of volume performance units (VPUs) that will be applied to this volume per GB, representing the Block Volume service's elastic performance options. See [Block Volume Performance Levels](https://docs.cloud.oracle.com/iaas/Content/Block/Concepts/blockvolumeperformance.htm#perf_levels) for more information.
+
+				Allowed values:
+				* `10`: Represents Balanced option.
+				* `20`: Represents Higher Performance option.
+				* `30`-`120`: Represents the Ultra High Performance option. 
 			* `image_id` - The OCID of the image used to boot the instance.
 			* `source_type` - The source type for the instance. Use `image` when specifying the image OCID. Use `bootVolume` when specifying the boot volume OCID. 
 	* `secondary_vnics` - 

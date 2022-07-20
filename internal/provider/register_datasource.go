@@ -4,93 +4,107 @@
 package provider
 
 import (
-	tf_ai_anomaly_detection "github.com/terraform-providers/terraform-provider-oci/internal/service/ai_anomaly_detection"
-	tf_ai_vision "github.com/terraform-providers/terraform-provider-oci/internal/service/ai_vision"
-	tf_analytics "github.com/terraform-providers/terraform-provider-oci/internal/service/analytics"
-	tf_apigateway "github.com/terraform-providers/terraform-provider-oci/internal/service/apigateway"
-	tf_apm "github.com/terraform-providers/terraform-provider-oci/internal/service/apm"
-	tf_apm_config "github.com/terraform-providers/terraform-provider-oci/internal/service/apm_config"
-	tf_apm_synthetics "github.com/terraform-providers/terraform-provider-oci/internal/service/apm_synthetics"
-	tf_apm_traces "github.com/terraform-providers/terraform-provider-oci/internal/service/apm_traces"
-	tf_appmgmt_control "github.com/terraform-providers/terraform-provider-oci/internal/service/appmgmt_control"
-	tf_artifacts "github.com/terraform-providers/terraform-provider-oci/internal/service/artifacts"
-	tf_audit "github.com/terraform-providers/terraform-provider-oci/internal/service/audit"
-	tf_autoscaling "github.com/terraform-providers/terraform-provider-oci/internal/service/autoscaling"
-	tf_bastion "github.com/terraform-providers/terraform-provider-oci/internal/service/bastion"
-	tf_bds "github.com/terraform-providers/terraform-provider-oci/internal/service/bds"
-	tf_blockchain "github.com/terraform-providers/terraform-provider-oci/internal/service/blockchain"
-	tf_budget "github.com/terraform-providers/terraform-provider-oci/internal/service/budget"
-	tf_certificates_management "github.com/terraform-providers/terraform-provider-oci/internal/service/certificates_management"
-	tf_cloud_guard "github.com/terraform-providers/terraform-provider-oci/internal/service/cloud_guard"
-	tf_computeinstanceagent "github.com/terraform-providers/terraform-provider-oci/internal/service/computeinstanceagent"
-	tf_containerengine "github.com/terraform-providers/terraform-provider-oci/internal/service/containerengine"
-	tf_core "github.com/terraform-providers/terraform-provider-oci/internal/service/core"
-	tf_data_connectivity "github.com/terraform-providers/terraform-provider-oci/internal/service/data_connectivity"
-	tf_data_labeling_service "github.com/terraform-providers/terraform-provider-oci/internal/service/data_labeling_service"
-	tf_data_safe "github.com/terraform-providers/terraform-provider-oci/internal/service/data_safe"
-	tf_database "github.com/terraform-providers/terraform-provider-oci/internal/service/database"
-	tf_database_management "github.com/terraform-providers/terraform-provider-oci/internal/service/database_management"
-	tf_database_migration "github.com/terraform-providers/terraform-provider-oci/internal/service/database_migration"
-	tf_database_tools "github.com/terraform-providers/terraform-provider-oci/internal/service/database_tools"
-	tf_datacatalog "github.com/terraform-providers/terraform-provider-oci/internal/service/datacatalog"
-	tf_dataflow "github.com/terraform-providers/terraform-provider-oci/internal/service/dataflow"
-	tf_dataintegration "github.com/terraform-providers/terraform-provider-oci/internal/service/dataintegration"
-	tf_datascience "github.com/terraform-providers/terraform-provider-oci/internal/service/datascience"
-	tf_devops "github.com/terraform-providers/terraform-provider-oci/internal/service/devops"
-	tf_dns "github.com/terraform-providers/terraform-provider-oci/internal/service/dns"
-	tf_email "github.com/terraform-providers/terraform-provider-oci/internal/service/email"
-	tf_events "github.com/terraform-providers/terraform-provider-oci/internal/service/events"
-	tf_file_storage "github.com/terraform-providers/terraform-provider-oci/internal/service/file_storage"
-	tf_functions "github.com/terraform-providers/terraform-provider-oci/internal/service/functions"
-	tf_generic_artifacts_content "github.com/terraform-providers/terraform-provider-oci/internal/service/generic_artifacts_content"
-	tf_golden_gate "github.com/terraform-providers/terraform-provider-oci/internal/service/golden_gate"
-	tf_health_checks "github.com/terraform-providers/terraform-provider-oci/internal/service/health_checks"
-	tf_identity "github.com/terraform-providers/terraform-provider-oci/internal/service/identity"
-	tf_integration "github.com/terraform-providers/terraform-provider-oci/internal/service/integration"
-	tf_jms "github.com/terraform-providers/terraform-provider-oci/internal/service/jms"
-	tf_kms "github.com/terraform-providers/terraform-provider-oci/internal/service/kms"
-	tf_limits "github.com/terraform-providers/terraform-provider-oci/internal/service/limits"
-	tf_load_balancer "github.com/terraform-providers/terraform-provider-oci/internal/service/load_balancer"
-	tf_log_analytics "github.com/terraform-providers/terraform-provider-oci/internal/service/log_analytics"
-	tf_logging "github.com/terraform-providers/terraform-provider-oci/internal/service/logging"
-	tf_management_agent "github.com/terraform-providers/terraform-provider-oci/internal/service/management_agent"
-	tf_management_dashboard "github.com/terraform-providers/terraform-provider-oci/internal/service/management_dashboard"
-	tf_marketplace "github.com/terraform-providers/terraform-provider-oci/internal/service/marketplace"
-	tf_metering_computation "github.com/terraform-providers/terraform-provider-oci/internal/service/metering_computation"
-	tf_monitoring "github.com/terraform-providers/terraform-provider-oci/internal/service/monitoring"
-	tf_mysql "github.com/terraform-providers/terraform-provider-oci/internal/service/mysql"
-	tf_network_load_balancer "github.com/terraform-providers/terraform-provider-oci/internal/service/network_load_balancer"
-	tf_nosql "github.com/terraform-providers/terraform-provider-oci/internal/service/nosql"
-	tf_objectstorage "github.com/terraform-providers/terraform-provider-oci/internal/service/objectstorage"
-	tf_oce "github.com/terraform-providers/terraform-provider-oci/internal/service/oce"
-	tf_ocvp "github.com/terraform-providers/terraform-provider-oci/internal/service/ocvp"
-	tf_oda "github.com/terraform-providers/terraform-provider-oci/internal/service/oda"
-	tf_ons "github.com/terraform-providers/terraform-provider-oci/internal/service/ons"
-	tf_operator_access_control "github.com/terraform-providers/terraform-provider-oci/internal/service/operator_access_control"
-	tf_opsi "github.com/terraform-providers/terraform-provider-oci/internal/service/opsi"
-	tf_optimizer "github.com/terraform-providers/terraform-provider-oci/internal/service/optimizer"
-	tf_osmanagement "github.com/terraform-providers/terraform-provider-oci/internal/service/osmanagement"
-	tf_osp_gateway "github.com/terraform-providers/terraform-provider-oci/internal/service/osp_gateway"
-	tf_osub_billing_schedule "github.com/terraform-providers/terraform-provider-oci/internal/service/osub_billing_schedule"
-	tf_osub_organization_subscription "github.com/terraform-providers/terraform-provider-oci/internal/service/osub_organization_subscription"
-	tf_osub_subscription "github.com/terraform-providers/terraform-provider-oci/internal/service/osub_subscription"
-	tf_osub_usage "github.com/terraform-providers/terraform-provider-oci/internal/service/osub_usage"
-	tf_resourcemanager "github.com/terraform-providers/terraform-provider-oci/internal/service/resourcemanager"
-	tf_sch "github.com/terraform-providers/terraform-provider-oci/internal/service/sch"
-	tf_secrets "github.com/terraform-providers/terraform-provider-oci/internal/service/secrets"
-	tf_service_catalog "github.com/terraform-providers/terraform-provider-oci/internal/service/service_catalog"
-	tf_service_manager_proxy "github.com/terraform-providers/terraform-provider-oci/internal/service/service_manager_proxy"
-	tf_stack_monitoring "github.com/terraform-providers/terraform-provider-oci/internal/service/stack_monitoring"
-	tf_streaming "github.com/terraform-providers/terraform-provider-oci/internal/service/streaming"
-	tf_usage_proxy "github.com/terraform-providers/terraform-provider-oci/internal/service/usage_proxy"
-	tf_vault "github.com/terraform-providers/terraform-provider-oci/internal/service/vault"
-	tf_visual_builder "github.com/terraform-providers/terraform-provider-oci/internal/service/visual_builder"
-	tf_vulnerability_scanning "github.com/terraform-providers/terraform-provider-oci/internal/service/vulnerability_scanning"
-	tf_waas "github.com/terraform-providers/terraform-provider-oci/internal/service/waas"
-	tf_waf "github.com/terraform-providers/terraform-provider-oci/internal/service/waf"
+	tf_adm "terraform-provider-oci/internal/service/adm"
+	tf_ai_anomaly_detection "terraform-provider-oci/internal/service/ai_anomaly_detection"
+	tf_ai_vision "terraform-provider-oci/internal/service/ai_vision"
+	tf_analytics "terraform-provider-oci/internal/service/analytics"
+	tf_apigateway "terraform-provider-oci/internal/service/apigateway"
+	tf_apm "terraform-provider-oci/internal/service/apm"
+	tf_apm_config "terraform-provider-oci/internal/service/apm_config"
+	tf_apm_synthetics "terraform-provider-oci/internal/service/apm_synthetics"
+	tf_apm_traces "terraform-provider-oci/internal/service/apm_traces"
+	tf_appmgmt_control "terraform-provider-oci/internal/service/appmgmt_control"
+	tf_artifacts "terraform-provider-oci/internal/service/artifacts"
+	tf_audit "terraform-provider-oci/internal/service/audit"
+	tf_autoscaling "terraform-provider-oci/internal/service/autoscaling"
+	tf_bastion "terraform-provider-oci/internal/service/bastion"
+	tf_bds "terraform-provider-oci/internal/service/bds"
+	tf_blockchain "terraform-provider-oci/internal/service/blockchain"
+	tf_budget "terraform-provider-oci/internal/service/budget"
+	tf_certificates_management "terraform-provider-oci/internal/service/certificates_management"
+	tf_cloud_guard "terraform-provider-oci/internal/service/cloud_guard"
+	tf_computeinstanceagent "terraform-provider-oci/internal/service/computeinstanceagent"
+	tf_containerengine "terraform-provider-oci/internal/service/containerengine"
+	tf_core "terraform-provider-oci/internal/service/core"
+	tf_data_connectivity "terraform-provider-oci/internal/service/data_connectivity"
+	tf_data_labeling_service "terraform-provider-oci/internal/service/data_labeling_service"
+	tf_data_safe "terraform-provider-oci/internal/service/data_safe"
+	tf_database "terraform-provider-oci/internal/service/database"
+	tf_database_management "terraform-provider-oci/internal/service/database_management"
+	tf_database_migration "terraform-provider-oci/internal/service/database_migration"
+	tf_database_tools "terraform-provider-oci/internal/service/database_tools"
+	tf_datacatalog "terraform-provider-oci/internal/service/datacatalog"
+	tf_dataflow "terraform-provider-oci/internal/service/dataflow"
+	tf_dataintegration "terraform-provider-oci/internal/service/dataintegration"
+	tf_datascience "terraform-provider-oci/internal/service/datascience"
+	tf_devops "terraform-provider-oci/internal/service/devops"
+	tf_dns "terraform-provider-oci/internal/service/dns"
+	tf_em_warehouse "terraform-provider-oci/internal/service/em_warehouse"
+	tf_email "terraform-provider-oci/internal/service/email"
+	tf_events "terraform-provider-oci/internal/service/events"
+	tf_file_storage "terraform-provider-oci/internal/service/file_storage"
+	tf_functions "terraform-provider-oci/internal/service/functions"
+	tf_generic_artifacts_content "terraform-provider-oci/internal/service/generic_artifacts_content"
+	tf_golden_gate "terraform-provider-oci/internal/service/golden_gate"
+	tf_health_checks "terraform-provider-oci/internal/service/health_checks"
+	tf_identity "terraform-provider-oci/internal/service/identity"
+	tf_integration "terraform-provider-oci/internal/service/integration"
+	tf_jms "terraform-provider-oci/internal/service/jms"
+	tf_kms "terraform-provider-oci/internal/service/kms"
+	tf_license_manager "terraform-provider-oci/internal/service/license_manager"
+	tf_limits "terraform-provider-oci/internal/service/limits"
+	tf_load_balancer "terraform-provider-oci/internal/service/load_balancer"
+	tf_log_analytics "terraform-provider-oci/internal/service/log_analytics"
+	tf_logging "terraform-provider-oci/internal/service/logging"
+	tf_management_agent "terraform-provider-oci/internal/service/management_agent"
+	tf_management_dashboard "terraform-provider-oci/internal/service/management_dashboard"
+	tf_marketplace "terraform-provider-oci/internal/service/marketplace"
+	tf_metering_computation "terraform-provider-oci/internal/service/metering_computation"
+	tf_monitoring "terraform-provider-oci/internal/service/monitoring"
+	tf_mysql "terraform-provider-oci/internal/service/mysql"
+	tf_network_load_balancer "terraform-provider-oci/internal/service/network_load_balancer"
+	tf_nosql "terraform-provider-oci/internal/service/nosql"
+	tf_objectstorage "terraform-provider-oci/internal/service/objectstorage"
+	tf_oce "terraform-provider-oci/internal/service/oce"
+	tf_ocvp "terraform-provider-oci/internal/service/ocvp"
+	tf_oda "terraform-provider-oci/internal/service/oda"
+	tf_onesubscription "terraform-provider-oci/internal/service/onesubscription"
+	tf_ons "terraform-provider-oci/internal/service/ons"
+	tf_operator_access_control "terraform-provider-oci/internal/service/operator_access_control"
+	tf_opsi "terraform-provider-oci/internal/service/opsi"
+	tf_optimizer "terraform-provider-oci/internal/service/optimizer"
+	tf_osmanagement "terraform-provider-oci/internal/service/osmanagement"
+	tf_osp_gateway "terraform-provider-oci/internal/service/osp_gateway"
+	tf_osub_billing_schedule "terraform-provider-oci/internal/service/osub_billing_schedule"
+	tf_osub_organization_subscription "terraform-provider-oci/internal/service/osub_organization_subscription"
+	tf_osub_subscription "terraform-provider-oci/internal/service/osub_subscription"
+	tf_osub_usage "terraform-provider-oci/internal/service/osub_usage"
+	tf_resourcemanager "terraform-provider-oci/internal/service/resourcemanager"
+	tf_sch "terraform-provider-oci/internal/service/sch"
+	tf_secrets "terraform-provider-oci/internal/service/secrets"
+	tf_service_catalog "terraform-provider-oci/internal/service/service_catalog"
+	tf_service_manager_proxy "terraform-provider-oci/internal/service/service_manager_proxy"
+	tf_service_mesh "terraform-provider-oci/internal/service/service_mesh"
+	tf_stack_monitoring "terraform-provider-oci/internal/service/stack_monitoring"
+	tf_streaming "terraform-provider-oci/internal/service/streaming"
+	tf_usage_proxy "terraform-provider-oci/internal/service/usage_proxy"
+	tf_vault "terraform-provider-oci/internal/service/vault"
+	tf_visual_builder "terraform-provider-oci/internal/service/visual_builder"
+	tf_vn_monitoring "terraform-provider-oci/internal/service/vn_monitoring"
+	tf_vulnerability_scanning "terraform-provider-oci/internal/service/vulnerability_scanning"
+	tf_waa "terraform-provider-oci/internal/service/waa"
+	tf_waas "terraform-provider-oci/internal/service/waas"
+	tf_waf "terraform-provider-oci/internal/service/waf"
 )
 
 func init() {
+	// adm service
+	RegisterDatasource("oci_adm_knowledge_base", tf_adm.AdmKnowledgeBaseDataSource())
+	RegisterDatasource("oci_adm_knowledge_bases", tf_adm.AdmKnowledgeBasesDataSource())
+	RegisterDatasource("oci_adm_vulnerability_audit", tf_adm.AdmVulnerabilityAuditDataSource())
+	RegisterDatasource("oci_adm_vulnerability_audits", tf_adm.AdmVulnerabilityAuditsDataSource())
+	RegisterDatasource("oci_adm_vulnerability_audit_application_dependency_vulnerability", tf_adm.AdmVulnerabilityAuditApplicationDependencyVulnerabilityDataSource())
+	RegisterDatasource("oci_adm_vulnerability_audit_application_dependency_vulnerabilities", tf_adm.AdmVulnerabilityAuditApplicationDependencyVulnerabilitiesDataSource())
 	// ai_anomaly_detection service
 	RegisterDatasource("oci_ai_anomaly_detection_ai_private_endpoint", tf_ai_anomaly_detection.AiAnomalyDetectionAiPrivateEndpointDataSource())
 	RegisterDatasource("oci_ai_anomaly_detection_ai_private_endpoints", tf_ai_anomaly_detection.AiAnomalyDetectionAiPrivateEndpointsDataSource())
@@ -121,6 +135,10 @@ func init() {
 	RegisterDatasource("oci_apigateway_deployments", tf_apigateway.ApigatewayDeploymentsDataSource())
 	RegisterDatasource("oci_apigateway_gateway", tf_apigateway.ApigatewayGatewayDataSource())
 	RegisterDatasource("oci_apigateway_gateways", tf_apigateway.ApigatewayGatewaysDataSource())
+	RegisterDatasource("oci_apigateway_subscriber", tf_apigateway.ApigatewaySubscriberDataSource())
+	RegisterDatasource("oci_apigateway_subscribers", tf_apigateway.ApigatewaySubscribersDataSource())
+	RegisterDatasource("oci_apigateway_usage_plan", tf_apigateway.ApigatewayUsagePlanDataSource())
+	RegisterDatasource("oci_apigateway_usage_plans", tf_apigateway.ApigatewayUsagePlansDataSource())
 	// apm service
 	RegisterDatasource("oci_apm_apm_domain", tf_apm.ApmApmDomainDataSource())
 	RegisterDatasource("oci_apm_apm_domains", tf_apm.ApmApmDomainsDataSource())
@@ -134,7 +152,10 @@ func init() {
 	// apm_config service
 	RegisterDatasource("oci_apm_config_config", tf_apm_config.ApmConfigConfigDataSource())
 	RegisterDatasource("oci_apm_config_configs", tf_apm_config.ApmConfigConfigsDataSource())
+
 	// apm_synthetics service
+	RegisterDatasource("oci_apm_synthetics_dedicated_vantage_points", tf_apm_synthetics.ApmSyntheticsDedicatedVantagePointsDataSource())
+	RegisterDatasource("oci_apm_synthetics_dedicated_vantage_point", tf_apm_synthetics.ApmSyntheticsDedicatedVantagePointDataSource())
 	RegisterDatasource("oci_apm_synthetics_monitor", tf_apm_synthetics.ApmSyntheticsMonitorDataSource())
 	RegisterDatasource("oci_apm_synthetics_monitors", tf_apm_synthetics.ApmSyntheticsMonitorsDataSource())
 	RegisterDatasource("oci_apm_synthetics_public_vantage_point", tf_apm_synthetics.ApmSyntheticsPublicVantagePointDataSource())
@@ -212,9 +233,15 @@ func init() {
 	RegisterDatasource("oci_cloud_guard_managed_list", tf_cloud_guard.CloudGuardManagedListDataSource())
 	RegisterDatasource("oci_cloud_guard_managed_lists", tf_cloud_guard.CloudGuardManagedListsDataSource())
 	RegisterDatasource("oci_cloud_guard_responder_recipe", tf_cloud_guard.CloudGuardResponderRecipeDataSource())
+	RegisterDatasource("oci_cloud_guard_security_policy", tf_cloud_guard.CloudGuardSecurityPolicyDataSource())
+	RegisterDatasource("oci_cloud_guard_security_recipe", tf_cloud_guard.CloudGuardSecurityRecipeDataSource())
+	RegisterDatasource("oci_cloud_guard_security_zone", tf_cloud_guard.CloudGuardSecurityZoneDataSource())
 	RegisterDatasource("oci_cloud_guard_responder_recipes", tf_cloud_guard.CloudGuardResponderRecipesDataSource())
 	RegisterDatasource("oci_cloud_guard_target", tf_cloud_guard.CloudGuardTargetDataSource())
 	RegisterDatasource("oci_cloud_guard_targets", tf_cloud_guard.CloudGuardTargetsDataSource())
+	RegisterDatasource("oci_cloud_guard_security_policies", tf_cloud_guard.CloudGuardSecurityPoliciesDataSource())
+	RegisterDatasource("oci_cloud_guard_security_recipes", tf_cloud_guard.CloudGuardSecurityRecipesDataSource())
+	RegisterDatasource("oci_cloud_guard_security_zones", tf_cloud_guard.CloudGuardSecurityZonesDataSource())
 	// computeinstanceagent service
 	RegisterDatasource("oci_computeinstanceagent_instance_agent_plugin", tf_computeinstanceagent.ComputeinstanceagentInstanceAgentPluginDataSource())
 	RegisterDatasource("oci_computeinstanceagent_instance_agent_plugins", tf_computeinstanceagent.ComputeinstanceagentInstanceAgentPluginsDataSource())
@@ -248,6 +275,8 @@ func init() {
 	RegisterDatasource("oci_core_byoip_allocated_ranges", tf_core.CoreByoipAllocatedRangesDataSource())
 	RegisterDatasource("oci_core_byoip_range", tf_core.CoreByoipRangeDataSource())
 	RegisterDatasource("oci_core_byoip_ranges", tf_core.CoreByoipRangesDataSource())
+	RegisterDatasource("oci_core_capture_filter", tf_core.CoreCaptureFilterDataSource())
+	RegisterDatasource("oci_core_capture_filters", tf_core.CoreCaptureFiltersDataSource())
 	RegisterDatasource("oci_core_cluster_network", tf_core.CoreClusterNetworkDataSource())
 	RegisterDatasource("oci_core_cluster_network_instances", tf_core.CoreClusterNetworkInstancesDataSource())
 	RegisterDatasource("oci_core_cluster_networks", tf_core.CoreClusterNetworksDataSource())
@@ -362,6 +391,8 @@ func init() {
 	RegisterDatasource("oci_core_volume_group_replicas", tf_core.CoreVolumeGroupReplicasDataSource())
 	RegisterDatasource("oci_core_volume_groups", tf_core.CoreVolumeGroupsDataSource())
 	RegisterDatasource("oci_core_volumes", tf_core.CoreVolumesDataSource())
+	RegisterDatasource("oci_core_vtap", tf_core.CoreVtapDataSource())
+	RegisterDatasource("oci_core_vtaps", tf_core.CoreVtapsDataSource())
 	// data_connectivity service
 	RegisterDatasource("oci_data_connectivity_registries", tf_data_connectivity.DataConnectivityRegistriesDataSource())
 	RegisterDatasource("oci_data_connectivity_registry", tf_data_connectivity.DataConnectivityRegistryDataSource())
@@ -469,6 +500,7 @@ func init() {
 	RegisterDatasource("oci_database_autonomous_container_patches", tf_database.DatabaseAutonomousContainerPatchesDataSource())
 	RegisterDatasource("oci_database_autonomous_database", tf_database.DatabaseAutonomousDatabaseDataSource())
 	RegisterDatasource("oci_database_autonomous_database_backup", tf_database.DatabaseAutonomousDatabaseBackupDataSource())
+	RegisterDatasource("oci_database_autonomous_database_character_sets", tf_database.DatabaseAutonomousDatabaseCharacterSetsDataSource())
 	RegisterDatasource("oci_database_autonomous_database_backups", tf_database.DatabaseAutonomousDatabaseBackupsDataSource())
 	RegisterDatasource("oci_database_autonomous_database_dataguard_association", tf_database.DatabaseAutonomousDatabaseDataguardAssociationDataSource())
 	RegisterDatasource("oci_database_autonomous_database_dataguard_associations", tf_database.DatabaseAutonomousDatabaseDataguardAssociationsDataSource())
@@ -516,10 +548,12 @@ func init() {
 	RegisterDatasource("oci_database_db_nodes", tf_database.DatabaseDbNodesDataSource())
 	RegisterDatasource("oci_database_db_server", tf_database.DatabaseDbServerDataSource())
 	RegisterDatasource("oci_database_db_servers", tf_database.DatabaseDbServersDataSource())
-	RegisterDatasource("oci_database_db_system_patch_history_entries", tf_database.DatabaseDbSystemPatchHistoryEntriesDataSource())
-	RegisterDatasource("oci_database_db_system_patches", tf_database.DatabaseDbSystemPatchesDataSource())
-	RegisterDatasource("oci_database_db_system_shapes", tf_database.DatabaseDbSystemShapesDataSource())
 	RegisterDatasource("oci_database_db_systems", tf_database.DatabaseDbSystemsDataSource())
+	RegisterDatasource("oci_database_db_system_compute_performances", tf_database.DatabaseDbSystemComputePerformancesDataSource())
+	RegisterDatasource("oci_database_db_system_patches", tf_database.DatabaseDbSystemPatchesDataSource())
+	RegisterDatasource("oci_database_db_system_patch_history_entries", tf_database.DatabaseDbSystemPatchHistoryEntriesDataSource())
+	RegisterDatasource("oci_database_db_system_shapes", tf_database.DatabaseDbSystemShapesDataSource())
+	RegisterDatasource("oci_database_db_system_storage_performances", tf_database.DatabaseDbSystemStoragePerformancesDataSource())
 	RegisterDatasource("oci_database_db_versions", tf_database.DatabaseDbVersionsDataSource())
 	RegisterDatasource("oci_database_exadata_infrastructure", tf_database.DatabaseExadataInfrastructureDataSource())
 	RegisterDatasource("oci_database_exadata_infrastructure_download_config_file", tf_database.DatabaseExadataInfrastructureDownloadConfigFileDataSource())
@@ -555,6 +589,8 @@ func init() {
 	RegisterDatasource("oci_database_vm_cluster_update_history_entry", tf_database.DatabaseVmClusterUpdateHistoryEntryDataSource())
 	RegisterDatasource("oci_database_vm_cluster_updates", tf_database.DatabaseVmClusterUpdatesDataSource())
 	RegisterDatasource("oci_database_vm_clusters", tf_database.DatabaseVmClustersDataSource())
+	RegisterDatasource("oci_database_db_systems_upgrade_history_entries", tf_database.DatabaseDbSystemsUpgradeHistoryEntriesDataSource())
+	RegisterDatasource("oci_database_db_systems_upgrade_history_entry", tf_database.DatabaseDbSystemsUpgradeHistoryEntryDataSource())
 	// database_management service
 	RegisterDatasource("oci_database_management_db_management_private_endpoint", tf_database_management.DatabaseManagementDbManagementPrivateEndpointDataSource())
 	RegisterDatasource("oci_database_management_db_management_private_endpoint_associated_database", tf_database_management.DatabaseManagementDbManagementPrivateEndpointAssociatedDatabaseDataSource())
@@ -563,6 +599,12 @@ func init() {
 	RegisterDatasource("oci_database_management_job_executions_status", tf_database_management.DatabaseManagementJobExecutionsStatusDataSource())
 	RegisterDatasource("oci_database_management_job_executions_statuses", tf_database_management.DatabaseManagementJobExecutionsStatusesDataSource())
 	RegisterDatasource("oci_database_management_managed_database", tf_database_management.DatabaseManagementManagedDatabaseDataSource())
+	RegisterDatasource("oci_database_management_managed_database_addm_task", tf_database_management.DatabaseManagementManagedDatabaseAddmTaskDataSource())
+	RegisterDatasource("oci_database_management_managed_database_addm_tasks", tf_database_management.DatabaseManagementManagedDatabaseAddmTasksDataSource())
+	RegisterDatasource("oci_database_management_managed_database_alert_log_count", tf_database_management.DatabaseManagementManagedDatabaseAlertLogCountDataSource())
+	RegisterDatasource("oci_database_management_managed_database_alert_log_counts", tf_database_management.DatabaseManagementManagedDatabaseAlertLogCountsDataSource())
+	RegisterDatasource("oci_database_management_managed_database_attention_log_count", tf_database_management.DatabaseManagementManagedDatabaseAttentionLogCountDataSource())
+	RegisterDatasource("oci_database_management_managed_database_attention_log_counts", tf_database_management.DatabaseManagementManagedDatabaseAttentionLogCountsDataSource())
 	RegisterDatasource("oci_database_management_managed_database_group", tf_database_management.DatabaseManagementManagedDatabaseGroupDataSource())
 	RegisterDatasource("oci_database_management_managed_database_groups", tf_database_management.DatabaseManagementManagedDatabaseGroupsDataSource())
 	RegisterDatasource("oci_database_management_managed_database_sql_tuning_advisor_task", tf_database_management.DatabaseManagementManagedDatabaseSqlTuningAdvisorTaskDataSource())
@@ -574,6 +616,8 @@ func init() {
 	RegisterDatasource("oci_database_management_managed_database_sql_tuning_advisor_tasks_recommendations", tf_database_management.DatabaseManagementManagedDatabaseSqlTuningAdvisorTasksRecommendationsDataSource())
 	RegisterDatasource("oci_database_management_managed_database_sql_tuning_advisor_tasks_sql_execution_plan", tf_database_management.DatabaseManagementManagedDatabaseSqlTuningAdvisorTasksSqlExecutionPlanDataSource())
 	RegisterDatasource("oci_database_management_managed_database_sql_tuning_advisor_tasks_summary_report", tf_database_management.DatabaseManagementManagedDatabaseSqlTuningAdvisorTasksSummaryReportDataSource())
+	RegisterDatasource("oci_database_management_managed_database_sql_tuning_set", tf_database_management.DatabaseManagementManagedDatabaseSqlTuningSetDataSource())
+	RegisterDatasource("oci_database_management_managed_database_sql_tuning_sets", tf_database_management.DatabaseManagementManagedDatabaseSqlTuningSetsDataSource())
 	RegisterDatasource("oci_database_management_managed_database_user", tf_database_management.DatabaseManagementManagedDatabaseUserDataSource())
 	RegisterDatasource("oci_database_management_managed_database_user_consumer_group_privilege", tf_database_management.DatabaseManagementManagedDatabaseUserConsumerGroupPrivilegeDataSource())
 	RegisterDatasource("oci_database_management_managed_database_user_consumer_group_privileges", tf_database_management.DatabaseManagementManagedDatabaseUserConsumerGroupPrivilegesDataSource())
@@ -690,6 +734,7 @@ func init() {
 	RegisterDatasource("oci_devops_repository_diffs", tf_devops.DevopsRepositoryDiffsDataSource())
 	RegisterDatasource("oci_devops_repository_file_diff", tf_devops.DevopsRepositoryFileDiffDataSource())
 	RegisterDatasource("oci_devops_repository_file_line", tf_devops.DevopsRepositoryFileLineDataSource())
+	RegisterDatasource("oci_devops_repo_file_line", tf_devops.DevopsRepoFileLineDataSource())
 	RegisterDatasource("oci_devops_repository_mirror_record", tf_devops.DevopsRepositoryMirrorRecordDataSource())
 	RegisterDatasource("oci_devops_repository_mirror_records", tf_devops.DevopsRepositoryMirrorRecordsDataSource())
 	RegisterDatasource("oci_devops_repository_mirrorrecord", tf_devops.DevopsRepositoryMirrorrecordDataSource())
@@ -720,6 +765,12 @@ func init() {
 	RegisterDatasource("oci_dns_view", tf_dns.DnsViewDataSource())
 	RegisterDatasource("oci_dns_views", tf_dns.DnsViewsDataSource())
 	RegisterDatasource("oci_dns_zones", tf_dns.DnsZonesDataSource())
+	// em_warehouse service
+	RegisterDatasource("oci_em_warehouse_em_warehouse", tf_em_warehouse.EmWarehouseEmWarehouseDataSource())
+	RegisterDatasource("oci_em_warehouse_em_warehouse_etl_run", tf_em_warehouse.EmWarehouseEmWarehouseEtlRunDataSource())
+	RegisterDatasource("oci_em_warehouse_em_warehouse_etl_runs", tf_em_warehouse.EmWarehouseEmWarehouseEtlRunsDataSource())
+	RegisterDatasource("oci_em_warehouse_em_warehouse_resource_usage", tf_em_warehouse.EmWarehouseEmWarehouseResourceUsageDataSource())
+	RegisterDatasource("oci_em_warehouse_em_warehouses", tf_em_warehouse.EmWarehouseEmWarehousesDataSource())
 	// email service
 	RegisterDatasource("oci_email_dkim", tf_email.EmailDkimDataSource())
 	RegisterDatasource("oci_email_dkims", tf_email.EmailDkimsDataSource())
@@ -831,6 +882,16 @@ func init() {
 	RegisterDatasource("oci_kms_vault_replicas", tf_kms.KmsVaultReplicasDataSource())
 	RegisterDatasource("oci_kms_vault_usage", tf_kms.KmsVaultUsageDataSource())
 	RegisterDatasource("oci_kms_vaults", tf_kms.KmsVaultsDataSource())
+	// license_manager service
+	RegisterDatasource("oci_license_manager_configuration", tf_license_manager.LicenseManagerConfigurationDataSource())
+	RegisterDatasource("oci_license_manager_license_metric", tf_license_manager.LicenseManagerLicenseMetricDataSource())
+	RegisterDatasource("oci_license_manager_license_record", tf_license_manager.LicenseManagerLicenseRecordDataSource())
+	RegisterDatasource("oci_license_manager_license_records", tf_license_manager.LicenseManagerLicenseRecordsDataSource())
+	RegisterDatasource("oci_license_manager_product_license", tf_license_manager.LicenseManagerProductLicenseDataSource())
+	RegisterDatasource("oci_license_manager_product_license_consumers", tf_license_manager.LicenseManagerProductLicenseConsumersDataSource())
+	RegisterDatasource("oci_license_manager_product_licenses", tf_license_manager.LicenseManagerProductLicensesDataSource())
+	RegisterDatasource("oci_license_manager_top_utilized_product_licenses", tf_license_manager.LicenseManagerTopUtilizedProductLicensesDataSource())
+	RegisterDatasource("oci_license_manager_top_utilized_resources", tf_license_manager.LicenseManagerTopUtilizedResourcesDataSource())
 	// limits service
 	RegisterDatasource("oci_limits_limit_definitions", tf_limits.LimitsLimitDefinitionsDataSource())
 	RegisterDatasource("oci_limits_limit_values", tf_limits.LimitsLimitValuesDataSource())
@@ -921,6 +982,10 @@ func init() {
 	RegisterDatasource("oci_metering_computation_custom_tables", tf_metering_computation.MeteringComputationCustomTablesDataSource())
 	RegisterDatasource("oci_metering_computation_queries", tf_metering_computation.MeteringComputationQueriesDataSource())
 	RegisterDatasource("oci_metering_computation_query", tf_metering_computation.MeteringComputationQueryDataSource())
+	RegisterDatasource("oci_metering_computation_schedule", tf_metering_computation.MeteringComputationScheduleDataSource())
+	RegisterDatasource("oci_metering_computation_scheduled_run", tf_metering_computation.MeteringComputationScheduledRunDataSource())
+	RegisterDatasource("oci_metering_computation_scheduled_runs", tf_metering_computation.MeteringComputationScheduledRunsDataSource())
+	RegisterDatasource("oci_metering_computation_schedules", tf_metering_computation.MeteringComputationSchedulesDataSource())
 	// monitoring service
 	RegisterDatasource("oci_monitoring_alarm", tf_monitoring.MonitoringAlarmDataSource())
 	RegisterDatasource("oci_monitoring_alarm_history_collection", tf_monitoring.MonitoringAlarmHistoryCollectionDataSource())
@@ -988,6 +1053,20 @@ func init() {
 	// oda service
 	RegisterDatasource("oci_oda_oda_instance", tf_oda.OdaOdaInstanceDataSource())
 	RegisterDatasource("oci_oda_oda_instances", tf_oda.OdaOdaInstancesDataSource())
+	// onesubscription service
+	RegisterDatasource("oci_onesubscription_aggregated_computed_usages", tf_onesubscription.OnesubscriptionAggregatedComputedUsagesDataSource())
+	RegisterDatasource("oci_onesubscription_billing_schedules", tf_onesubscription.OnesubscriptionBillingSchedulesDataSource())
+	RegisterDatasource("oci_onesubscription_commitment", tf_onesubscription.OnesubscriptionCommitmentDataSource())
+	RegisterDatasource("oci_onesubscription_commitments", tf_onesubscription.OnesubscriptionCommitmentsDataSource())
+	RegisterDatasource("oci_onesubscription_computed_usage", tf_onesubscription.OnesubscriptionComputedUsageDataSource())
+	RegisterDatasource("oci_onesubscription_computed_usages", tf_onesubscription.OnesubscriptionComputedUsagesDataSource())
+	RegisterDatasource("oci_onesubscription_invoice_line_computed_usages", tf_onesubscription.OnesubscriptionInvoiceLineComputedUsagesDataSource())
+	RegisterDatasource("oci_onesubscription_invoices", tf_onesubscription.OnesubscriptionInvoicesDataSource())
+	RegisterDatasource("oci_onesubscription_organization_subscriptions", tf_onesubscription.OnesubscriptionOrganizationSubscriptionsDataSource())
+	RegisterDatasource("oci_onesubscription_ratecards", tf_onesubscription.OnesubscriptionRatecardsDataSource())
+	RegisterDatasource("oci_onesubscription_subscribed_service", tf_onesubscription.OnesubscriptionSubscribedServiceDataSource())
+	RegisterDatasource("oci_onesubscription_subscribed_services", tf_onesubscription.OnesubscriptionSubscribedServicesDataSource())
+	RegisterDatasource("oci_onesubscription_subscriptions", tf_onesubscription.OnesubscriptionSubscriptionsDataSource())
 	// ons service
 	RegisterDatasource("oci_ons_notification_topic", tf_ons.OnsNotificationTopicDataSource())
 	RegisterDatasource("oci_ons_notification_topics", tf_ons.OnsNotificationTopicsDataSource())
@@ -1045,8 +1124,13 @@ func init() {
 	RegisterDatasource("oci_osmanagement_managed_instance_event_report", tf_osmanagement.OsmanagementManagedInstanceEventReportDataSource())
 	RegisterDatasource("oci_osmanagement_managed_instance_group", tf_osmanagement.OsmanagementManagedInstanceGroupDataSource())
 	RegisterDatasource("oci_osmanagement_managed_instance_groups", tf_osmanagement.OsmanagementManagedInstanceGroupsDataSource())
+	RegisterDatasource("oci_osmanagement_managed_instance_module_streams", tf_osmanagement.OsmanagementManagedInstanceModuleStreamsDataSource())
+	RegisterDatasource("oci_osmanagement_managed_instance_stream_profiles", tf_osmanagement.OsmanagementManagedInstanceStreamProfilesDataSource())
 	RegisterDatasource("oci_osmanagement_managed_instances", tf_osmanagement.OsmanagementManagedInstancesDataSource())
 	RegisterDatasource("oci_osmanagement_software_source", tf_osmanagement.OsmanagementSoftwareSourceDataSource())
+	RegisterDatasource("oci_osmanagement_software_source_module_stream", tf_osmanagement.OsmanagementSoftwareSourceModuleStreamDataSource())
+	RegisterDatasource("oci_osmanagement_software_source_module_stream_profile", tf_osmanagement.OsmanagementSoftwareSourceModuleStreamProfileDataSource())
+	RegisterDatasource("oci_osmanagement_software_source_stream_profiles", tf_osmanagement.OsmanagementSoftwareSourceStreamProfilesDataSource())
 	RegisterDatasource("oci_osmanagement_software_sources", tf_osmanagement.OsmanagementSoftwareSourcesDataSource())
 	//osp_gateway
 	RegisterDatasource("oci_osp_gateway_invoice", tf_osp_gateway.OspGatewayInvoiceDataSource())
@@ -1069,6 +1153,9 @@ func init() {
 	RegisterDatasource("oci_osub_usage_computed_usage_aggregateds", tf_osub_usage.OsubUsageComputedUsageAggregatedsDataSource())
 	RegisterDatasource("oci_osub_usage_computed_usages", tf_osub_usage.OsubUsageComputedUsagesDataSource())
 	// resourcemanager service
+	RegisterDatasource("oci_resourcemanager_private_endpoint", tf_resourcemanager.ResourcemanagerPrivateEndpointDataSource())
+	RegisterDatasource("oci_resourcemanager_private_endpoint_reachable_ip", tf_resourcemanager.ResourcemanagerPrivateEndpointReachableIpDataSource())
+	RegisterDatasource("oci_resourcemanager_private_endpoints", tf_resourcemanager.ResourcemanagerPrivateEndpointsDataSource())
 	RegisterDatasource("oci_resourcemanager_stack", tf_resourcemanager.ResourcemanagerStackDataSource())
 	RegisterDatasource("oci_resourcemanager_stack_tf_state", tf_resourcemanager.ResourcemanagerStackTfStateDataSource())
 	RegisterDatasource("oci_resourcemanager_stacks", tf_resourcemanager.ResourcemanagerStacksDataSource())
@@ -1090,6 +1177,22 @@ func init() {
 	// service_manager_proxy service
 	RegisterDatasource("oci_service_manager_proxy_service_environment", tf_service_manager_proxy.ServiceManagerProxyServiceEnvironmentDataSource())
 	RegisterDatasource("oci_service_manager_proxy_service_environments", tf_service_manager_proxy.ServiceManagerProxyServiceEnvironmentsDataSource())
+	// service_mesh service
+	RegisterDatasource("oci_service_mesh_access_policies", tf_service_mesh.ServiceMeshAccessPoliciesDataSource())
+	RegisterDatasource("oci_service_mesh_access_policy", tf_service_mesh.ServiceMeshAccessPolicyDataSource())
+	RegisterDatasource("oci_service_mesh_ingress_gateway", tf_service_mesh.ServiceMeshIngressGatewayDataSource())
+	RegisterDatasource("oci_service_mesh_ingress_gateway_route_table", tf_service_mesh.ServiceMeshIngressGatewayRouteTableDataSource())
+	RegisterDatasource("oci_service_mesh_ingress_gateway_route_tables", tf_service_mesh.ServiceMeshIngressGatewayRouteTablesDataSource())
+	RegisterDatasource("oci_service_mesh_ingress_gateways", tf_service_mesh.ServiceMeshIngressGatewaysDataSource())
+	RegisterDatasource("oci_service_mesh_mesh", tf_service_mesh.ServiceMeshMeshDataSource())
+	RegisterDatasource("oci_service_mesh_meshes", tf_service_mesh.ServiceMeshMeshesDataSource())
+	RegisterDatasource("oci_service_mesh_proxy_detail", tf_service_mesh.ServiceMeshProxyDetailDataSource())
+	RegisterDatasource("oci_service_mesh_virtual_deployment", tf_service_mesh.ServiceMeshVirtualDeploymentDataSource())
+	RegisterDatasource("oci_service_mesh_virtual_deployments", tf_service_mesh.ServiceMeshVirtualDeploymentsDataSource())
+	RegisterDatasource("oci_service_mesh_virtual_service", tf_service_mesh.ServiceMeshVirtualServiceDataSource())
+	RegisterDatasource("oci_service_mesh_virtual_service_route_table", tf_service_mesh.ServiceMeshVirtualServiceRouteTableDataSource())
+	RegisterDatasource("oci_service_mesh_virtual_service_route_tables", tf_service_mesh.ServiceMeshVirtualServiceRouteTablesDataSource())
+	RegisterDatasource("oci_service_mesh_virtual_services", tf_service_mesh.ServiceMeshVirtualServicesDataSource())
 	// stack_monitoring service
 	RegisterDatasource("oci_stack_monitoring_discovery_job", tf_stack_monitoring.StackMonitoringDiscoveryJobDataSource())
 	RegisterDatasource("oci_stack_monitoring_discovery_jobs", tf_stack_monitoring.StackMonitoringDiscoveryJobsDataSource())
@@ -1117,6 +1220,11 @@ func init() {
 	RegisterDatasource("oci_visual_builder_vb_instance", tf_visual_builder.VisualBuilderVbInstanceDataSource())
 	RegisterDatasource("oci_visual_builder_vb_instances", tf_visual_builder.VisualBuilderVbInstancesDataSource())
 	RegisterDatasource("oci_visual_builder_vb_instance_applications", tf_visual_builder.VisualBuilderVbInstanceApplicationsDataSource())
+
+	// vn_monitoring service
+	RegisterDatasource("oci_vn_monitoring_path_analyzer_test", tf_vn_monitoring.VnMonitoringPathAnalyzerTestDataSource())
+	RegisterDatasource("oci_vn_monitoring_path_analyzer_tests", tf_vn_monitoring.VnMonitoringPathAnalyzerTestsDataSource())
+
 	// vulnerability_scanning service
 	RegisterDatasource("oci_vulnerability_scanning_container_scan_recipe", tf_vulnerability_scanning.VulnerabilityScanningContainerScanRecipeDataSource())
 	RegisterDatasource("oci_vulnerability_scanning_container_scan_recipes", tf_vulnerability_scanning.VulnerabilityScanningContainerScanRecipesDataSource())
@@ -1126,6 +1234,11 @@ func init() {
 	RegisterDatasource("oci_vulnerability_scanning_host_scan_recipes", tf_vulnerability_scanning.VulnerabilityScanningHostScanRecipesDataSource())
 	RegisterDatasource("oci_vulnerability_scanning_host_scan_target", tf_vulnerability_scanning.VulnerabilityScanningHostScanTargetDataSource())
 	RegisterDatasource("oci_vulnerability_scanning_host_scan_targets", tf_vulnerability_scanning.VulnerabilityScanningHostScanTargetsDataSource())
+	// waa service
+	RegisterDatasource("oci_waa_web_app_acceleration", tf_waa.WaaWebAppAccelerationDataSource())
+	RegisterDatasource("oci_waa_web_app_acceleration_policies", tf_waa.WaaWebAppAccelerationPoliciesDataSource())
+	RegisterDatasource("oci_waa_web_app_acceleration_policy", tf_waa.WaaWebAppAccelerationPolicyDataSource())
+	RegisterDatasource("oci_waa_web_app_accelerations", tf_waa.WaaWebAppAccelerationsDataSource())
 	// waas service
 	RegisterDatasource("oci_waas_address_list", tf_waas.WaasAddressListDataSource())
 	RegisterDatasource("oci_waas_address_lists", tf_waas.WaasAddressListsDataSource())

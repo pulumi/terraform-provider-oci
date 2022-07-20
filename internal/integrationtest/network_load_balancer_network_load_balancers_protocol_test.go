@@ -6,17 +6,17 @@ package integrationtest
 import (
 	"testing"
 
-	"github.com/terraform-providers/terraform-provider-oci/internal/acctest"
+	"terraform-provider-oci/internal/acctest"
 
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/resource"
 
-	"github.com/terraform-providers/terraform-provider-oci/httpreplay"
+	"terraform-provider-oci/httpreplay"
 )
 
 var (
-	networkLoadBalancersProtocolDataSourceRepresentation = map[string]interface{}{}
+	NetworkLoadBalancerNetworkLoadBalancerNetworkLoadBalancersProtocolDataSourceRepresentation = map[string]interface{}{}
 
-	NetworkLoadBalancersProtocolResourceConfig = ""
+	NetworkLoadBalancerNetworkLoadBalancersProtocolResourceConfig = ""
 )
 
 // issue-routing-tag: network_load_balancer/default
@@ -32,8 +32,8 @@ func TestNetworkLoadBalancerNetworkLoadBalancersProtocolResource_basic(t *testin
 		// verify datasource
 		{
 			Config: config +
-				acctest.GenerateDataSourceFromRepresentationMap("oci_network_load_balancer_network_load_balancers_protocols", "test_network_load_balancers_protocols", acctest.Required, acctest.Create, networkLoadBalancersProtocolDataSourceRepresentation) +
-				NetworkLoadBalancersProtocolResourceConfig,
+				acctest.GenerateDataSourceFromRepresentationMap("oci_network_load_balancer_network_load_balancers_protocols", "test_network_load_balancers_protocols", acctest.Required, acctest.Create, NetworkLoadBalancerNetworkLoadBalancerNetworkLoadBalancersProtocolDataSourceRepresentation) +
+				NetworkLoadBalancerNetworkLoadBalancersProtocolResourceConfig,
 			Check: acctest.ComposeAggregateTestCheckFuncWrapper(
 				resource.TestCheckResourceAttrSet(datasourceName, "network_load_balancers_protocol_collection.#"),
 				resource.TestCheckResourceAttr(datasourceName, "network_load_balancers_protocol_collection.0.items.#", "3"),

@@ -7,8 +7,8 @@ import (
 	"context"
 	"strconv"
 
-	"github.com/terraform-providers/terraform-provider-oci/internal/client"
-	"github.com/terraform-providers/terraform-provider-oci/internal/tfresource"
+	"terraform-provider-oci/internal/client"
+	"terraform-provider-oci/internal/tfresource"
 
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
 	oci_functions "github.com/oracle/oci-go-sdk/v65/functions"
@@ -152,6 +152,16 @@ func (s *FunctionsFunctionsDataSourceCrud) SetData() error {
 
 		if r.MemoryInMBs != nil {
 			function["memory_in_mbs"] = strconv.FormatInt(*r.MemoryInMBs, 10)
+		}
+
+		if r.ProvisionedConcurrencyConfig != nil {
+			provisionedConcurrencyConfigArray := []interface{}{}
+			if provisionedConcurrencyConfigMap := FunctionProvisionedConcurrencyConfigToMap(&r.ProvisionedConcurrencyConfig); provisionedConcurrencyConfigMap != nil {
+				provisionedConcurrencyConfigArray = append(provisionedConcurrencyConfigArray, provisionedConcurrencyConfigMap)
+			}
+			function["provisioned_concurrency_config"] = provisionedConcurrencyConfigArray
+		} else {
+			function["provisioned_concurrency_config"] = nil
 		}
 
 		function["state"] = r.LifecycleState

@@ -11,8 +11,8 @@ import (
 	"regexp"
 	"strings"
 
-	"github.com/terraform-providers/terraform-provider-oci/internal/client"
-	"github.com/terraform-providers/terraform-provider-oci/internal/tfresource"
+	"terraform-provider-oci/internal/client"
+	"terraform-provider-oci/internal/tfresource"
 
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/validation"
@@ -171,6 +171,18 @@ func (s *DnsResolverEndpointResourceCrud) CreatedPending() []string {
 }
 
 func (s *DnsResolverEndpointResourceCrud) CreatedTarget() []string {
+	return []string{
+		string(oci_dns.ResolverEndpointLifecycleStateActive),
+	}
+}
+
+func (s *DnsResolverEndpointResourceCrud) UpdatedPending() []string {
+	return []string{
+		string(oci_dns.ResolverEndpointLifecycleStateUpdating),
+	}
+}
+
+func (s *DnsResolverEndpointResourceCrud) UpdatedTarget() []string {
 	return []string{
 		string(oci_dns.ResolverEndpointLifecycleStateActive),
 	}

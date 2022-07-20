@@ -7,8 +7,8 @@ import (
 	"context"
 	"log"
 
-	"github.com/terraform-providers/terraform-provider-oci/internal/client"
-	"github.com/terraform-providers/terraform-provider-oci/internal/tfresource"
+	"terraform-provider-oci/internal/client"
+	"terraform-provider-oci/internal/tfresource"
 
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
 	oci_devops "github.com/oracle/oci-go-sdk/v65/devops"
@@ -108,6 +108,8 @@ func (s *DevopsConnectionDataSourceCrud) SetData() error {
 		s.D.Set("connection_type", "GITHUB_ACCESS_TOKEN")
 	case oci_devops.GitlabAccessTokenConnection:
 		s.D.Set("connection_type", "GITLAB_ACCESS_TOKEN")
+	case oci_devops.BitbucketCloudAppPasswordConnection:
+		s.D.Set("connection_type", "BITBUCKET_CLOUD_APP_PASSWORD")
 	default:
 		log.Printf("[WARN] Received 'connection_type' of unknown type %v", v)
 		return nil

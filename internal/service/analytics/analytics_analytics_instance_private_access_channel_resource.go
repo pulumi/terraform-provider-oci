@@ -12,8 +12,8 @@ import (
 	"strings"
 	"time"
 
-	"github.com/terraform-providers/terraform-provider-oci/internal/client"
-	"github.com/terraform-providers/terraform-provider-oci/internal/tfresource"
+	"terraform-provider-oci/internal/client"
+	"terraform-provider-oci/internal/tfresource"
 
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/resource"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
@@ -484,10 +484,9 @@ func (s *AnalyticsAnalyticsInstancePrivateAccessChannelResourceCrud) Delete() er
 
 func (s *AnalyticsAnalyticsInstancePrivateAccessChannelResourceCrud) SetData() error {
 
-	analyticsInstanceId, privateAccessChannelKey, err := parseAnalyticsInstancePrivateAccessChannelCompositeId(s.D.Id())
+	analyticsInstanceId, _, err := parseAnalyticsInstancePrivateAccessChannelCompositeId(s.D.Id())
 	if err == nil {
 		s.D.Set("analytics_instance_id", &analyticsInstanceId)
-		s.D.Set("private_access_channel_key", &privateAccessChannelKey)
 	} else {
 		log.Printf("[WARN] SetData() unable to parse current ID: %s", s.D.Id())
 	}

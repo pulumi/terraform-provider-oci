@@ -7,20 +7,20 @@ import (
 	"fmt"
 	"testing"
 
-	"github.com/terraform-providers/terraform-provider-oci/internal/acctest"
-	"github.com/terraform-providers/terraform-provider-oci/internal/utils"
+	"terraform-provider-oci/internal/acctest"
+	"terraform-provider-oci/internal/utils"
 
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/resource"
 
-	"github.com/terraform-providers/terraform-provider-oci/httpreplay"
+	"terraform-provider-oci/httpreplay"
 )
 
 var (
-	modelDeploymentShapeDataSourceRepresentation = map[string]interface{}{
+	DatascienceDatascienceModelDeploymentShapeDataSourceRepresentation = map[string]interface{}{
 		"compartment_id": acctest.Representation{RepType: acctest.Required, Create: `${var.compartment_id}`},
 	}
 
-	ModelDeploymentShapeResourceConfig = ""
+	DatascienceModelDeploymentShapeResourceConfig = ""
 )
 
 // issue-routing-tag: datascience/default
@@ -39,8 +39,8 @@ func TestDatascienceModelDeploymentShapeResource_basic(t *testing.T) {
 		// verify datasource
 		{
 			Config: config +
-				acctest.GenerateDataSourceFromRepresentationMap("oci_datascience_model_deployment_shapes", "test_model_deployment_shapes", acctest.Required, acctest.Create, modelDeploymentShapeDataSourceRepresentation) +
-				compartmentIdVariableStr + ModelDeploymentShapeResourceConfig,
+				acctest.GenerateDataSourceFromRepresentationMap("oci_datascience_model_deployment_shapes", "test_model_deployment_shapes", acctest.Required, acctest.Create, DatascienceDatascienceModelDeploymentShapeDataSourceRepresentation) +
+				compartmentIdVariableStr + DatascienceModelDeploymentShapeResourceConfig,
 			Check: acctest.ComposeAggregateTestCheckFuncWrapper(
 				resource.TestCheckResourceAttr(datasourceName, "compartment_id", compartmentId),
 

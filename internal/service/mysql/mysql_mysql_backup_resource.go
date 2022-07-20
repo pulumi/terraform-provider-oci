@@ -8,8 +8,8 @@ import (
 
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
 
-	"github.com/terraform-providers/terraform-provider-oci/internal/client"
-	"github.com/terraform-providers/terraform-provider-oci/internal/tfresource"
+	"terraform-provider-oci/internal/client"
+	"terraform-provider-oci/internal/tfresource"
 
 	oci_mysql "github.com/oracle/oci-go-sdk/v65/mysql"
 )
@@ -132,6 +132,23 @@ func MysqlMysqlBackupResource() *schema.Resource {
 									"is_enabled": {
 										Type:     schema.TypeBool,
 										Computed: true,
+									},
+									"pitr_policy": {
+										Type:     schema.TypeList,
+										Computed: true,
+										Elem: &schema.Resource{
+											Schema: map[string]*schema.Schema{
+												// Required
+
+												// Optional
+
+												// Computed
+												"is_enabled": {
+													Type:     schema.TypeBool,
+													Computed: true,
+												},
+											},
+										},
 									},
 									"retention_in_days": {
 										Type:     schema.TypeInt,
@@ -522,12 +539,13 @@ func (s *MysqlMysqlBackupResourceCrud) Update() error {
 
 	request.RequestMetadata.RetryPolicy = tfresource.GetRetryPolicy(s.DisableNotFoundRetries, "mysql")
 
-	_, err := s.Client.UpdateBackup(context.Background(), request)
+	response, err := s.Client.UpdateBackup(context.Background(), request)
 	if err != nil {
 		return err
 	}
 
-	return s.Get()
+	s.Res = &response.Backup
+	return nil
 }
 
 func (s *MysqlMysqlBackupResourceCrud) Delete() error {
@@ -623,6 +641,10 @@ func BackupPolicyToMap(obj *oci_mysql.BackupPolicy) map[string]interface{} {
 
 	if obj.IsEnabled != nil {
 		result["is_enabled"] = bool(*obj.IsEnabled)
+	}
+
+	if obj.PitrPolicy != nil {
+		result["pitr_policy"] = []interface{}{PitrPolicyToMap(obj.PitrPolicy)}
 	}
 
 	if obj.RetentionInDays != nil {

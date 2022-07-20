@@ -10,9 +10,9 @@ import (
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/resource"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
 
-	"github.com/terraform-providers/terraform-provider-oci/httpreplay"
-	"github.com/terraform-providers/terraform-provider-oci/internal/acctest"
-	"github.com/terraform-providers/terraform-provider-oci/internal/utils"
+	"terraform-provider-oci/httpreplay"
+	"terraform-provider-oci/internal/acctest"
+	"terraform-provider-oci/internal/utils"
 )
 
 var (
@@ -41,7 +41,7 @@ var (
 	onDemandToPrevisonTableRepresentation  = acctest.RepresentationCopyWithNewProperties(
 		onDemandNoLfcTableLimitsRepresentation,
 		map[string]interface{}{
-			"table_limits": acctest.RepresentationGroup{RepType: acctest.Required, Group: tableTableLimitsRepresentation},
+			"table_limits": acctest.RepresentationGroup{RepType: acctest.Required, Group: NosqlTableTableLimitsRepresentation},
 		},
 	)
 

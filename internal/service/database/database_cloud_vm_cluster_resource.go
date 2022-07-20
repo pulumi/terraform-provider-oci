@@ -7,12 +7,16 @@ import (
 	"context"
 	"strconv"
 
-	"github.com/terraform-providers/terraform-provider-oci/internal/client"
-	"github.com/terraform-providers/terraform-provider-oci/internal/tfresource"
+	"fmt"
+	"log"
+
+	"terraform-provider-oci/internal/client"
+	"terraform-provider-oci/internal/tfresource"
 
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
 
 	oci_database "github.com/oracle/oci-go-sdk/v65/database"
+	oci_work_requests "github.com/oracle/oci-go-sdk/v65/workrequests"
 )
 
 func DatabaseCloudVmClusterResource() *schema.Resource {
@@ -98,6 +102,27 @@ func DatabaseCloudVmClusterResource() *schema.Resource {
 				Optional: true,
 				Computed: true,
 				ForceNew: true,
+			},
+			"data_collection_options": {
+				Type:     schema.TypeList,
+				Optional: true,
+				Computed: true,
+				MaxItems: 1,
+				MinItems: 1,
+				Elem: &schema.Resource{
+					Schema: map[string]*schema.Schema{
+						// Required
+
+						// Optional
+						"is_diagnostics_events_enabled": {
+							Type:     schema.TypeBool,
+							Optional: true,
+							Computed: true,
+						},
+
+						// Computed
+					},
+				},
 			},
 			"data_storage_percentage": {
 				Type:     schema.TypeInt,
@@ -303,6 +328,7 @@ func createDatabaseCloudVmCluster(d *schema.ResourceData, m interface{}) error {
 	sync := &DatabaseCloudVmClusterResourceCrud{}
 	sync.D = d
 	sync.Client = m.(*client.OracleClients).DatabaseClient()
+	sync.WorkRequestClient = m.(*client.OracleClients).WorkRequestClient
 
 	return tfresource.CreateResource(d, sync)
 }
@@ -311,6 +337,7 @@ func readDatabaseCloudVmCluster(d *schema.ResourceData, m interface{}) error {
 	sync := &DatabaseCloudVmClusterResourceCrud{}
 	sync.D = d
 	sync.Client = m.(*client.OracleClients).DatabaseClient()
+	sync.WorkRequestClient = m.(*client.OracleClients).WorkRequestClient
 
 	return tfresource.ReadResource(sync)
 }
@@ -319,6 +346,7 @@ func updateDatabaseCloudVmCluster(d *schema.ResourceData, m interface{}) error {
 	sync := &DatabaseCloudVmClusterResourceCrud{}
 	sync.D = d
 	sync.Client = m.(*client.OracleClients).DatabaseClient()
+	sync.WorkRequestClient = m.(*client.OracleClients).WorkRequestClient
 
 	return tfresource.UpdateResource(d, sync)
 }
@@ -327,6 +355,7 @@ func deleteDatabaseCloudVmCluster(d *schema.ResourceData, m interface{}) error {
 	sync := &DatabaseCloudVmClusterResourceCrud{}
 	sync.D = d
 	sync.Client = m.(*client.OracleClients).DatabaseClient()
+	sync.WorkRequestClient = m.(*client.OracleClients).WorkRequestClient
 	sync.DisableNotFoundRetries = true
 
 	return tfresource.DeleteResource(d, sync)
@@ -335,7 +364,9 @@ func deleteDatabaseCloudVmCluster(d *schema.ResourceData, m interface{}) error {
 type DatabaseCloudVmClusterResourceCrud struct {
 	tfresource.BaseCrud
 	Client                 *oci_database.DatabaseClient
+	WorkRequestClient      *oci_work_requests.WorkRequestClient
 	Res                    *oci_database.CloudVmCluster
+	Infra                  *oci_database.CloudExadataInfrastructure
 	DisableNotFoundRetries bool
 }
 
@@ -429,6 +460,17 @@ func (s *DatabaseCloudVmClusterResourceCrud) Create() error {
 	if cpuCoreCount, ok := s.D.GetOkExists("cpu_core_count"); ok {
 		tmp := cpuCoreCount.(int)
 		request.CpuCoreCount = &tmp
+	}
+
+	if dataCollectionOptions, ok := s.D.GetOkExists("data_collection_options"); ok {
+		if tmpList := dataCollectionOptions.([]interface{}); len(tmpList) > 0 {
+			fieldKeyFormat := fmt.Sprintf("%s.%d.%%s", "data_collection_options", 0)
+			tmp, err := s.mapToDataCollectionOptions(fieldKeyFormat)
+			if err != nil {
+				return err
+			}
+			request.DataCollectionOptions = &tmp
+		}
 	}
 
 	if dataStoragePercentage, ok := s.D.GetOkExists("data_storage_percentage"); ok {
@@ -541,6 +583,14 @@ func (s *DatabaseCloudVmClusterResourceCrud) Create() error {
 		return err
 	}
 
+	workId := response.OpcWorkRequestId
+	if workId != nil {
+		_, err = tfresource.WaitForWorkRequestWithErrorHandling(s.WorkRequestClient, workId, "cloudVmCluster", oci_work_requests.WorkRequestResourceActionTypeCreated, s.D.Timeout(schema.TimeoutCreate), s.DisableNotFoundRetries)
+		if err != nil {
+			return err
+		}
+	}
+
 	s.Res = &response.CloudVmCluster
 	return nil
 }
@@ -591,22 +641,51 @@ func (s *DatabaseCloudVmClusterResourceCrud) Update() error {
 	tmp := s.D.Id()
 	request.CloudVmClusterId = &tmp
 
-	if computeNodes, ok := s.D.GetOkExists("compute_nodes"); ok {
-		interfaces := computeNodes.([]interface{})
-		tmp := make([]string, len(interfaces))
-		for i := range interfaces {
-			if interfaces[i] != nil {
-				tmp[i] = interfaces[i].(string)
+	if cloudExadataInfrastructureId, ok := s.D.GetOkExists("cloud_exadata_infrastructure_id"); ok {
+		if s.Infra == nil || s.Infra.Id == nil {
+			err := s.getInfraInfo(cloudExadataInfrastructureId.(string))
+			if err != nil {
+				log.Printf("[ERROR] Could not get Cloud Exadata Infrastructure info for the : %v", err)
 			}
 		}
-		if len(tmp) != 0 || s.D.HasChange("compute_nodes") {
-			request.ComputeNodes = tmp
+	}
+
+	if nodeCount, ok := s.D.GetOkExists("node_count"); ok {
+		if *s.Infra.ComputeCount != nodeCount {
+			request.ComputeNodes = []string{"ALL"}
+		} else {
+			request.ComputeNodes = []string{}
+			if shape, ok := s.D.GetOkExists("shape"); ok {
+				flexShape := shape.(string) + ".StorageServer"
+
+				if compartmentId, compOk := s.D.GetOkExists("compartment_id"); compOk {
+					flex, err := s.flexAvailableDbStorageInGBs(compartmentId.(string), flexShape)
+
+					if err == nil {
+						if storageSizeInGBs, ok := s.D.GetOkExists("storage_size_in_gbs"); ok {
+							tmp := flex**s.Infra.StorageCount - storageSizeInGBs.(int)
+							request.StorageSizeInGBs = &tmp
+						}
+					}
+				}
+			}
 		}
 	}
 
 	if cpuCoreCount, ok := s.D.GetOkExists("cpu_core_count"); ok && s.D.HasChange("cpu_core_count") {
 		tmp := cpuCoreCount.(int)
 		request.CpuCoreCount = &tmp
+	}
+
+	if dataCollectionOptions, ok := s.D.GetOkExists("data_collection_options"); ok {
+		if tmpList := dataCollectionOptions.([]interface{}); len(tmpList) > 0 {
+			fieldKeyFormat := fmt.Sprintf("%s.%d.%%s", "data_collection_options", 0)
+			tmp, err := s.mapToDataCollectionOptions(fieldKeyFormat)
+			if err != nil {
+				return err
+			}
+			request.DataCollectionOptions = &tmp
+		}
 	}
 
 	if definedTags, ok := s.D.GetOkExists("defined_tags"); ok {
@@ -662,16 +741,19 @@ func (s *DatabaseCloudVmClusterResourceCrud) Update() error {
 		}
 	}
 
-	if storageSizeInGBs, ok := s.D.GetOkExists("storage_size_in_gbs"); ok && s.D.HasChange("storage_size_in_gbs") {
-		tmp := storageSizeInGBs.(int)
-		request.StorageSizeInGBs = &tmp
-	}
-
 	request.RequestMetadata.RetryPolicy = tfresource.GetRetryPolicy(s.DisableNotFoundRetries, "database")
 
 	response, err := s.Client.UpdateCloudVmCluster(context.Background(), request)
 	if err != nil {
 		return err
+	}
+
+	workId := response.OpcWorkRequestId
+	if workId != nil {
+		_, err = tfresource.WaitForWorkRequestWithErrorHandling(s.WorkRequestClient, workId, "cloudVmCluster", oci_work_requests.WorkRequestResourceActionTypeUpdated, s.D.Timeout(schema.TimeoutCreate), s.DisableNotFoundRetries)
+		if err != nil {
+			return err
+		}
 	}
 
 	s.Res = &response.CloudVmCluster
@@ -721,6 +803,11 @@ func (s *DatabaseCloudVmClusterResourceCrud) SetData() error {
 		s.D.Set("cpu_core_count", *s.Res.CpuCoreCount)
 	}
 
+	if s.Res.DataCollectionOptions != nil {
+		s.D.Set("data_collection_options", []interface{}{DataCollectionOptionsToMap(s.Res.DataCollectionOptions)})
+	} else {
+		s.D.Set("data_collection_options", nil)
+	}
 	if s.Res.OcpuCount != nil {
 		s.D.Set("ocpu_count", *s.Res.OcpuCount)
 	}
@@ -846,6 +933,17 @@ func (s *DatabaseCloudVmClusterResourceCrud) SetData() error {
 	return nil
 }
 
+func (s *DatabaseCloudVmClusterResourceCrud) mapToDataCollectionOptions(fieldKeyFormat string) (oci_database.DataCollectionOptions, error) {
+	result := oci_database.DataCollectionOptions{}
+
+	if isDiagnosticsEventsEnabled, ok := s.D.GetOkExists(fmt.Sprintf(fieldKeyFormat, "is_diagnostics_events_enabled")); ok {
+		tmp := isDiagnosticsEventsEnabled.(bool)
+		result.IsDiagnosticsEventsEnabled = &tmp
+	}
+
+	return result, nil
+}
+
 func (s *DatabaseCloudVmClusterResourceCrud) updateCompartment(compartment interface{}) error {
 	changeCompartmentRequest := oci_database.ChangeCloudVmClusterCompartmentRequest{}
 
@@ -865,6 +963,38 @@ func (s *DatabaseCloudVmClusterResourceCrud) updateCompartment(compartment inter
 	if waitErr := tfresource.WaitForUpdatedState(s.D, s); waitErr != nil {
 		return waitErr
 	}
+
+	return nil
+}
+
+func (s *DatabaseCloudVmClusterResourceCrud) flexAvailableDbStorageInGBs(compartmentId string, shapeName string) (int, error) {
+	request := oci_database.ListFlexComponentsRequest{}
+	request.CompartmentId = &compartmentId
+	request.Name = &shapeName
+	request.RequestMetadata.RetryPolicy = tfresource.GetRetryPolicy(false, "database")
+
+	response, err := s.Client.ListFlexComponents(context.Background(), request)
+	if err != nil {
+		return 0, err
+	}
+	for _, item := range response.FlexComponentCollection.Items {
+		return *item.AvailableDbStorageInGBs, nil
+	}
+
+	return 0, fmt.Errorf("No flex component found for compartment")
+}
+
+func (s *DatabaseCloudVmClusterResourceCrud) getInfraInfo(ceiId string) error {
+	request := oci_database.GetCloudExadataInfrastructureRequest{}
+
+	request.CloudExadataInfrastructureId = &ceiId
+
+	response, err := s.Client.GetCloudExadataInfrastructure(context.Background(), request)
+	if err != nil {
+		return err
+	}
+
+	s.Infra = &response.CloudExadataInfrastructure
 
 	return nil
 }

@@ -9,17 +9,17 @@ import (
 
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/resource"
 
-	"github.com/terraform-providers/terraform-provider-oci/httpreplay"
-	"github.com/terraform-providers/terraform-provider-oci/internal/acctest"
-	"github.com/terraform-providers/terraform-provider-oci/internal/utils"
+	"terraform-provider-oci/httpreplay"
+	"terraform-provider-oci/internal/acctest"
+	"terraform-provider-oci/internal/utils"
 )
 
 var (
-	ipSecConnectionDeviceConfigSingularDataSourceRepresentation = map[string]interface{}{
+	CoreCoreIpSecConnectionDeviceConfigSingularDataSourceRepresentation = map[string]interface{}{
 		"ipsec_id": acctest.Representation{RepType: acctest.Required, Create: `${oci_core_ipsec.test_ip_sec_connection.id}`},
 	}
 
-	IpSecConnectionDeviceConfigResourceConfig = IpSecConnectionRequiredOnlyResource
+	CoreIpSecConnectionDeviceConfigResourceConfig = CoreIpSecConnectionRequiredOnlyResource
 )
 
 // issue-routing-tag: core/default
@@ -40,8 +40,8 @@ func TestCoreIpSecConnectionDeviceConfigResource_basic(t *testing.T) {
 		// verify singular datasource
 		{
 			Config: config +
-				acctest.GenerateDataSourceFromRepresentationMap("oci_core_ipsec_config", "test_ip_sec_connection_device_config", acctest.Required, acctest.Create, ipSecConnectionDeviceConfigSingularDataSourceRepresentation) +
-				compartmentIdVariableStr + IpSecConnectionDeviceConfigResourceConfig,
+				acctest.GenerateDataSourceFromRepresentationMap("oci_core_ipsec_config", "test_ip_sec_connection_device_config", acctest.Required, acctest.Create, CoreCoreIpSecConnectionDeviceConfigSingularDataSourceRepresentation) +
+				compartmentIdVariableStr + CoreIpSecConnectionDeviceConfigResourceConfig,
 			Check: acctest.ComposeAggregateTestCheckFuncWrapper(
 				resource.TestCheckResourceAttrSet(singularDatasourceName, "ipsec_id"),
 
